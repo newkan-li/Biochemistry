@@ -161,7 +161,8 @@
     t = t.replace(/\s*([①-⑳])/g, "<br>$1");
     t = t.replace(/\s*(【[^】]{1,24}】)/g, "<br>$1");
     t = t.replace(/\s*(▸|•)\s*/g, "<br>$1 ");
-    t = t.replace(/(<br>)+/g, "<br>").replace(/^<br>/, "");
+    t = t.replace(/。\s*/g, "。<br>");
+    t = t.replace(/(<br>)+/g, "<br>").replace(/^<br>/, "").replace(/<br>$/, "");
     return t;
   }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
