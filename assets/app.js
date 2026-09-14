@@ -154,6 +154,16 @@
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (m) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m]; }); }
+  /* 把连排的参考答案拆成易读的分点（圈号 / 【小标题】 / 换行） */
+  function fmtAns(s) {
+    var t = esc(s).replace(/\r/g, "");
+    t = t.replace(/\n+/g, "<br>");
+    t = t.replace(/\s*([①-⑳])/g, "<br>$1");
+    t = t.replace(/\s*(【[^】]{1,24}】)/g, "<br>$1");
+    t = t.replace(/\s*(▸|•)\s*/g, "<br>$1 ");
+    t = t.replace(/(<br>)+/g, "<br>").replace(/^<br>/, "");
+    return t;
+  }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function chNames() { var m = {}; (window.MANIFEST || []).forEach(function (x) { m[x.id] = x.title; }); return m; }
 
@@ -419,11 +429,11 @@
     var title, answerHTML, kps = "";
     if (kind === "term") {
       title = "名词解释 " + idx + "：" + esc(q.term);
-      answerHTML = "<b>标准定义：</b><br>" + esc(q.def).replace(/\n/g, "<br>");
+      answerHTML = "<b>标准定义：</b><div class=\"anspts\">" + fmtAns(q.def) + "</div>";
       kps = q.kps || "";
     } else {
       title = (kind === "short" ? "简答题 " : "论述/推导 ") + idx + "：" + esc(q.q);
-      answerHTML = "<b>参考答案：</b><br>" + esc(kind === "calc" ? (q.steps || q.a) : q.a).replace(/\n/g, "<br>");
+      answerHTML = "<b>参考答案：</b><div class=\"anspts\">" + fmtAns(kind === "calc" ? (q.steps || q.a) : q.a) + "</div>";
     }
     box.appendChild(el("p", "qq", title));
     var ta = el("textarea", "ta");
@@ -441,7 +451,7 @@
     box.appendChild(tbar);
     var det = el("details", "sol");
     det.innerHTML = '<summary>参考答案 / 踩分点</summary><div class="ansbox">' + answerHTML + "</div>" +
-      (kps ? '<div class="kps">' + esc(kps) + "</div>" : "");
+      (kps ? '<div class="kps">踩分点：' + fmtAns(kps) + "</div>" : "");
     box.appendChild(det);
     var bar = el("div", "self");
     var bOk = el("button", "ok", "✓ 我会（掌握）"), bNo = el("button", "no", "✗ 我不会");
@@ -636,8 +646,8 @@
           P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(qtext) + '</div>');
           P.push('<div class="stu">我的作答：<br>' + esc(tx[q.id] || "（未作答）").replace(/\n/g, "<br>") + '</div>');
           P.push('<div class="stu">自评：' + (st.state === "ok" ? "会" : st.state === "no" ? "不会" : "未评") + '</div>');
-          P.push('<div class="ans">参考答案：<br>' + esc(ans).replace(/\n/g, "<br>") + '</div>');
-          if (q.kps) P.push('<div class="exp">踩分点：' + esc(q.kps) + '</div>');
+          P.push('<div class="ans">参考答案：<div class="anspts">' + fmtAns(ans) + '</div></div>');
+          if (q.kps) P.push('<div class="exp">踩分点：' + fmtAns(q.kps) + '</div>');
           var im = strokesToDataURL(hw[q.id], 900, 230);
           if (im) P.push('<img class="hwimg" src="' + im + '">');
           P.push('</div>');
