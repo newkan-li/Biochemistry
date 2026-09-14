@@ -1575,8 +1575,9 @@
     var Z = window.ZHENTI || {};
     var names = window.ZTNAMES || {};
     var srcEl = document.getElementById("ztsource"); if (srcEl && window.ZTSOURCE) srcEl.textContent = window.ZTSOURCE;
-    var cur = "all", q = "";
-    ctl.innerHTML = '<div class="fc-chips" id="ztchips"></div><input id="ztsearch" class="ans" placeholder="搜索题干 / 答案…" style="margin-top:6px">' +
+    var cur = "all", q = "", curKind = "all";
+    ctl.innerHTML = '<div class="fc-chips" id="ztkinds"></div><div class="fc-chips" id="ztchips" style="margin-top:4px"></div>' +
+      '<input id="ztsearch" class="ans" placeholder="搜索题干 / 答案…" style="margin-top:6px">' +
       '<button class="navbtn" style="width:auto;margin-top:8px" id="ztQuiz">🎯 真题自测（随机 20 题）</button>';
     var chips = document.getElementById("ztchips");
     function chip(label, val) {
@@ -1587,18 +1588,32 @@
     chip("全部（" + Object.keys(Z).length + "章）", "all");
     Object.keys(Z).sort(function (a, b) { return a - b; }).forEach(function (cid) { chip(esc(names[cid] || ("第" + cid + "章")), cid); });
     function syncChips() { Array.prototype.forEach.call(chips.children, function (b) { b.classList.toggle("on", b.dataset.v === cur); }); }
+    // 题型（课后习题 / 名校考研真题）筛选
+    var kEl = document.getElementById("ztkinds");
+    var KINDS = [["all", "全部题型"], ["考研", "🎓 名校考研真题"], ["课后", "📘 课后习题"]];
+    function kindChip() {
+      kEl.innerHTML = "";
+      KINDS.forEach(function (k) {
+        var n = 0;
+        Object.keys(Z).forEach(function (cid) { Z[cid].forEach(function (x) { if (k[0] === "all" || x.kind === k[0]) n++; }); });
+        var b = el("button", "fc-chip" + (curKind === k[0] ? " on" : ""), k[1] + "（" + n + "）");
+        b.onclick = function () { curKind = k[0]; kindChip(); render(); };
+        kEl.appendChild(b);
+      });
+    }
+    function kindOk(x) { return curKind === "all" || x.kind === curKind; }
     var search = document.getElementById("ztsearch");
     search.oninput = function () { q = (search.value || "").trim().toLowerCase(); render(); };
     function render() {
       var html = "", total = 0;
       Object.keys(Z).sort().forEach(function (cid) {
         if (cur !== "all" && cid !== cur) return;
-        var arr = Z[cid].filter(function (x) { return !q || (x.q + " " + x.a).toLowerCase().indexOf(q) >= 0; });
+        var arr = Z[cid].filter(function (x) { return kindOk(x) && (!q || (x.q + " " + x.a).toLowerCase().indexOf(q) >= 0); });
         if (!arr.length) return;
         html += "<h2>" + esc(names[cid] || ("第" + cid + "章")) + "（" + arr.length + "）</h2>";
         arr.forEach(function (x, i) {
           total++;
-          html += '<div class="zt"><div class="zt-q"><b>' + (i + 1) + ".</b> " + fmtAns(x.q) + "</div>" +
+          html += '<div class="zt"><div class="zt-q"><b>' + (i + 1) + ".</b> " + (x.kind === "考研" ? '<span class="zt-kind">🎓考研</span>' : '<span class="zt-kind hk">📘课后</span>') + fmtAns(x.q) + "</div>" +
             (x.src ? '<div class="zt-src">📌 ' + esc(x.src) + "</div>" : "") +
             (x.a ? '<details class="sol"><summary>答案</summary><div class="ansbox">' + fmtAns(x.a) + "</div></details>" : "") +
             "</div>";
@@ -1611,7 +1626,7 @@
       var pool = [];
       Object.keys(Z).forEach(function (cid) {
         if (cur !== "all" && cid !== cur) return;
-        Z[cid].forEach(function (x) { if (x.q) pool.push({ cid: cid, x: x }); });
+        Z[cid].forEach(function (x) { if (x.q && kindOk(x)) pool.push({ cid: cid, x: x }); });
       });
       for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
       pool = pool.slice(0, 20);
@@ -1644,6 +1659,7 @@
       draw();
     }
     document.getElementById("ztQuiz").onclick = startQuiz;
+    kindChip();
     render();
   }
 
