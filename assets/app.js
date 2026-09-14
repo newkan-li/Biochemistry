@@ -1209,6 +1209,20 @@
         }
       } else {
         if (c.subjective) { mode = "写"; sync(); show(); return; }
+        // 名词解释/术语：正向出题——题面=术语，答案=定义
+        if ((c.tag === "名词解释" || c.tag === "术语") && c.front && c.plain) {
+          host.innerHTML = head + '<div class="fc-card"><div class="fc-front">' + fmtAns(c.front) + '</div></div>' +
+            '<div class="fc-input"><input class="fc-ans" placeholder="先写下定义要点（可选，自动保存）…"><button class="fc-check">显示参考答案</button></div>' +
+            '<div class="fc-back" style="display:none">' + c.back + "</div>";
+          var rrN = rateRow(c); host.appendChild(rrN);
+          var inpN = host.querySelector(".fc-ans"), bkN = host.querySelector(".fc-back");
+          var recN = fcAnsGet(c.id); if (recN && recN.last) inpN.value = recN.last;
+          host.querySelector(".fc-check").onclick = function () {
+            fcAnsSave(c.id, "填空", inpN.value, true); renderRecords();
+            bkN.style.display = "block"; rrN.style.display = "flex";
+          };
+          return;
+        }
         var cloze = c.plain || "", blank = c.blank || "", blank2 = c.blank2 || "", cardInner, answers = [], backOverride = "";
         if (blank && cloze.indexOf(blank) >= 0) {
           if (blank2 && blank2 !== blank && cloze.indexOf(blank2) >= 0) {
@@ -1219,10 +1233,6 @@
             cardInner = '<div class="fc-front">' + esc(c.front) + '</div><div class="fc-cloze">' + esc(cloze.replace(blank, "______")) + "</div>";
             answers = [blank];
           }
-        } else if ((c.tag === "名词解释" || c.tag === "术语") && c.front && c.plain) {
-          cardInner = '<div class="fc-front">' + fmtAns(c.plain) + "</div>";
-          answers = [c.front];
-          backOverride = '<b>答案（术语）：</b>' + fmtAns(c.front);
         } else { mode = "写"; sync(); show(); return; }
         var inputsHtml = answers.map(function (a, i) {
           var lbl = answers.length > 1 ? ("①②③".charAt(i) + " ") : "";
