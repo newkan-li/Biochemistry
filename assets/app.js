@@ -1209,7 +1209,7 @@
         }
       } else {
         if (c.subjective) { mode = "写"; sync(); show(); return; }
-        var cloze = c.plain || "", blank = c.blank || "", blank2 = c.blank2 || "", cardInner, answers = [];
+        var cloze = c.plain || "", blank = c.blank || "", blank2 = c.blank2 || "", cardInner, answers = [], backOverride = "";
         if (blank && cloze.indexOf(blank) >= 0) {
           if (blank2 && blank2 !== blank && cloze.indexOf(blank2) >= 0) {
             cardInner = '<div class="fc-front">' + esc(c.front) + '</div><div class="fc-cloze">' +
@@ -1222,6 +1222,7 @@
         } else if ((c.tag === "名词解释" || c.tag === "术语") && c.front && c.plain) {
           cardInner = '<div class="fc-front">' + fmtAns(c.plain) + "</div>";
           answers = [c.front];
+          backOverride = '<b>答案（术语）：</b>' + fmtAns(c.front);
         } else { mode = "写"; sync(); show(); return; }
         var inputsHtml = answers.map(function (a, i) {
           var lbl = answers.length > 1 ? ("①②③".charAt(i) + " ") : "";
@@ -1229,7 +1230,7 @@
         }).join("");
         host.innerHTML = head + '<div class="fc-card">' + cardInner + "</div>" +
           '<div class="fc-input">' + inputsHtml + '<button class="fc-check">检查</button></div>' +
-          '<div class="fc-back" style="display:none">' + c.back + "</div>";
+          '<div class="fc-back" style="display:none">' + (backOverride || c.back) + "</div>";
         var rr3 = rateRow(c); host.appendChild(rr3);
         var inps = host.querySelectorAll(".fc-ans"), bk3 = host.querySelector(".fc-back");
         var doCheck3 = function () {
