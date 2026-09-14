@@ -1562,8 +1562,8 @@
     var ctl = document.getElementById("ztctl"), host = document.getElementById("zthost"), cnt = document.getElementById("ztcount");
     if (!host) return;
     var Z = window.ZHENTI || {};
-    var names = chNames();
-    var covered = { ch01: 1, ch02: 1, ch03: 1, ch04: 1, ch05: 1, ch07: 1, ch08: 1, ch11: 1 };
+    var names = window.ZTNAMES || {};
+    var srcEl = document.getElementById("ztsource"); if (srcEl && window.ZTSOURCE) srcEl.textContent = window.ZTSOURCE;
     var cur = "all", q = "";
     ctl.innerHTML = '<div class="fc-chips" id="ztchips"></div><input id="ztsearch" class="ans" placeholder="搜索题干 / 答案…" style="margin-top:6px">' +
       '<button class="navbtn" style="width:auto;margin-top:8px" id="ztQuiz">🎯 真题自测（随机 20 题）</button>';
@@ -1573,19 +1573,18 @@
       b.onclick = function () { cur = val; syncChips(); render(); };
       chips.appendChild(b);
     }
-    chip("全部（17章）", "all"); chip("只看已讲章节", "covered");
-    Object.keys(Z).sort().forEach(function (cid) { chip(esc(names[cid] || cid), cid); });
+    chip("全部（" + Object.keys(Z).length + "章）", "all");
+    Object.keys(Z).sort(function (a, b) { return a - b; }).forEach(function (cid) { chip(esc(names[cid] || ("第" + cid + "章")), cid); });
     function syncChips() { Array.prototype.forEach.call(chips.children, function (b) { b.classList.toggle("on", b.dataset.v === cur); }); }
     var search = document.getElementById("ztsearch");
     search.oninput = function () { q = (search.value || "").trim().toLowerCase(); render(); };
     function render() {
       var html = "", total = 0;
       Object.keys(Z).sort().forEach(function (cid) {
-        if (cur === "covered") { if (!covered[cid]) return; }
-        else if (cur !== "all" && cid !== cur) return;
+        if (cur !== "all" && cid !== cur) return;
         var arr = Z[cid].filter(function (x) { return !q || (x.q + " " + x.a).toLowerCase().indexOf(q) >= 0; });
         if (!arr.length) return;
-        html += "<h2>" + esc(names[cid] || cid) + "（" + arr.length + "）</h2>";
+        html += "<h2>" + esc(names[cid] || ("第" + cid + "章")) + "（" + arr.length + "）</h2>";
         arr.forEach(function (x, i) {
           total++;
           html += '<div class="zt"><div class="zt-q"><b>' + (i + 1) + ".</b> " + esc(x.q) + "</div>" +
@@ -1600,8 +1599,7 @@
     function startQuiz() {
       var pool = [];
       Object.keys(Z).forEach(function (cid) {
-        if (cur === "covered" && !covered[cid]) return;
-        if (cur !== "all" && cur !== "covered" && cid !== cur) return;
+        if (cur !== "all" && cid !== cur) return;
         Z[cid].forEach(function (x) { if (x.q) pool.push({ cid: cid, x: x }); });
       });
       for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
