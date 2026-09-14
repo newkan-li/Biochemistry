@@ -1576,6 +1576,7 @@
     var names = window.ZTNAMES || {};
     var srcEl = document.getElementById("ztsource"); if (srcEl && window.ZTSOURCE) srcEl.textContent = window.ZTSOURCE;
     var cur = "all", q = "", curKind = "all";
+    try { var qp = new URLSearchParams(location.search).get("ch"); if (qp && Z[qp]) cur = qp; } catch (e) { }
     ctl.innerHTML = '<div class="fc-chips" id="ztkinds"></div><div class="fc-chips" id="ztchips" style="margin-top:4px"></div>' +
       '<input id="ztsearch" class="ans" placeholder="搜索题干 / 答案…" style="margin-top:6px">' +
       '<button class="navbtn" style="width:auto;margin-top:8px" id="ztQuiz">🎯 真题自测（随机 20 题）</button>';
@@ -1670,12 +1671,14 @@
     var html = '<p class="hint">' + esc(T.source) + " ｜ " + esc(T.note) + "</p>";
     (T.chapters || []).forEach(function (ch) {
       html += '<div class="tb-chapter"><h3>' + esc(ch.title) + "</h3>" +
-        '<table class="tbl"><thead><tr><th>教材章节（第4版）</th><th>本站模块</th><th>页号</th><th>覆盖</th><th></th></tr></thead><tbody>';
+        '<table class="tbl"><thead><tr><th>教材章节（第4版）</th><th>本站模块</th><th>页号</th><th>覆盖</th><th>学习</th><th>真题</th></tr></thead><tbody>';
       (ch.maps || []).forEach(function (m) {
         var anchor = "s_" + ch.web + "_s" + m.mod + "_0";
         var cov = m.cover === "全" ? "全" : "部分";
+        var tbnum = (String(m.tb).match(/第\s*(\d+)\s*章/) || [])[1];
+        var ztCell = tbnum ? '<a href="zhenti.html?ch=' + tbnum + '">🎓 做真题</a>' : "—";
         html += "<tr><td>" + esc(m.tb) + "</td><td>" + esc(m.modName || ("模块" + m.mod)) + "</td><td>" + esc(m.pages) + "</td><td>" + esc(cov) + "</td>" +
-          '<td><a href="' + ch.web + '.html#' + anchor + '">去学习 →</a></td></tr>';
+          '<td><a href="' + ch.web + '.html#' + anchor + '">去学习 →</a></td><td>' + ztCell + '</td></tr>';
       });
       html += "</tbody></table>";
       if (ch.gaps && ch.gaps.length) {
