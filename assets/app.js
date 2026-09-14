@@ -522,7 +522,7 @@
       item.innerHTML = '<div class="wq">' + esc(e.q) + '<span class="pill">' + esc(e.type) + "</span>" +
         (e.cause ? '<span class="cause-tag">' + esc((CAUSES.filter(function (c) { return c[0] === e.cause; })[0] || ["", "其他"])[1]) + "</span>" : "") + "</div>" +
         extra +
-        '<div class="wa">正确答案：<b>' + esc(e.correct) + "</b></div>" +
+        '<div class="wa">正确答案：<div class="anspts">' + fmtAns(e.correct) + "</div></div>" +
         (e.chosen ? '<div class="wa">你的作答：' + esc(e.chosen) + "</div>" : "");
       var act = el("div", "act");
       var bm = el("button", "", "标记已掌握");
@@ -607,7 +607,7 @@
           P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(q.q) + '</div>');
           P.push('<div class="opts">' + q.o.map(function (o) { return '<div>' + esc(o) + '</div>'; }).join('') + '</div>');
           P.push('<div class="stu">我的作答：<b>' + esc(rec.last || "（未作答）") + '</b></div>');
-          P.push('<div class="ans">正确答案：' + esc(q.a) + '</div>');
+          P.push('<div class="ans">正确答案：<div class="anspts">' + fmtAns(q.a) + '</div></div>');
           if (q.e) P.push('<div class="exp">解析：' + esc(q.e) + '</div>');
           var im = strokesToDataURL(hw[q.id], 900, 150);
           if (im) P.push('<img class="hwimg" src="' + im + '">');
@@ -620,7 +620,7 @@
           var rec = jg[q.id] || {};
           P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(q.q) + '</div>');
           P.push('<div class="stu">我的作答：<b>' + esc(rec.last || "（未作答）") + '</b></div>');
-          P.push('<div class="ans">正确答案：' + esc(q.a) + '</div>');
+          P.push('<div class="ans">正确答案：<div class="anspts">' + fmtAns(q.a) + '</div></div>');
           if (q.e) P.push('<div class="exp">解析：' + esc(q.e) + '</div>');
           P.push('</div>');
         });
@@ -631,7 +631,7 @@
           var rec = fi[q.id] || {};
           P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(q.q) + '</div>');
           P.push('<div class="stu">我的作答：<b>' + esc(rec.last || tx[q.id] || "（未作答）") + '</b></div>');
-          P.push('<div class="ans">参考答案：' + esc(q.a) + '</div>');
+          P.push('<div class="ans">参考答案：<div class="anspts">' + fmtAns(q.a) + '</div></div>');
           var im = strokesToDataURL(hw[q.id], 900, 150);
           if (im) P.push('<img class="hwimg" src="' + im + '">');
           P.push('</div>');
@@ -992,7 +992,7 @@
         var modName = (q.modI != null && ch.modules[q.modI]) ? ch.modules[q.modI].name : "";
         cards.push({
           id: "fc_term_" + q.id, ch: m.id, mod: (q.modI != null ? q.modI : null), modName: modName, tag: "名词解释", front: q.term,
-          back: "<b>定义</b><br>" + esc(q.def).replace(/\n/g, "<br>") + (q.kps ? '<div class="fc-kps">踩分点：' + esc(q.kps) + "</div>" : ""),
+          back: "<b>定义</b><div class=\"anspts\">" + fmtAns(q.def) + "</div>" + (q.kps ? '<div class="fc-kps">踩分点：' + fmtAns(q.kps) + "</div>" : ""),
           plain: q.def, blank: q.term
         });
       });
@@ -1000,7 +1000,7 @@
         cards.push({
           id: "fc_app_" + m.id + "_" + i, ch: m.id, mod: c.mod, modName: c.modName || "应用综合",
           tag: "应用卡片", subjective: true, front: c.front,
-          back: esc(c.back).replace(/\n/g, "<br>") + (c.points ? '<div class="fc-kps">踩分点：' + esc(c.points) + "</div>" : ""),
+          back: fmtAns(c.back) + (c.points ? '<div class="fc-kps">踩分点：' + fmtAns(c.points) + "</div>" : ""),
           plain: c.back, blank: ""
         });
       });
@@ -1008,7 +1008,7 @@
         mod.slides.forEach(function (s) {
           var kp0 = m.id + "_s" + mod.i + "_" + s.i;
           (s.cards || []).forEach(function (c, i) {
-            var back = esc(c.back).replace(/\n/g, "<br>");
+            var back = fmtAns(c.back);
             if (c.mnemonic) back += '<div class="fc-mn">💡 ' + esc(c.mnemonic) + "</div>";
             if (c.useImg && s.img) back += '<img class="fc-img" src="' + s.img + '" loading="lazy" alt="">';
             cards.push({ id: "fc_s_" + kp0 + "_" + i, ch: m.id, mod: mod.i, modName: mod.name, tag: "掌握卡片", front: c.front, back: back, plain: c.back, blank: c.blank || "", blank2: c.blank2 || "" });
@@ -1016,7 +1016,7 @@
           if (!s.points && !s.fig) return;
           var kp = m.id + "_s" + mod.i + "_" + s.i, back = "";
           if (s.points && s.points.length) back += "<ul>" + s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
-          if (s.fig) back += '<div class="fc-fig">' + esc(s.fig).replace(/\n/g, "<br>") + "</div>";
+          if (s.fig) back += '<div class="fc-fig">' + fmtAns(s.fig) + "</div>";
           cards.push({ id: "fc_kp_" + kp, ch: m.id, mod: mod.i, modName: mod.name, tag: "本页要点", front: s.title, back: back,
             plain: (s.points ? s.points.join("；") : "") + (s.fig ? " " + s.fig : ""), blank: "" });
         });
@@ -1025,7 +1025,7 @@
     (window.GLOSSARY || []).forEach(function (g, i) {
       cards.push({
         id: "fc_gloss_" + i, ch: g.ch, mod: null, modName: "", tag: "术语", front: g.t,
-        back: (g.en ? "<b>" + esc(g.en) + "</b><br>" : "") + esc(g.d),
+        back: (g.en ? "<b>" + esc(g.en) + "</b><br>" : "") + fmtAns(g.d),
         plain: g.d, blank: g.t
       });
     });
@@ -1220,7 +1220,7 @@
             answers = [blank];
           }
         } else if ((c.tag === "名词解释" || c.tag === "术语") && c.front && c.plain) {
-          cardInner = '<div class="fc-front">' + esc(c.plain) + "</div>";
+          cardInner = '<div class="fc-front">' + fmtAns(c.plain) + "</div>";
           answers = [c.front];
         } else { mode = "写"; sync(); show(); return; }
         var inputsHtml = answers.map(function (a, i) {
@@ -1390,9 +1390,9 @@
       for (var i = 0; i < (q.o || []).length; i++) { if (String(q.o[i]).trim().charAt(0) === String(q.a).trim()) { a = q.o[i]; break; } }
     } else if (k === "term") a = q.def || "";
     else a = q.a != null ? q.a : "";
-    var h = "<div>答案：<b>" + esc(a) + "</b></div>";
-    if (q.e) h += '<div class="rev-exp">' + esc(q.e) + "</div>";
-    if (q.kps) h += '<div class="rev-kps">踩分点：' + esc(q.kps) + "</div>";
+    var h = '<div>答案：<div class="anspts">' + fmtAns(a) + "</div></div>";
+    if (q.e) h += '<div class="rev-exp">' + fmtAns(q.e) + "</div>";
+    if (q.kps) h += '<div class="rev-kps">踩分点：' + fmtAns(q.kps) + "</div>";
     return h;
   }
   function renderReview() {
@@ -1587,9 +1587,9 @@
         html += "<h2>" + esc(names[cid] || ("第" + cid + "章")) + "（" + arr.length + "）</h2>";
         arr.forEach(function (x, i) {
           total++;
-          html += '<div class="zt"><div class="zt-q"><b>' + (i + 1) + ".</b> " + esc(x.q) + "</div>" +
+          html += '<div class="zt"><div class="zt-q"><b>' + (i + 1) + ".</b> " + fmtAns(x.q) + "</div>" +
             (x.src ? '<div class="zt-src">📌 ' + esc(x.src) + "</div>" : "") +
-            (x.a ? '<details class="sol"><summary>答案</summary><div class="ansbox">' + esc(x.a) + "</div></details>" : "") +
+            (x.a ? '<details class="sol"><summary>答案</summary><div class="ansbox">' + fmtAns(x.a) + "</div></details>" : "") +
             "</div>";
         });
       });
@@ -1615,9 +1615,9 @@
         }
         var it = pool[pos];
         host.innerHTML = '<div class="fc-progress">第 ' + (pos + 1) + " / " + pool.length + " 题 · " + esc(names[it.cid] || it.cid) + "</div>" +
-          '<div class="zt"><div class="zt-q">' + esc(it.x.q) + "</div>" +
+          '<div class="zt"><div class="zt-q">' + fmtAns(it.x.q) + "</div>" +
           (it.x.src ? '<div class="zt-src">📌 ' + esc(it.x.src) + "</div>" : "") +
-          '<div class="zt-a" style="display:none;margin-top:6px"><b>答案：</b>' + esc(it.x.a || "（原书未给出，见教材）") + "</div>" +
+          '<div class="zt-a" style="display:none;margin-top:6px"><b>答案：</b><div class="anspts">' + (it.x.a ? fmtAns(it.x.a) : "（原书未给出，见教材）") + "</div></div>" +
           '<div style="margin-top:8px"><button class="fc-check" id="ztReveal">显示答案</button></div>' +
           '<div class="fc-rate" style="display:none;margin-top:8px"><button class="no">不会</button><button class="mid">模糊</button><button class="ok">会</button></div></div>';
         document.getElementById("ztReveal").onclick = function () {
@@ -1778,7 +1778,7 @@
         item.innerHTML = '<div class="wq">' + esc(e.q) + '<span class="pill">' + esc(e.type) + "</span>" +
           (e.cause ? '<span class="cause-tag">' + esc((CAUSES.filter(function (c) { return c[0] === e.cause; })[0] || ["", "其他"])[1]) + "</span>" : "") + "</div>" +
           (q ? '<div style="margin-top:4px">选项：' + q.o.map(esc).join("　") + "</div>" : "") +
-          '<div class="wa">正确答案：<b>' + esc(e.correct) + "</b></div>" +
+          '<div class="wa">正确答案：<div class="anspts">' + fmtAns(e.correct) + "</div></div>" +
           (e.chosen ? '<div class="wa">你的作答：' + esc(e.chosen) + "</div>" : "");
         var act = el("div", "act"); var b = el("button", "", "标记已掌握");
         b.onclick = function () { clearWrong(m.id, e.id); item.remove(); };
