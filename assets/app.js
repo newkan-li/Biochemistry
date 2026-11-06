@@ -976,9 +976,11 @@
         head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
         card.appendChild(head);
         var body = el("div", "body");
-        var img = el("img"); img.src = s.img; img.loading = "lazy"; img.alt = s.title;
-        img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
-        body.appendChild(img);
+        if (s.img) {
+          var img = el("img"); img.src = s.img; img.loading = "lazy"; img.alt = s.title;
+          img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
+          body.appendChild(img);
+        }
         body.appendChild(el("div", "notes", esc(s.notes)));
         card.appendChild(body);
         if (s.points && s.points.length) {
