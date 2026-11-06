@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>PPT 放映 · 生物化学</title>
+<link rel="stylesheet" href="assets/style.css?v=20261106a">
+<script src="assets/theme.js?v=20261106a"></script>
+<style>
+html,body{height:100%}
+body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
+.ppt-top{height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;background:#13263d;border-bottom:1px solid #24405f;box-sizing:border-box}
+.ppt-top .t{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.ppt-top .meta{font-size:12px;color:#9fb6cf;white-space:nowrap}
+.ppt-btn{border:1px solid #33506f;background:#1b3049;color:#d7e6f7;border-radius:8px;padding:5px 9px;font:inherit;font-size:12px;cursor:pointer}
+.ppt-btn:hover{background:#25415f}
+.ppt-stage{height:calc(100% - 52px);display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:0}
+.ppt-fig{min-height:0;background:#0b1522;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.ppt-fig img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,.45);cursor:zoom-in}
+.ppt-fig.none{display:none}
+.ppt-side{min-height:0;overflow:auto;padding:26px 28px 22px;box-sizing:border-box;background:#13263d}
+.ppt-side h1{font-size:25px;line-height:1.35;margin:0 0 10px;color:#fff}
+.ppt-side .mod{font-size:12px;color:#8fb3d6;margin-bottom:10px}
+.ppt-side .notes{font-size:15px;line-height:1.95;color:#d8e5f3;white-space:pre-wrap}
+.ppt-side .points{margin-top:14px;font-size:13.5px;line-height:1.8;color:#bcd1e6;border-left:3px solid #4a90d9;padding-left:10px}
+.ppt-side .points b{color:#8fc8ff}
+.ppt-side .src{margin-top:14px;font-size:11.5px;color:#7f9ab5}
+.ppt-nav{position:fixed;right:18px;bottom:16px;display:flex;gap:8px;z-index:5}
+.ppt-nav .ppt-btn{font-size:14px;padding:8px 12px}
+.ppt-bar{position:fixed;left:0;right:0;bottom:0;height:3px;background:#1d3550;z-index:6}
+.ppt-bar>i{display:block;height:100%;background:#4a90d9;width:0;transition:width .2s}
+.ppt-zoom{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:99;padding:20px;cursor:zoom-out}
+.ppt-zoom.on{display:flex}
+.ppt-zoom img{max-width:100%;max-height:100%;object-fit:contain}
+@media (max-width:850px){.ppt-stage{grid-template-columns:1fr;grid-template-rows:46vh 1fr}.ppt-side{padding:18px}.ppt-side h1{font-size:20px}.ppt-side .notes{font-size:14px}.ppt-top .meta{display:none}}
+</style>
+</head>
+<body class="ppt">
+<div class="ppt-top">
+  <button class="ppt-btn" id="backBtn">← 返回</button>
+  <div class="t" id="ttl">PPT 放映</div>
+  <div class="meta" id="count"></div>
+  <button class="ppt-btn" id="fsBtn">全屏</button>
+</div>
+<div class="ppt-stage">
+  <div class="ppt-fig" id="figBox"><img id="figImg" alt="教材页"></div>
+  <div class="ppt-side">
+    <div class="mod" id="mod"></div>
+    <h1 id="title"></h1>
+    <div class="notes" id="notes"></div>
+    <div class="points" id="points"></div>
+    <div class="src" id="src"></div>
+  </div>
+</div>
+<div class="ppt-nav">
+  <button class="ppt-btn" id="prevBtn">← 上一页</button>
+  <button class="ppt-btn" id="nextBtn">下一页 →</button>
+</div>
+<div class="ppt-bar"><i id="bar"></i></div>
+<div class="ppt-zoom" id="zoom"><img id="zoomImg" alt="放大"></div>
+<script>
+(function(){
+  var ch=(new URLSearchParams(location.search).get('ch')||'u01_protein').replace(/[^a-z0-9_-]/gi,'');
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261106a';
+  s.onload=function(){init()};s.onerror=function(){document.getElementById('ttl').textContent='数据加载失败'};document.head.appendChild(s);
+  function init(){
+    var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c){document.getElementById('ttl').textContent='未找到单元';return;}
+    var slides=[];c.modules.forEach(function(m){m.slides.forEach(function(s){slides.push({s:s,mod:m.name})})});
+    var i=0, n=slides.length;
+    document.title=c.title+' · PPT 放映';
+    document.getElementById('ttl').textContent=c.title;
+    function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,function(z){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[z]})}
+    function render(){
+      var x=slides[i], z=x.s;
+      document.getElementById('count').textContent=(i+1)+' / '+n;
+      document.getElementById('mod').textContent=x.mod||'';
+      document.getElementById('title').textContent=z.title||'';
+      document.getElementById('notes').textContent=z.notes||'';
+      var pts=document.getElementById('points');
+      pts.innerHTML=z.points&&z.points.length?'<b>本页要点</b><br>'+z.points.map(function(p){return '• '+esc(p)}).join('<br>'):'';
+      document.getElementById('src').textContent=(z.fig||'')+(z.page?' · 教材 p'+z.page:'');
+      var fb=document.getElementById('figBox'), im=document.getElementById('figImg');
+      if(z.img){fb.classList.remove('none');im.src=z.img;im.style.display='';}else{fb.classList.add('none');im.removeAttribute('src');}
+      document.getElementById('bar').style.width=((i+1)*100/n)+'%';
+      document.getElementById('prevBtn').disabled=i<=0;document.getElementById('nextBtn').disabled=i>=n-1;
+    }
+    function go(d){i=Math.max(0,Math.min(n-1,i+d));render()}
+    document.getElementById('prevBtn').onclick=function(){go(-1)};
+    document.getElementById('nextBtn').onclick=function(){go(1)};
+    document.getElementById('backBtn').onclick=function(){location.href='u01_protein.html'};
+    document.getElementById('fsBtn').onclick=function(){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}};
+    document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(-1)}else if(e.key==='Escape'){location.href='u01_protein.html'}});
+    document.getElementById('figImg').onclick=function(){if(this.src){document.getElementById('zoomImg').src=this.src;document.getElementById('zoom').classList.add('on')}};
+    document.getElementById('zoom').onclick=function(){this.classList.remove('on')};
+    render();
+  }
+})();
+</script>
+</body>
+</html>
