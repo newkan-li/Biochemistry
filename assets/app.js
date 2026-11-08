@@ -866,9 +866,15 @@
         });
         if (chosenEl && !correct) chosenEl.classList.add("wrong");
       }
-      fb.innerHTML = (correct ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>') +
+      var fbhtml = (correct ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>') +
         '　正确答案：<b>' + esc(answerText()) + "</b>" +
         (q.e ? '<div style="margin-top:4px">解析：' + esc(q.e) + "</div>" : "");
+      if (q.oe && q.oe.length) {
+        fbhtml += '<div class="cp-oe"><b>选项解析</b><ul>' + q.oe.map(function (x, i) {
+          return "<li><b>" + String(q.o && q.o[i] ? q.o[i] : "").trim().charAt(0) + "</b>：" + esc(x) + "</li>";
+        }).join("") + "</ul></div>";
+      }
+      fb.innerHTML = fbhtml;
     }
     if (kind === "short") {
       box.appendChild(el("div", "cp-q", esc(q.q || "请复述本页核心知识点。")));
