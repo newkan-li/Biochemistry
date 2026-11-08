@@ -464,3 +464,5 @@ html[data-theme="dark"] .toc-subgroup>summary{color:#a8c6e0}
 .test-wrap h3{margin:12px 0 6px;font-size:13.5px;color:#7a2a24}
 html[data-theme="dark"] .chapter-test{border-top-color:#33475a}
 html[data-theme="dark"] .test-wrap{background:#1c2630;border-color:#33404d}
+.q .q-exp{margin-top:8px;padding:8px 10px;border-left:3px solid #1f5c8b;background:#f2f7fb;border-radius:0 7px 7px 0;font-size:12.5px;line-height:1.7}
+html[data-theme="dark"] .q .q-exp{background:#22303d;border-left-color:#5b9bd5}
