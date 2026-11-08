@@ -865,6 +865,10 @@
     }
     if (kind === "short") {
       box.appendChild(el("div", "cp-q", esc(q.q || "请复述本页核心知识点。")));
+      var inp0 = el("textarea", "cp-in");
+      inp0.rows = 4;
+      inp0.placeholder = "先自己写答案/公式，再点“显示参考答案”核对";
+      box.appendChild(inp0);
       var showB = el("button", "cp-opt", "显示参考答案");
       showB.onclick = function () {
         fb.innerHTML = '<div class="cp-ans"><b>参考答案</b>：<div class="anspts">' + fmtAns(q.a || "本页为过渡页，无文字要点。") + "</div></div>";
