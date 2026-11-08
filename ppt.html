@@ -88,9 +88,9 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
     function go(d){i=Math.max(0,Math.min(n-1,i+d));render()}
     document.getElementById('prevBtn').onclick=function(){go(-1)};
     document.getElementById('nextBtn').onclick=function(){go(1)};
-    document.getElementById('backBtn').onclick=function(){location.href='u01_protein.html'};
+    document.getElementById('backBtn').onclick=function(){location.href=ch+'.html'};
     document.getElementById('fsBtn').onclick=function(){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}};
-    document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(-1)}else if(e.key==='Escape'){location.href='u01_protein.html'}});
+    document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(-1)}else if(e.key==='Escape'){location.href=ch+'.html'}});
     document.getElementById('figImg').onclick=function(){if(this.src){document.getElementById('zoomImg').src=this.src;document.getElementById('zoom').classList.add('on')}};
     document.getElementById('zoom').onclick=function(){this.classList.remove('on')};
     render();
