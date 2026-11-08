@@ -1030,13 +1030,15 @@
           img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
           body.appendChild(img);
         }
+        var textwrap = el("div", "slide-text");
         if (s.imageExplain) {
           var ie = el("div", "img-explain");
           ie.innerHTML = '<div class="ie-h">🖼 PPT图片讲解</div><p>' + esc(s.imageExplain) + "</p>";
-          body.appendChild(ie);
+          textwrap.appendChild(ie);
         }
-        body.appendChild(el("div", "notes-h", "📖 本页PPT详细讲解"));
-        body.appendChild(el("div", "notes", esc(s.notes)));
+        textwrap.appendChild(el("div", "notes-h", "📖 本页PPT详细讲解"));
+        textwrap.appendChild(el("div", "notes", esc(s.notes)));
+        body.appendChild(textwrap);
         card.appendChild(body);
         if (s.points && s.points.length) {
           var pb = el("div", "points");
