@@ -531,7 +531,8 @@
       answerHTML = "<b>标准定义：</b><div class=\"anspts\">" + fmtAns(q.def) + "</div>";
       kps = q.kps || "";
     } else {
-      title = (kind === "short" ? "简答题 " : "论述/推导 ") + idx + "：" + esc(q.q);
+      title = (kind === "short" ? "简答题 " : "论述/推导 ") + idx + "：" + esc(q.q) +
+        (q.src ? ' <span class="src">[' + esc(q.src) + ']</span>' : "");
       answerHTML = "<b>参考答案：</b><div class=\"anspts\">" + fmtAns(kind === "calc" ? (q.steps || q.a) : q.a) + "</div>";
     }
     box.appendChild(el("p", "qq", title));
@@ -942,17 +943,19 @@
     var total = counts.mcq + counts.judge + counts.fill + counts.short + counts.calc + counts.term;
     if (!total) return null;
     var sec = el("section", "chapter-test"); sec.id = "chapter-test";
-    sec.appendChild(el("h2", "", "📝 本章章节测试（期末/期中题型）"));
-    sec.appendChild(el("p", "hint", "按本章现有题库组卷：客观题即时判分，简答/论述/名词解释自评。共 " + total + " 题。"));
+    sec.appendChild(el("h2", "", "📝 本章章节测试（原书课后题优先）"));
+    sec.appendChild(el("p", "hint", "第一部分为朱圣庚第4版本章课后题；客观题用于补充检测。共 " + total + " 题。"));
     var box = el("details", "test-wrap"); box.open = false;
     box.appendChild(el("summary", "", "展开本章测试（" + total + " 题）"));
     function head(t) { return el("h3", "", t); }
-    if (counts.mcq) { box.appendChild(head("一、选择题（点选项即时判分）")); ch.mcq.forEach(function (q, i) { box.appendChild(renderMCQ(cid, q, i + 1)); }); }
-    if (counts.judge) { box.appendChild(head("二、判断题")); ch.judge.forEach(function (q, i) { box.appendChild(renderJudge(cid, q, i + 1)); }); }
-    if (counts.fill) { box.appendChild(head("三、填空题")); ch.fill.forEach(function (q, i) { box.appendChild(renderFill(cid, q, i + 1)); }); }
-    if (counts.term) { box.appendChild(head("四、名词解释（自评）")); ch.term.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "term")); }); }
-    if (counts.short) { box.appendChild(head("五、简答题（自评）")); ch.short.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "short")); }); }
-    if (counts.calc) { box.appendChild(head("六、论述/计算题（自评）")); ch.calc.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "calc")); }); }
+    var no = 0;
+    function hn(t) { return head(["一","二","三","四","五","六","七","八"][no++] + "、" + t); }
+    if (counts.short) { box.appendChild(hn("原书课后题（简答/计算）")); ch.short.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "short")); }); }
+    if (counts.mcq) { box.appendChild(hn("补充选择题（点选项即时判分）")); ch.mcq.forEach(function (q, i) { box.appendChild(renderMCQ(cid, q, i + 1)); }); }
+    if (counts.judge) { box.appendChild(hn("补充判断题")); ch.judge.forEach(function (q, i) { box.appendChild(renderJudge(cid, q, i + 1)); }); }
+    if (counts.fill) { box.appendChild(hn("补充填空题")); ch.fill.forEach(function (q, i) { box.appendChild(renderFill(cid, q, i + 1)); }); }
+    if (counts.term) { box.appendChild(hn("名词解释（自评）")); ch.term.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "term")); }); }
+    if (counts.calc) { box.appendChild(hn("补充论述/计算题（自评）")); ch.calc.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "calc")); }); }
     sec.appendChild(box);
     var bar = el("div", "navbtns");
     var gb = el("button", "navbtn", "📋 本章测试交卷判分"); gb.onclick = function () { mGradeAll(cid); }; bar.appendChild(gb);
