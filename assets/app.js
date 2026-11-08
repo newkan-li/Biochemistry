@@ -937,6 +937,30 @@
     window.__refreshHeat = draw;
   }
 
+  function renderChapterTest(cid, ch) {
+    var counts = { mcq: (ch.mcq || []).length, judge: (ch.judge || []).length, fill: (ch.fill || []).length, short: (ch.short || []).length, calc: (ch.calc || []).length, term: (ch.term || []).length };
+    var total = counts.mcq + counts.judge + counts.fill + counts.short + counts.calc + counts.term;
+    if (!total) return null;
+    var sec = el("section", "chapter-test"); sec.id = "chapter-test";
+    sec.appendChild(el("h2", "", "📝 本章章节测试（期末/期中题型）"));
+    sec.appendChild(el("p", "hint", "按本章现有题库组卷：客观题即时判分，简答/论述/名词解释自评。共 " + total + " 题。"));
+    var box = el("details", "test-wrap"); box.open = false;
+    box.appendChild(el("summary", "", "展开本章测试（" + total + " 题）"));
+    function head(t) { return el("h3", "", t); }
+    if (counts.mcq) { box.appendChild(head("一、选择题（点选项即时判分）")); ch.mcq.forEach(function (q, i) { box.appendChild(renderMCQ(cid, q, i + 1)); }); }
+    if (counts.judge) { box.appendChild(head("二、判断题")); ch.judge.forEach(function (q, i) { box.appendChild(renderJudge(cid, q, i + 1)); }); }
+    if (counts.fill) { box.appendChild(head("三、填空题")); ch.fill.forEach(function (q, i) { box.appendChild(renderFill(cid, q, i + 1)); }); }
+    if (counts.term) { box.appendChild(head("四、名词解释（自评）")); ch.term.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "term")); }); }
+    if (counts.short) { box.appendChild(head("五、简答题（自评）")); ch.short.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "short")); }); }
+    if (counts.calc) { box.appendChild(head("六、论述/计算题（自评）")); ch.calc.forEach(function (q, i) { box.appendChild(renderSelf(cid, q, i + 1, "calc")); }); }
+    sec.appendChild(box);
+    var bar = el("div", "navbtns");
+    var gb = el("button", "navbtn", "📋 本章测试交卷判分"); gb.onclick = function () { mGradeAll(cid); }; bar.appendChild(gb);
+    var eb = el("a", "navbtn", "⏱ 进入本章限时测试"); eb.href = "exam.html?ch=" + encodeURIComponent(cid); eb.style.cssText = "width:auto;display:inline-block;text-decoration:none"; bar.appendChild(eb);
+    sec.appendChild(bar);
+    return sec;
+  }
+
   function renderChapter(cid) {
     var ch = window.CHAPTERS[cid];
     if (!ch) { document.getElementById("main").innerHTML = "<p>数据未加载。</p>"; return; }
@@ -962,8 +986,6 @@
         });
         bd.innerHTML = h; aside.appendChild(bd);
       });
-      var testA = el("a", "sub", "📝 本章章节测试（期末风格）");
-      testA.href = "exam.html?ch=" + encodeURIComponent(cid); aside.appendChild(testA);
     } else if (ch.guide && ch.guide.length) {
       var guideMod = ch.modules[0];
       ch.guide.forEach(function (g, gi) {
@@ -984,8 +1006,6 @@
         }
         aside.appendChild(sbox);
       });
-      var testA = el("a", "sub", "📝 本章章节测试（期末风格）");
-      testA.href = "exam.html?ch=" + encodeURIComponent(cid); aside.appendChild(testA);
     } else {
       ch.modules.forEach(function (m) {
         var a = el("a", "", esc(m.name)); a.href = "#m" + m.i; aside.appendChild(a);
@@ -1007,6 +1027,10 @@
         subs.forEach(function (x) { var sa = el("a", "sub", "· " + x[1]); sa.href = "#" + x[0]; aside.appendChild(sa); });
       });
     }
+    var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
+    ctA.href = "#chapter-test"; aside.appendChild(ctA);
+    var exA = el("a", "sub", "⏱ 本章限时测试");
+    exA.href = "exam.html?ch=" + encodeURIComponent(cid); aside.appendChild(exA);
     var tools = el("div", "navbtns");
     function tb(label, fn) { var b = el("button", "navbtn", label); b.onclick = fn; tools.appendChild(b); }
     tb("📕 错题本", function () { openWrongDrawer(cid, ch); });
@@ -1190,6 +1214,8 @@
       main.appendChild(sec);
     });
 
+    var chapterTest = renderChapterTest(cid, ch);
+    if (chapterTest) main.appendChild(chapterTest);
     main.appendChild(el("footer", "", "仅供个人学习使用 ｜ 数据保存在本机浏览器 localStorage"));
     refreshProgress();
   }

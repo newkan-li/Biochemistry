@@ -457,3 +457,10 @@ html[data-theme="dark"] .toc-subgroup>summary{color:#a8c6e0}
 .toc-subgroup[open]>summary{color:#7a2a24}
 .toc-subgroup .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .toc-subgroup>summary{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chapter-test{margin-top:18px;padding-top:12px;border-top:2px solid #d5e3ef}
+.chapter-test h2{margin:0 0 4px}
+.test-wrap{margin:8px 0 12px;border:1px solid #cbd9ea;border-radius:10px;background:#f7fbff;padding:8px 12px}
+.test-wrap>summary{cursor:pointer;font-weight:700;color:#1f5c8b;font-size:14px}
+.test-wrap h3{margin:12px 0 6px;font-size:13.5px;color:#7a2a24}
+html[data-theme="dark"] .chapter-test{border-top-color:#33475a}
+html[data-theme="dark"] .test-wrap{background:#1c2630;border-color:#33404d}
