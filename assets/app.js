@@ -988,7 +988,7 @@
       gbox.innerHTML = '<h3 style="margin:0 0 8px">📘 本章知识点透彻讲解</h3><p class="hint" style="margin:0 0 8px">先按下面 9 个知识块理解“是什么、为什么、怎么考”，再进入逐页 PPT 和自测。</p>';
       ch.guide.forEach(function (g, gi) {
         var d = el("details", "guide-item");
-        d.open = true;
+        d.open = false;
         var h = '<summary><b>' + esc(g.title || ("知识块" + (gi + 1))) + '</b> <span class="hint">' + esc(g.pages || "") + '</span></summary>';
         h += '<div class="guide-detail">' + esc(g.detail || "").replace(/\n/g, "<br>") + '</div>';
         if (g.points && g.points.length) h += '<div class="guide-points"><b>必须掌握</b><ul>' + g.points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</ul></div>';
@@ -998,6 +998,10 @@
       });
       main.appendChild(gbox);
     }
+    var jump = el("a", "navbtn", "📑 跳到PPT逐页");
+    jump.href = "#s_" + cid + "_s0_0";
+    jump.style.cssText = "width:auto;display:inline-block;margin:6px 0;text-decoration:none";
+    main.appendChild(jump);
     var statsbox = el("div", "statsbox"); statsbox.id = "statsbox"; renderStats(cid, ch, statsbox); main.appendChild(statsbox);
     var heat = el("div", "statsbox"); heat.id = "heatmap"; renderHeatmap(cid, ch, heat); main.appendChild(heat);
 
