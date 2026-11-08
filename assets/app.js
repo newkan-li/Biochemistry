@@ -944,8 +944,27 @@
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
     aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
-    aside.appendChild(el("div", "grp", ch.guide && ch.guide.length ? "本章知识块（" + ch.guide.length + "）" : "各模块（概念 + 考题）"));
-    if (ch.guide && ch.guide.length) {
+    aside.appendChild(el("div", "grp", (ch.toc || ch.guide) && (ch.toc || ch.guide).length ? "本章知识块（" + (ch.toc || ch.guide).length + "）" : "各模块（概念 + 考题）"));
+    if (ch.toc && ch.toc.length) {
+      var tocMod = ch.modules[0];
+      ch.toc.forEach(function (b, bi) {
+        var bd = el("details", "toc-block");
+        if (bi === 0) bd.open = true;
+        var h = "<summary>" + esc(b.title || ("知识块" + (bi + 1))) + '<span class="toc-meta">' + (b.start + 1) + "–" + b.end + "页</span></summary>";
+        (b.items || []).forEach(function (it, ii) {
+          h += '<details class="toc-subgroup"' + (bi === 0 && ii === 0 ? " open" : "") + "><summary>" + esc(it.title || "") + "</summary>";
+          for (var si = it.start; si < it.end; si++) {
+            var s = tocMod.slides[si]; if (!s) continue;
+            var lt = (si + 1) + ". " + (s.title || ("第" + (si + 1) + "页"));
+            h += '<a class="sub" title="' + esc(lt) + '" href="#s_' + cid + '_s0_' + s.i + '">' + esc(lt) + "</a>";
+          }
+          h += "</details>";
+        });
+        bd.innerHTML = h; aside.appendChild(bd);
+      });
+      var testA = el("a", "sub", "📝 本章章节测试（期末风格）");
+      testA.href = "exam.html?ch=" + encodeURIComponent(cid); aside.appendChild(testA);
+    } else if (ch.guide && ch.guide.length) {
       var guideMod = ch.modules[0];
       ch.guide.forEach(function (g, gi) {
         var start = Math.max(0, g.start || 0);
