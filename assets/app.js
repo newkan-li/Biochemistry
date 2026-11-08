@@ -931,6 +931,14 @@
       if (m.short && m.short.length) subs.push(["m" + m.i + "-short", "简答题"]);
       if (m.calc && m.calc.length) subs.push(["m" + m.i + "-calc", "论述/推导"]);
       if (m.term && m.term.length) subs.push(["m" + m.i + "-term", "名词解释"]);
+      var sbox = el("details", "toc-slides");
+      sbox.innerHTML = "<summary>📑 本模块 PPT / 讲义逐页目录（" + m.slides.length + "页）</summary>";
+      m.slides.forEach(function (s, si) {
+        var sa = el("a", "sub", (si + 1) + ". " + (s.title || ("第" + (si + 1) + "页")));
+        sa.href = "#s_" + cid + "_s" + m.i + "_" + si;
+        sbox.appendChild(sa);
+      });
+      aside.appendChild(sbox);
       subs.forEach(function (x) { var sa = el("a", "sub", "· " + x[1]); sa.href = "#" + x[0]; aside.appendChild(sa); });
     });
     var tools = el("div", "navbtns");
