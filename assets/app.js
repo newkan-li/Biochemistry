@@ -438,6 +438,15 @@
       }).join("") + "</ul></div>";
     }
     res.innerHTML = mh;
+    if (!ok) {
+      var rbtn = el("button", "cp-opt", "再做一次");
+      rbtn.onclick = function () {
+        Array.prototype.forEach.call(box.querySelectorAll(".mopt"), function (b) { b.classList.remove("sel", "right", "wrong"); });
+        res.style.display = "none"; res.innerHTML = "";
+        box._cause.style.display = "none";
+      };
+      res.appendChild(rbtn);
+    }
     box._cause.style.display = ok ? "none" : "flex";
     if (!ok) {
       addWrong(cid, { id: q.id, type: "mcq", q: q.q, correct: correct, chosen: chosen, cause: "", ts: Date.now() });
@@ -884,6 +893,14 @@
         }).join("") + "</ul></div>";
       }
       fb.innerHTML = fbhtml;
+      if (!correct && opts) {
+        var rb = el("button", "cp-opt cp-retry", "再做一次");
+        rb.onclick = function () {
+          done = false; fb.innerHTML = "";
+          Array.prototype.forEach.call(opts.children, function (b) { b.classList.remove("right", "wrong"); });
+        };
+        fb.appendChild(rb);
+      }
     }
     if (kind === "short") {
       box.appendChild(el("div", "cp-q", esc(q.q || "请复述本页核心知识点。")));
