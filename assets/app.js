@@ -839,6 +839,12 @@
     var box = el("div", "checkpoint");
     box.appendChild(el("div", "cp-h", "🎯 本页自测（选做，不计入已读）" + (slide && slide.check && slide.check.src ? " · " + slide.check.src : "")));
     if (q.img) { var cimg = el("img", "cp-img"); cimg.src = q.img; cimg.alt = "题目配图"; cimg.loading = "lazy"; box.appendChild(cimg); }
+    if (q.guide) {
+      var gd = el("details", "cp-guide");
+      gd.open = true;
+      gd.innerHTML = "<summary>📖 先学：考点讲解</summary><div class='cp-guidebody'>" + fmtAns(q.guide) + "</div>";
+      box.appendChild(gd);
+    }
     var done = false;
     var fb = el("div", "cp-fb");
     function optLetter(o) { return String(o).trim().charAt(0); }
