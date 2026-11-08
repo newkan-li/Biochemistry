@@ -1018,6 +1018,15 @@
           fb.innerHTML = '<div class="fn-h">🔍 图注解读</div><p>' + esc(s.fig).replace(/\n/g, "<br>") + "</p>";
           card.appendChild(fb);
         }
+        if (s.table && s.table.length) {
+          var tw = el("div", "aa-table");
+          var th = '<div class="at-h">📊 ' + esc(s.tableTitle || "数据表") + '</div><div class="at-scroll"><table><thead><tr>';
+          s.table[0].forEach(function (h) { th += "<th>" + esc(h) + "</th>"; });
+          th += "</tr></thead><tbody>";
+          s.table.slice(1).forEach(function (row) { th += "<tr>"; row.forEach(function (c) { th += "<td>" + esc(c) + "</td>"; }); th += "</tr>"; });
+          th += "</tbody></table></div>";
+          tw.innerHTML = th; card.appendChild(tw);
+        }
         var cp = renderCheckpoint(cid, key, qByKp, s);
         if (cp) card.appendChild(cp);
         if (s.anim) {
