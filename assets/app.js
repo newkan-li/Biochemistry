@@ -837,7 +837,7 @@
     else if (slide && slide.check) { q = slide.check; kind = slide.check.kind || "mcq"; }
     else return null;
     var box = el("div", "checkpoint");
-    box.appendChild(el("div", "cp-h", "🎯 本页自测（选做，不计入已读）"));
+    box.appendChild(el("div", "cp-h", "🎯 本页自测（选做，不计入已读）" + (slide && slide.check && slide.check.src ? " · " + slide.check.src : "")));
     var done = false;
     var fb = el("div", "cp-fb");
     function optLetter(o) { return String(o).trim().charAt(0); }
@@ -992,11 +992,12 @@
           img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
           body.appendChild(img);
         }
+        body.appendChild(el("div", "notes-h", "📖 本页PPT详细讲解"));
         body.appendChild(el("div", "notes", esc(s.notes)));
         card.appendChild(body);
         if (s.points && s.points.length) {
           var pb = el("div", "points");
-          pb.innerHTML = '<div class="pt-h">📌 本页要点</div><ul>' +
+          pb.innerHTML = '<div class="pt-h">📌 本页掌握知识点</div><ul>' +
             s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
           card.appendChild(pb);
         }
