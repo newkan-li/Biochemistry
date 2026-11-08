@@ -422,3 +422,8 @@ html[data-theme="dark"] .chapter-guide .guide-item{background:#1b2531;border-col
 html[data-theme="dark"] .chapter-guide .guide-detail{color:#c9d6e2}
 html[data-theme="dark"] .chapter-guide .guide-points{background:#2a2618;border-color:#4a4326;color:#e0c060}
 html[data-theme="dark"] .chapter-guide .guide-exam{background:#2a1d1a;border-color:#5a3a34;color:#e8b0a5}
+.img-explain{margin:8px 0;border:1px solid #cbd9ea;border-radius:8px;background:#f5f9ff;padding:7px 10px}
+.img-explain .ie-h{font-weight:700;color:#1f5c8b;font-size:12.5px;margin-bottom:3px}
+.img-explain p{margin:0;font-size:12.5px;line-height:1.7;color:#31516f}
+html[data-theme="dark"] .img-explain{background:#1b2a39;border-color:#33475a}
+html[data-theme="dark"] .img-explain p{color:#a8c6e0}

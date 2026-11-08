@@ -1030,6 +1030,11 @@
           img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
           body.appendChild(img);
         }
+        if (s.imageExplain) {
+          var ie = el("div", "img-explain");
+          ie.innerHTML = '<div class="ie-h">🖼 PPT图片讲解</div><p>' + esc(s.imageExplain) + "</p>";
+          body.appendChild(ie);
+        }
         body.appendChild(el("div", "notes-h", "📖 本页PPT详细讲解"));
         body.appendChild(el("div", "notes", esc(s.notes)));
         card.appendChild(body);
