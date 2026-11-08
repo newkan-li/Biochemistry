@@ -1486,7 +1486,7 @@
       }).join("") + "</div>" +
       '<div class="ex-row"><b>题量：</b><select id="exCount"><option>10</option><option selected>20</option><option>30</option><option>50</option></select>' +
       '<b>时间：</b><select id="exMin"><option value="15">15 分钟</option><option value="30" selected>30 分钟</option><option value="60">60 分钟</option><option value="120">120 分钟</option></select>' +
-      '<button id="exFull" class="navbtn" style="width:auto;margin:0;background:#c0392b;border-color:#c0392b">📄 802 整套模拟</button>' +
+      '<button id="exFull" class="navbtn" style="width:auto;margin:0;background:#c0392b;border-color:#c0392b">📄 期末综合卷（全章）</button>' +
       '<button id="exStart" class="navbtn" style="width:auto;margin:0">开始测验</button></div>';
     var timer = null, remain = 0, current = [];
     function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
@@ -1552,7 +1552,7 @@
     }
     document.getElementById("exStart").onclick = function () { start(); };
     document.getElementById("exFull").onclick = function () {
-      start({ minutes: 180, counts: { term: 5, fill: 10, mcq: 15, judge: 10, short: 3, calc: 2 } });
+      start({ minutes: 120, counts: { mcq: 16, judge: 5, fill: 5, short: 8, calc: 2, term: 6 } });
     };
   }
 
