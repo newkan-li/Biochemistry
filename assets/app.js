@@ -834,7 +834,7 @@
     var pick = pickCheckpoint(qByKp, kp);
     var q, kind;
     if (pick) { q = pick.q; kind = pick.kind; }
-    else if (slide && slide.check) { q = slide.check; kind = "mcq"; }
+    else if (slide && slide.check) { q = slide.check; kind = slide.check.kind || "mcq"; }
     else return null;
     var box = el("div", "checkpoint");
     box.appendChild(el("div", "cp-h", "🎯 本页自测（选做，不计入已读）"));
@@ -862,6 +862,17 @@
       fb.innerHTML = (correct ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>') +
         '　正确答案：<b>' + esc(answerText()) + "</b>" +
         (q.e ? '<div style="margin-top:4px">解析：' + esc(q.e) + "</div>" : "");
+    }
+    if (kind === "short") {
+      box.appendChild(el("div", "cp-q", esc(q.q || "请复述本页核心知识点。")));
+      var showB = el("button", "cp-opt", "显示参考答案");
+      showB.onclick = function () {
+        fb.innerHTML = '<div class="cp-ans"><b>参考答案</b>：<div class="anspts">' + fmtAns(q.a || "本页为过渡页，无文字要点。") + "</div></div>";
+        showB.disabled = true;
+      };
+      box.appendChild(showB);
+      box.appendChild(fb);
+      return box;
     }
     if (kind === "mcq") {
       box.appendChild(el("div", "cp-q", esc(q.q)));
