@@ -410,3 +410,15 @@ html[data-theme="dark"] .aa-table th,html[data-theme="dark"] .aa-table td{border
 .checkpoint .cp-guidebody{font-size:12.5px;line-height:1.7;color:#31516f;margin-top:4px}
 html[data-theme="dark"] .checkpoint .cp-guide{background:#22303d;border-color:#33475a}
 html[data-theme="dark"] .checkpoint .cp-guidebody{color:#a8c6e0}
+.chapter-guide .guide-item{border:1px solid #cbd9ea;border-radius:9px;background:#fff;padding:7px 10px;margin:7px 0}
+.chapter-guide .guide-item summary{cursor:pointer;color:#1f5c8b;font-size:13.5px}
+.chapter-guide .guide-detail{font-size:13px;line-height:1.85;color:#33495e;margin:6px 0 4px}
+.chapter-guide .guide-points{font-size:12.5px;line-height:1.7;color:#5a4a1a;background:#fff8e8;border:1px solid #f0d9a8;border-radius:7px;padding:5px 9px;margin:5px 0}
+.chapter-guide .guide-points ul{margin:3px 0 0;padding-left:18px}
+.chapter-guide .guide-exam{font-size:12.5px;line-height:1.7;color:#7a2a24;background:#fff2f0;border:1px solid #f0d0cb;border-radius:7px;padding:5px 9px;margin:5px 0}
+.chapter-guide .guide-link{font-size:12px;margin-top:3px}
+.chapter-guide .guide-link a{color:#1f5c8b;text-decoration:none}
+html[data-theme="dark"] .chapter-guide .guide-item{background:#1b2531;border-color:#2c3a4a}
+html[data-theme="dark"] .chapter-guide .guide-detail{color:#c9d6e2}
+html[data-theme="dark"] .chapter-guide .guide-points{background:#2a2618;border-color:#4a4326;color:#e0c060}
+html[data-theme="dark"] .chapter-guide .guide-exam{background:#2a1d1a;border-color:#5a3a34;color:#e8b0a5}
