@@ -432,3 +432,7 @@ html[data-theme="dark"] .img-explain p{color:#a8c6e0}
 .checkpoint .cp-oe ul{margin:4px 0 0;padding-left:18px}
 .checkpoint .cp-oe li{margin:2px 0;line-height:1.6}
 html[data-theme="dark"] .checkpoint .cp-oe{background:#22303d;border-color:#33475a}
+.q .q-oe{margin-top:8px;padding:7px 10px;border-radius:8px;background:#f2f7fb;border:1px solid #d5e3ef;font-size:12.5px}
+.q .q-oe ul{margin:4px 0 0;padding-left:18px}
+.q .q-oe li{margin:2px 0;line-height:1.6}
+html[data-theme="dark"] .q .q-oe{background:#22303d;border-color:#33475a}

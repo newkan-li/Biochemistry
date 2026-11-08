@@ -430,8 +430,14 @@
       if (b.dataset.l === chosen) b.classList.add("sel");
     });
     var res = box._res; res.style.display = "block";
-    res.innerHTML = (ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>（正确答案：<b>' + esc(correct) + "</b>）") +
+    var mh = (ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>（正确答案：<b>' + esc(correct) + "</b>）") +
       '<div style="margin-top:4px">解析：' + esc(q.e || "") + "</div>";
+    if (q.oe && q.oe.length) {
+      mh += '<div class="q-oe"><b>选项解析</b><ul>' + q.oe.map(function (x, i) {
+        return "<li><b>" + String(q.o && q.o[i] ? q.o[i] : "").trim().charAt(0) + "</b>：" + esc(x) + "</li>";
+      }).join("") + "</ul></div>";
+    }
+    res.innerHTML = mh;
     box._cause.style.display = ok ? "none" : "flex";
     if (!ok) {
       addWrong(cid, { id: q.id, type: "mcq", q: q.q, correct: correct, chosen: chosen, cause: "", ts: Date.now() });
@@ -937,7 +943,7 @@
     HW.init(cid);
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
-    aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html">📝 模拟测验</a>';
+    aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
     aside.appendChild(el("div", "grp", "各模块（概念 + 考题）"));
     ch.modules.forEach(function (m) {
       var a = el("a", "", esc(m.name)); a.href = "#m" + m.i; aside.appendChild(a);
@@ -1008,6 +1014,10 @@
     jump.href = "#s_" + cid + "_s0_0";
     jump.style.cssText = "width:auto;display:inline-block;margin:6px 0;text-decoration:none";
     main.appendChild(jump);
+    var exBtn = el("a", "navbtn", "📝 本章测试（期末风格）");
+    exBtn.href = "exam.html?ch=" + encodeURIComponent(cid);
+    exBtn.style.cssText = "width:auto;display:inline-block;margin:6px 0 6px 8px;text-decoration:none;background:#8a3a30;border-color:#8a3a30";
+    main.appendChild(exBtn);
     var statsbox = el("div", "statsbox"); statsbox.id = "statsbox"; renderStats(cid, ch, statsbox); main.appendChild(statsbox);
     var heat = el("div", "statsbox"); heat.id = "heatmap"; renderHeatmap(cid, ch, heat); main.appendChild(heat);
 
@@ -1465,10 +1475,12 @@
       var ch = window.CHAPTERS[m.id]; if (!ch) return;
       types.forEach(function (t) { (ch[t[0]] || []).forEach(function (q) { pool.push({ cid: m.id, kind: t[0], q: q }); }); });
     });
+    var wantCh = "";
+    try { wantCh = new URLSearchParams(window.location.search).get("ch") || ""; } catch (e) { }
     ctl.innerHTML =
       '<div class="ex-row"><b>章节：</b>' + (window.MANIFEST || []).map(function (m) {
-        return '<label class="ex-lb"><input type="checkbox" class="ex-ch" value="' + m.id + '" checked> ' + esc(names[m.id] || m.id) + "</label>";
-      }).join("") + "</div>" +
+        return '<label class="ex-lb"><input type="checkbox" class="ex-ch" value="' + m.id + '"' + ((!wantCh || m.id === wantCh) ? " checked" : "") + '> ' + esc(names[m.id] || m.id) + "</label>";
+      }).join("") + "</div>" + (wantCh ? '<div class="hint">已按章节预选：' + esc(names[wantCh] || wantCh) + "（可自行调整）</div>" : "") +
       '<div class="ex-row"><b>题型：</b>' + types.map(function (t) {
         return '<label class="ex-lb"><input type="checkbox" class="ex-ty" value="' + t[0] + '" checked> ' + t[1] + "</label>";
       }).join("") + "</div>" +
