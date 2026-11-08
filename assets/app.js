@@ -944,26 +944,50 @@
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
     aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
-    aside.appendChild(el("div", "grp", "各模块（概念 + 考题）"));
-    ch.modules.forEach(function (m) {
-      var a = el("a", "", esc(m.name)); a.href = "#m" + m.i; aside.appendChild(a);
-      var subs = [];
-      if (m.mcq && m.mcq.length) subs.push(["m" + m.i + "-mcq", "选择题"]);
-      if (m.judge && m.judge.length) subs.push(["m" + m.i + "-judge", "判断题"]);
-      if (m.fill && m.fill.length) subs.push(["m" + m.i + "-fill", "填空题"]);
-      if (m.short && m.short.length) subs.push(["m" + m.i + "-short", "简答题"]);
-      if (m.calc && m.calc.length) subs.push(["m" + m.i + "-calc", "论述/推导"]);
-      if (m.term && m.term.length) subs.push(["m" + m.i + "-term", "名词解释"]);
-      var sbox = el("details", "toc-slides");
-      sbox.innerHTML = "<summary>📑 本模块 PPT / 讲义逐页目录（" + m.slides.length + "页）</summary>";
-      m.slides.forEach(function (s, si) {
-        var sa = el("a", "sub", (si + 1) + ". " + (s.title || ("第" + (si + 1) + "页")));
-        sa.href = "#s_" + cid + "_s" + m.i + "_" + si;
-        sbox.appendChild(sa);
+    aside.appendChild(el("div", "grp", ch.guide && ch.guide.length ? "本章知识块（" + ch.guide.length + "）" : "各模块（概念 + 考题）"));
+    if (ch.guide && ch.guide.length) {
+      var guideMod = ch.modules[0];
+      ch.guide.forEach(function (g, gi) {
+        var start = Math.max(0, g.start || 0);
+        var end = (gi + 1 < ch.guide.length && ch.guide[gi + 1].start != null) ? ch.guide[gi + 1].start : guideMod.slides.length;
+        end = Math.min(guideMod.slides.length, Math.max(start, end));
+        var first = guideMod.slides[start];
+        var a = el("a", "", (gi + 1) + ". " + (g.title || "知识块" + (gi + 1)));
+        a.href = "#s_" + cid + "_s0_" + (first ? first.i : start);
+        aside.appendChild(a);
+        var sbox = el("details", "toc-slides");
+        sbox.innerHTML = "<summary>📑 " + esc(g.title || ("知识块" + (gi + 1))) + "（" + (end - start) + "页 · " + esc(g.pages || "") + "）</summary>";
+        for (var si = start; si < end; si++) {
+          var s = guideMod.slides[si];
+          var sa = el("a", "sub", (si + 1) + ". " + (s.title || ("第" + (si + 1) + "页")));
+          sa.href = "#s_" + cid + "_s0_" + s.i;
+          sbox.appendChild(sa);
+        }
+        aside.appendChild(sbox);
       });
-      aside.appendChild(sbox);
-      subs.forEach(function (x) { var sa = el("a", "sub", "· " + x[1]); sa.href = "#" + x[0]; aside.appendChild(sa); });
-    });
+      var testA = el("a", "sub", "📝 本章章节测试（期末风格）");
+      testA.href = "exam.html?ch=" + encodeURIComponent(cid); aside.appendChild(testA);
+    } else {
+      ch.modules.forEach(function (m) {
+        var a = el("a", "", esc(m.name)); a.href = "#m" + m.i; aside.appendChild(a);
+        var subs = [];
+        if (m.mcq && m.mcq.length) subs.push(["m" + m.i + "-mcq", "选择题"]);
+        if (m.judge && m.judge.length) subs.push(["m" + m.i + "-judge", "判断题"]);
+        if (m.fill && m.fill.length) subs.push(["m" + m.i + "-fill", "填空题"]);
+        if (m.short && m.short.length) subs.push(["m" + m.i + "-short", "简答题"]);
+        if (m.calc && m.calc.length) subs.push(["m" + m.i + "-calc", "论述/推导"]);
+        if (m.term && m.term.length) subs.push(["m" + m.i + "-term", "名词解释"]);
+        var sbox = el("details", "toc-slides");
+        sbox.innerHTML = "<summary>📑 本模块 PPT / 讲义逐页目录（" + m.slides.length + "页）</summary>";
+        m.slides.forEach(function (s, si) {
+          var sa = el("a", "sub", (si + 1) + ". " + (s.title || ("第" + (si + 1) + "页")));
+          sa.href = "#s_" + cid + "_s" + m.i + "_" + si;
+          sbox.appendChild(sa);
+        });
+        aside.appendChild(sbox);
+        subs.forEach(function (x) { var sa = el("a", "sub", "· " + x[1]); sa.href = "#" + x[0]; aside.appendChild(sa); });
+      });
+    }
     var tools = el("div", "navbtns");
     function tb(label, fn) { var b = el("button", "navbtn", label); b.onclick = fn; tools.appendChild(b); }
     tb("📕 错题本", function () { openWrongDrawer(cid, ch); });
