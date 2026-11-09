@@ -1127,7 +1127,8 @@
         var card = el("div", "slide"); card.id = "s_" + key;
         var lv = s.level || "掌握";
         var head = el("div", "sh");
-        head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
+        var imgType = !s.img ? "讲义" : (/\/full\d*\.jpg/i.test(s.img) || /\/note\d*\.jpg/i.test(s.img) ? "笔记原页" : (/\/ppt\d*\.jpg/i.test(s.img) ? "PPT" : "图片"));
+        head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="src-type">' + imgType + '</span><span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
         card.appendChild(head);
         var body = el("div", "body");
         if (s.img) {
