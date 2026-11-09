@@ -1050,6 +1050,11 @@
         subs.forEach(function (x) { var sa = el("a", "sub", "· " + x[1]); sa.href = "#" + x[0]; aside.appendChild(sa); });
       });
     }
+    if (ch.pptDeck) {
+      var pptA = el("a", "sub", "🎞 完整PPT原图");
+      pptA.href = "ppt.html?ch=" + ch.pptDeck;
+      aside.appendChild(pptA);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");

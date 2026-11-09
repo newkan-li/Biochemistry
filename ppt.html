@@ -62,7 +62,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 <script>
 (function(){
   var ch=(new URLSearchParams(location.search).get('ch')||'u01_protein').replace(/[^a-z0-9_-]/gi,'');
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261108cf';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261108cg';
   s.onload=function(){init()};s.onerror=function(){document.getElementById('ttl').textContent='数据加载失败'};document.head.appendChild(s);
   function init(){
     var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c){document.getElementById('ttl').textContent='未找到单元';return;}
@@ -94,7 +94,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
     function go(d){i=Math.max(0,Math.min(n-1,i+d));render()}
     document.getElementById('prevBtn').onclick=function(){go(-1)};
     document.getElementById('nextBtn').onclick=function(){go(1)};
-    document.getElementById('backBtn').onclick=function(){location.href=ch+'.html'};
+    var backCid=ch.replace(/ppt$/,'');document.getElementById('backBtn').onclick=function(){location.href=backCid+'.html'};
     document.getElementById('fsBtn').onclick=function(){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}};
     document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(-1)}else if(e.key==='Escape'){location.href=ch+'.html'}});
     document.getElementById('figImg').onclick=function(){if(this.src){document.getElementById('zoomImg').src=this.src;document.getElementById('zoom').classList.add('on')}};
