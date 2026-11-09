@@ -31,7 +31,7 @@ for g,title in groups:
     t=(sl.get('title') or f'PPT第{sl.get("i",0)+1}页').strip()
     psubs+=f'<a href="{cid}.html#s_{cid}_s0_{sl.get("i",0)}">{t[:55]}</a>'
    psum=f'本站PPT逐页目录（{len(slides)}）'
-  body+=f'<div class="ch"><div class="chh"><a href="{cid}.html">{x["title"]}</a><span class="meta">{x["n_slides"]}页PPT · {x["n_q"]}题</span></div><details open><summary>📖 原书章节子节（{len(secs)}）</summary><div class="subs">{subs or "（原书目录未提取到）"}</div></details><details><summary>📑 {psum}</summary><div class="subs">{psubs}</div></details></div>'
+  body+=f'<div class="ch" id="ch-{cid}"><div class="chh"><a href="{cid}.html">{x["title"]}</a><span class="meta">{x["n_slides"]}页PPT · {x["n_q"]}题</span></div><details open><summary>📖 原书章节子节（{len(secs)}）</summary><div class="subs">{subs or "（原书目录未提取到）"}</div></details><details><summary>📑 {psum}</summary><div class="subs">{psubs}</div></details></div>'
 body+='<div class="note"><b>说明：</b>“原书章节子节”来自朱圣庚第4版PDF目录，页码为PDF页；本站PPT页与笔记不保证逐页对应原书页码，只按知识点组织。</div><div class="links"><a href="index.html">← 首页</a><a href="870-resources.html">资料分析</a><a href="870-ppt-map.html">PPT对照表</a></div></div></body></html>'
 open('learn.html','w',encoding='utf-8').write(head+body)
 print('learn original toc')

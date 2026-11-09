@@ -1087,6 +1087,20 @@
     hero.innerHTML = "<h1>" + esc(ch.title) + '</h1><div class="tag">' + esc(ch.sub2 || "") + " ｜ 概念逐页 + 全题型练习 + 错题本 + 手写</div>";
     main.appendChild(hero);
 
+    if (window.BOOKTOC && window.BOOKTOC[cid]) {
+      var bt = window.BOOKTOC[cid];
+      var bbox = el("div", "statsbox booktoc-box");
+      var rows = (bt.sections || []).map(function (sec, i) {
+        var pg = sec.page > 0 ? ("原书 p" + sec.page) : "原书页码待核";
+        return '<li><span class="bt-no">' + (i + 1) + '</span><span class="bt-title">' + esc(sec.title || "") + '</span><span class="bt-pg">' + pg + '</span></li>';
+      }).join("");
+      bbox.innerHTML = '<h3 style="margin:0 0 6px">📚 本章原书目录（朱圣庚第4版）</h3>' +
+        '<p class="hint" style="margin:0 0 7px">按原书节级目录列出的学习地图；原书页码不是本站PPT页码，PPT逐页入口见右侧。</p>' +
+        '<details class="booktoc-fold"><summary>展开本章 ' + (bt.sections || []).length + ' 节原书目录</summary><ol class="booktoc-list">' + rows + '</ol></details>' +
+        '<a class="booktoc-link" href="learn.html#ch-' + esc(cid) + '">在36章详细目录中查看本章 →</a>';
+      main.appendChild(bbox);
+    }
+
     if (ch.preview) {
       var pv = el("div", "statsbox previewbox");
       pv.innerHTML = '<h3 style="margin:0 0 6px">📖 课前预习导览</h3>' +

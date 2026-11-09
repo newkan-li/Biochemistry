@@ -473,3 +473,18 @@ html[data-theme="dark"] .slide .sh .src-type{color:#9fb3c7;border-color:#33475a}
 .q .q-img{display:block;max-width:100%;width:520px;border:1px solid var(--line);border-radius:10px;margin:6px 0 10px;background:#fff}
 /* full PPT deck link */
 /* full teacher PPT deck links */
+.booktoc-box{margin:10px 0 12px}
+.booktoc-fold{margin:4px 0 6px}
+.booktoc-fold>summary{cursor:pointer;font-size:13px;font-weight:700;color:#1f5c8b;list-style:none}
+.booktoc-fold>summary::-webkit-details-marker{display:none}
+.booktoc-fold>summary::before{content:"▸ ";color:#7a5a00}
+.booktoc-fold[open]>summary::before{content:"▾ "}
+.booktoc-list{margin:7px 0 2px;padding:0 0 0 2px;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px 14px}
+.booktoc-list li{display:flex;gap:6px;align-items:baseline;font-size:12.5px;line-height:1.55;border-bottom:1px dotted var(--line);padding:3px 0}
+.booktoc-list .bt-no{flex:0 0 18px;color:#1f5c8b;font-weight:700;font-size:11px;text-align:right}
+.booktoc-list .bt-title{flex:1;color:var(--text)}
+.booktoc-list .bt-pg{flex:0 0 auto;color:#8a6a00;font-size:11px;white-space:nowrap}
+.booktoc-link{display:inline-block;margin-top:5px;font-size:12px;color:#1f5c8b;text-decoration:none}
+.booktoc-link:hover{text-decoration:underline}
+html[data-theme="dark"] .booktoc-fold>summary,html[data-theme="dark"] .booktoc-link,html[data-theme="dark"] .booktoc-list .bt-no{color:#a8c6e0}
+html[data-theme="dark"] .booktoc-list .bt-pg{color:#d8b968}
