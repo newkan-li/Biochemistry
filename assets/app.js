@@ -1050,9 +1050,15 @@
         subs.forEach(function (x) { var sa = el("a", "sub", "· " + x[1]); sa.href = "#" + x[0]; aside.appendChild(sa); });
       });
     }
-    if (ch.pptDeck) {
+    if (ch.pptDecks && ch.pptDecks.length) {
+      ch.pptDecks.forEach(function (d) {
+        var a = el("a", "sub", "🎞 " + d.label);
+        a.href = "ppt.html?ch=" + d.deck + "&back=" + encodeURIComponent(d.back || cid);
+        aside.appendChild(a);
+      });
+    } else if (ch.pptDeck) {
       var pptA = el("a", "sub", "🎞 完整" + (ch.pptLang || "") + "PPT原图");
-      pptA.href = "ppt.html?ch=" + ch.pptDeck;
+      pptA.href = "ppt.html?ch=" + ch.pptDeck + "&back=" + encodeURIComponent(cid);
       aside.appendChild(pptA);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
