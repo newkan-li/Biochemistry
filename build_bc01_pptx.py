@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """生成第1章“原书目录版”自制课件。内容按朱圣庚《生物化学》第4版第1章节/子节组织。"""
 import os, re, json
+from PIL import Image
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
@@ -183,7 +184,7 @@ def v_hierarchy(s, x, y, w, h):
             ar.fill.solid(); ar.fill.fore_color.rgb = GOLD; ar.line.fill.background()
         yy += 0.7
     text(s, x+0.2, y+4.45, w-0.4, 0.42, "共价键聚合 → 非共价作用组装", size=10.5, color=MUTED, align=PP_ALIGN.CENTER)
-    cap(s, x+0.2, y+4.78, w-0.4, "按教材结构层次绘制（矢量）")
+    cap(s, x+0.2, y+4.78, w-0.4, "知识点示意（非原图）")
 
 def v_dogma(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -271,7 +272,7 @@ def v_ecoli(s, x, y, w, h):
     text(s, x+0.22, y+3.35, w-0.44, 1.2,
          "• 无核膜，遗传物质在拟核\n• 环状DNA；可有质粒\n• 70S 核糖体\n• 细胞壁、细胞膜、鞭毛",
          size=9.6, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-16（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-16）")
 
 def v_euk(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -297,7 +298,7 @@ def v_euk(s, x, y, w, h):
     ly.fill.solid(); ly.fill.fore_color.rgb = RGBColor(0xE8,0xD7,0xF0); ly.line.color.rgb = RGBColor(0x8A,0x5A,0x9A)
     text(s, x+2.92, y+2.84, 0.62, 0.22, "溶酶体", size=7.6, color=MUTED, align=PP_ALIGN.CENTER)
     text(s, x+0.22, y+3.78, w-0.44, 0.65, "核膜、细胞核、线粒体、叶绿体、\n内质网、高尔基体、溶酶体。", size=8.6, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-17（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-17）")
 
 def v_chirality(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -334,7 +335,7 @@ def v_water(s, x, y, w, h):
         ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(px1+0.3), Inches(py1+0.3), Inches(px2+0.3), Inches(py2+0.3))
         ln.line.color.rgb = GOLD; ln.line.width = Pt(1.5); ln.line.dash_style = MSO_LINE_DASH_STYLE.DASH
     text(s, x+0.2, y+3.15, w-0.4, 1.2, "每个水分子最多形成4个氢键；\n氢键网络 → 高热容、高沸点、高表面张力。\n水是极性溶剂，也是许多反应的参与者。", size=10.2, color=MUTED)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-12（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-12）")
 
 def v_table(s, x, y, w, h):
     rows = [
@@ -410,7 +411,7 @@ def v_carbon(s, x, y, w, h):
     for lab, lx, ly in labels:
         text(s, lx, ly, 0.85, 0.26, lab, size=9.5, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
     text(s, x+0.18, y+3.55, w-0.36, 0.9, "碳原子四价，四个单键指向四面体四个顶点；\n可连接 H、O、N、S 等，形成多样骨架。", size=9.0, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-2（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-2）")
 
 def v_functional(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -423,7 +424,7 @@ def v_functional(s, x, y, w, h):
         text(s, x+1.55, yy+0.12, w-1.7, 0.3, formula, size=11.0, color=TEAL, bold=True)
         yy += 0.64
     text(s, x+0.2, y+4.05, w-0.4, 0.6, "官能团决定极性和化学反应性，\n碳骨架决定分子形状。", size=9.0, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-3（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-3）")
 
 def v_stereo(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -447,7 +448,7 @@ def v_stereo(s, x, y, w, h):
     box(s, x+0.28, y+2.85, w-0.56, 1.15, fill=PALE, line=None)
     text(s, x+0.42, y+2.98, w-0.84, 0.26, "对映体", size=9.0, color=NAVY, bold=True)
     text(s, x+0.42, y+3.28, w-0.84, 0.62, "互为镜像、不能重合；\n旋光方向相反，生物活性可不同。\n具体 D/L 构型见下页。", size=8.2, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-4（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-4）")
 
 def v_glyceraldehyde(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -472,7 +473,7 @@ def v_glyceraldehyde(s, x, y, w, h):
     ln.line.color.rgb = GOLD; ln.line.width = Pt(1.1); ln.line.dash_style = MSO_LINE_DASH_STYLE.DASH
     text(s, x+w/2-1.0, y+3.92, 1.1, 0.22, "镜面", size=7.5, color=GOLD, align=PP_ALIGN.CENTER)
     text(s, x+0.2, y+4.25, w-0.4, 0.4, "L-氨基酸、D-单糖是生物体常用构型", size=8.6, color=INK, bold=True)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-5（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-5）")
 
 def v_models(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -503,7 +504,7 @@ def v_models(s, x, y, w, h):
         text(s, x+2.10, yy+0.18, 1.85, 0.26, name, size=10.2, color=NAVY, bold=True)
         text(s, x+2.10, yy+0.50, 1.85, 0.24, note, size=8.4, color=MUTED)
     text(s, x+0.2, y+4.35, w-0.4, 0.28, "不同模型强调不同结构信息", size=8.8, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-9（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-9）")
 
 def v_tree(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -518,7 +519,7 @@ def v_tree(s, x, y, w, h):
         text(s, tx-0.6, ty-0.30, 1.2, 0.24, lab, size=8.6, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
     text(s, root[0]-0.65, root[1]+0.08, 1.3, 0.24, "共同祖先", size=8.2, color=MUTED, align=PP_ALIGN.CENTER)
     text(s, x+0.2, y+3.90, w-0.4, 0.55, "细菌、古菌为原核；真核生物有核膜和细胞器。", size=8.4, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-15（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-15）")
 
 def v_rnaworld(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -533,7 +534,7 @@ def v_rnaworld(s, x, y, w, h):
             text(s, x+0.55, yy+0.64, w-1.1, 0.28, "↓", size=13, color=GOLD, bold=True, align=PP_ALIGN.CENTER)
         yy += 1.02
     text(s, x+0.2, y+3.82, w-0.4, 0.7, "RNA 既能贮存信息又能催化；\n后来 DNA 贮存信息、蛋白质承担催化。", size=8.8, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-19（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-19）")
 
 def v_endosym(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -553,7 +554,7 @@ def v_endosym(s, x, y, w, h):
         ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+2.78), Inches(y+1.62+i*0.10), Inches(x+2.95), Inches(y+1.55+i*0.10))
         ln.line.color.rgb = RED; ln.line.width = Pt(0.8)
     text(s, x+0.2, y+3.05, w-0.4, 1.0, "被吞入的需氧细菌未被消化，\n与宿主形成稳定内共生 → 线粒体。\n叶绿体同理来自蓝细菌。", size=8.8, color=INK)
-    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-20（矢量重绘）")
+    cap(s, x+0.2, y+4.72, w-0.4, "知识点示意（原图见附录 图1-20）")
 
 # ---------- deck ----------
 slides = []
@@ -994,6 +995,127 @@ text(s, 7.12, 2.12, 5.3, 4.1,
      size=11.1, color=INK, line_spacing=1.10)
 footer(s,49,0)
 s.notes_slide.notes_text_frame.text = "例1强调配制与稀释：先求物质的量，再换算质量或体积。例2强调pH、Ka和缓冲液：先写平衡式/方程，再代入数据；缓冲液还可用总浓度守恒解方程组。"
+
+# ---------- appendix B: original figures ----------
+ASSETS = os.path.join(ROOT, "assets", "img", "bc01orig")
+
+def figure_slide(num, fig, title, page, bullets, notes):
+    s = prs.slides.add_slide(BLANK); set_bg(s, LIGHT)
+    box(s, 0, 0, 13.333, 0.10, fill=TEAL, line=None, radius=False)
+    kicker(s, "附录B · 原书配图（扫描原图）", page)
+    text(s, 0.62, 0.70, 12.0, 0.55, title, size=23, color=NAVY, bold=True, font=SERIF)
+    text(s, 0.64, 1.18, 8.0, 0.25, "原书 图%s · 原图未重绘" % fig, size=9.2, color=GOLD, bold=True)
+    img_path = os.path.join(ASSETS, "fig%s.png" % fig)
+    im = Image.open(img_path); iw, ih = im.size; ar = iw / ih
+    top, bottom = 1.48, 6.55
+    if ar >= 1.35:
+        max_w, max_h = 8.15, bottom - top
+        panel_x, panel_w = 8.95, 3.95
+        fsize = 10.2
+    elif ar <= 0.82:
+        max_h = bottom - top
+        max_w = 4.25
+        panel_x, panel_w = 5.15, 7.55
+        fsize = 12.0
+    else:
+        max_w, max_h = 5.55, bottom - top
+        panel_x, panel_w = 6.55, 6.15
+        fsize = 11.5
+    scale = min(max_w / iw, max_h / ih)
+    w_in, h_in = iw * scale, ih * scale
+    x_in = 0.62 + (max_w - w_in) / 2 if ar >= 1.35 else (0.80 if ar <= 0.82 else 0.70)
+    y_in = top + (max_h - h_in) / 2
+    s.shapes.add_picture(img_path, Inches(x_in), Inches(y_in), Inches(w_in), Inches(h_in))
+    # explanation panel
+    box(s, panel_x, 1.40, panel_w, 5.15, fill=WHITE, line=LINE)
+    text(s, panel_x+0.20, 1.55, panel_w-0.40, 0.30, "知识点讲解", size=11, color=TEAL, bold=True)
+    bullet_text(s, panel_x+0.20, 1.92, panel_w-0.40, 4.35, bullets, size=fsize, gap=6)
+    footer(s, num, page)
+    s.notes_slide.notes_text_frame.text = notes
+
+# divider
+s = prs.slides.add_slide(BLANK); set_bg(s, NAVY)
+box(s, 0, 0, 0.14, 7.5, fill=GOLD, line=None, radius=False)
+text(s, 0.95, 0.95, 10.0, 0.35, "APPENDIX B · ORIGINAL FIGURES", size=11, color=GOLD, bold=True)
+text(s, 0.95, 1.55, 11.0, 0.9, "附录B：原书配图", size=40, color=WHITE, bold=True, font=SERIF)
+text(s, 0.98, 2.75, 11.4, 0.45, "保留朱圣庚第4版原图构图，配知识点讲解；不再用示意图冒充原图。", size=15, color=RGBColor(0xD5,0xE3,0xEE))
+for i, q in enumerate(["图1-1—1-5：碳、官能团、立体异构", "图1-9—1-12：分子模型、水与氢键", "图1-15—1-17：三域、细菌、真核细胞", "图1-19—1-20：RNA世界、进化里程碑"]):
+    text(s, 1.05, 3.65 + i*0.52, 10.8, 0.32, "• " + q, size=12.5, color=WHITE)
+text(s, 0.98, 6.7, 11.0, 0.3, "说明：原书为扫描版，以下为原图裁切；矢量示意图已在正文标注“知识点示意”。", size=9.2, color=RGBColor(0x9E,0xB6,0xC8))
+text(s, 11.8, 6.85, 0.8, 0.3, "50", size=9.5, color=RGBColor(0x9E,0xB6,0xC8), align=PP_ALIGN.RIGHT)
+
+figure_slide(51, "1-1", "图1-1 碳原子成键的多能性", 9, [
+ "碳原子四价：可形成 4 个共价键。",
+ "既能与 H、O、N 成键，也能与碳成键，形成 C—C、C=C、C≡C。",
+ "单键、双键、三键的成键数目不同，决定分子的几何与反应性。",
+ "生物分子以碳骨架为基础，但三键在生物分子中较少见。"],
+ "图1-1展示碳的成键多能性。重点不是背反应式，而是理解碳能形成稳定单键、双键、三键，从而构建多样碳骨架。")
+figure_slide(52, "1-2", "图1-2 碳成键的几何学", 10, [
+ "A：4 个单键指向四面体四个顶点，键角约 109.5°。",
+ "B：C—C 单键可绕键轴自由旋转，产生不同构象。",
+ "C：C=C 双键不能自由旋转，双键碳及相连原子共平面，键角约 120°。",
+ "单键旋转 → 构象；双键限制旋转 → 顺反异构。"],
+ "图1-2把碳的几何学讲清楚：四面体、单键旋转、双键平面。它是后面构型/构象和顺反异构的基础。")
+figure_slide(53, "1-3", "图1-3 生物分子中常见官能团", 11, [
+ "常见官能团：羟基、羧基、氨基、磷酸基、巯基、羰基、酯基、酰胺基等。",
+ "R 代表任一取代基，通常是含碳基团；R1、R2 表示不同取代基。",
+ "官能团决定分子的极性、电荷、氢键能力和化学反应性。",
+ "同一碳骨架接不同官能团，可形成性质完全不同的生物分子。"],
+ "图1-3是官能团总表。学习时按“含氧、含氮、含硫、含磷”分组记忆，并联系极性、电荷和氢键。不要只背结构，要能判断性质。")
+figure_slide(54, "1-4", "图1-4 立体异构体的构型", 13, [
+ "A 上：马来酸（顺式）与延胡索酸（反式），C=C 不能旋转造成顺反异构。",
+ "A 下：顺-1,4-环己二醇与反-1,4-环己二醇，环限制旋转造成顺反差异。",
+ "B：L(−)-甘油醛与 D(+)-甘油醛，互为镜像、不能重合，是一对对映体。",
+ "构型改变需要断裂共价键；顺反异构和对映异构都属于构型异构。"],
+ "图1-4是“构型”最重要的原图：上半部分讲顺反异构，下半部分讲对映体。要能指出哪些基团在同侧/异侧，以及D/L互为镜像。")
+figure_slide(55, "1-5", "图1-5 甘油醛的构型（D/L 命名系统）", 14, [
+ "同一构型可用 Fischer 投影式、透视式、立体模型表示。",
+ "中央竖线为镜面，左右两组互为镜像，不能重合。",
+ "Fischer 投影式：水平键朝向观察者，垂直键远离观察者。",
+ "D/L 以甘油醛为参照；L-氨基酸、D-单糖是生物体常用构型。"],
+ "图1-5把Fischer式、透视式、立体模型放在同一镜面两侧，说明它们表示的是同一个构型问题。重点是会看Fischer式并判断D/L。")
+figure_slide(56, "1-9", "图1-9 三维结构的分子模型（L-丝氨酸）", 16, [
+ "透视式：用实线、楔形线、虚线表示三维朝向。",
+ "骨架模型：只显示键线骨架，突出连接次序。",
+ "球棍模型：球代表原子、棒代表键，突出键角和空间关系。",
+ "空间填充模型：按范德华半径显示真实占位，突出分子外形。"],
+ "图1-9用L-丝氨酸展示四种表示方法。模型没有“谁更高级”，只是强调的信息不同：连接、键角、体积。")
+figure_slide(57, "1-12", "图1-12 水分子结构与冰中氢键", 21, [
+ "A：水分子为极性分子，键角约 104.45°，有偶极矩；图中标出范德华半径与共价键长。",
+ "B：冰中每个水分子与 4 个相邻水分子形成四面体氢键。",
+ "C：水分子通过氢键连成三维网络，可看出六元环排列。",
+ "氢键网络解释水的高热容、高沸点、高表面张力。"],
+ "图1-12分A、B、C三部分：先看水分子的极性，再看四面体氢键，最后看冰的三维网络。不要把B的四面体簇和C的六元环混为一谈。")
+figure_slide(58, "1-15", "图1-15 生物三域系统树", 28, [
+ "系统树基于 rRNA 序列相似性：序列越相似，分支越接近。",
+ "三域：细菌域、古菌域、真核生物域，共同祖先在树底部。",
+ "细菌、古菌为原核生物；真核生物有核膜和细胞器。",
+ "分支距离表示序列差异程度，不表示“谁更高级”。"],
+ "图1-15是无根扇状树。读图先找三个域标签，再看各域包含的类群；分支长短表示差异，不表示进化等级。")
+figure_slide(59, "1-16", "图1-16 细菌细胞（以大肠杆菌为代表）", 29, [
+ "基本结构：细胞质、拟核（含DNA）、质粒、核糖体。",
+ "被膜：外膜（或荚膜）、细胞壁（肽聚糖层）、内膜（质膜）。",
+ "表面结构：菌毛（数百根，长度不等）、鞭毛（摆动推进）。",
+ "无核膜包被的细胞核；核糖体为70S。"],
+ "图1-16信息量很大：先看菌体轮廓，再看拟核/质粒/核糖体，最后看被膜和表面附属物。左下放大框专门讲被膜三层。")
+figure_slide(60, "1-17", "图1-17 真核细胞结构模式图", 30, [
+ "左：动物细胞，无细胞壁，有细胞核、线粒体、内质网、高尔基体、溶酶体等。",
+ "右：植物细胞，有细胞壁、中央大液泡、叶绿体，细胞核被液泡挤到一侧。",
+ "叶绿体含类囊体；线粒体含嵴；高尔基体由扁平囊泡叠成。",
+ "真核细胞有核膜和多种膜性细胞器；动物/植物细胞结构有差异。"],
+ "图1-17是动物细胞与植物细胞并排。先比较细胞壁、液泡、叶绿体三项差异，再在两类细胞中找共同细胞器。")
+figure_slide(61, "1-19", "图1-19 “RNA世界”说的分子进化情景", 34, [
+ "前生物汤 → 随机短RNA → 催化性RNA的选择性复制。",
+ "RNA催化专一肽合成；肽与RNA共进化。",
+ "原始转译系统 → RNA基因组被拷贝成DNA。",
+ "DNA基因组在核糖体上翻译；RNA世界是假说，不是定论。"],
+ "图1-19是8步流程图。抓住主线：RNA先同时承担信息和催化，随后DNA接管贮存、蛋白质接管催化。")
+figure_slide(62, "1-20", "图1-20 地球上生命进化的里程碑", 36, [
+ "时间轴单位：百万年前；0在顶部，4500在底部。",
+ "约4500：地球形成；约4000：海洋和大陆形成。",
+ "约3500：光合硫细菌、产甲烷菌；约3000：光合放氧蓝细菌。",
+ "约2000：需氧细菌与富氧大气；约1500：原生生物；约1000：红藻/绿藻；约500：多细胞真核生物多样化。"],
+ "图1-20是竖轴时间线，数值从下往上变小。读图时先看轴的方向，再按“地球形成—生命—氧气—真核—多细胞”顺序记忆。")
 
 # Save
 prs.save(PPTX)
