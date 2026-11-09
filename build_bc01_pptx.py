@@ -183,6 +183,7 @@ def v_hierarchy(s, x, y, w, h):
             ar.fill.solid(); ar.fill.fore_color.rgb = GOLD; ar.line.fill.background()
         yy += 0.7
     text(s, x+0.2, y+4.45, w-0.4, 0.42, "共价键聚合 → 非共价作用组装", size=10.5, color=MUTED, align=PP_ALIGN.CENTER)
+    cap(s, x+0.2, y+4.78, w-0.4, "按教材结构层次绘制（矢量）")
 
 def v_dogma(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -240,7 +241,7 @@ def v_ionpair(s, x, y, w, h):
     b1 = box(s, x+0.35, y+1.30, 1.25, 0.78, fill=RGBColor(0xE3,0xEF,0xF8), line=BLUE)
     text(s, x+0.35, y+1.47, 1.25, 0.3, "–COO⁻", size=15, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
     b2 = box(s, x+w-1.60, y+1.30, 1.25, 0.78, fill=RGBColor(0xE4,0xF4,0xF1), line=TEAL)
-    text(s, x+w-1.60, y+1.47, 1.25, 0.3, "⁺H₃N–", size=15, color=TEAL, bold=True, align=PP_ALIGN.CENTER)
+    text(s, x+w-1.60, y+1.47, 1.25, 0.3, "H₃N⁺", size=15, color=TEAL, bold=True, align=PP_ALIGN.CENTER)
     ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+1.65), Inches(y+1.69), Inches(x+w-1.65), Inches(y+1.69))
     ln.line.color.rgb = GOLD; ln.line.width = Pt(2.2); ln.line.dash_style = MSO_LINE_DASH_STYLE.DASH
     text(s, x+0.2, y+2.45, w-0.4, 1.9,
@@ -251,7 +252,7 @@ def v_ecoli(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
     text(s, x+0.2, y+0.16, w-0.4, 0.3, "大肠杆菌（原核细胞）", size=11.5, color=BLUE, bold=True)
     # capsule
-    cap = box(s, x+0.25, y+0.78, w-0.50, 2.35, fill=RGBColor(0xE6,0xF2,0xF7), line=BLUE)
+    cellcap = box(s, x+0.25, y+0.78, w-0.50, 2.35, fill=RGBColor(0xE6,0xF2,0xF7), line=BLUE)
     inner = box(s, x+0.48, y+1.02, w-0.96, 1.86, fill=RGBColor(0xF6,0xFB,0xFD), line=RGBColor(0x9C,0xC7,0xDD))
     text(s, x+0.30, y+0.55, 1.8, 0.24, "细胞壁/细胞膜", size=8.5, color=MUTED)
     # nucleoid
@@ -267,40 +268,36 @@ def v_ecoli(s, x, y, w, h):
     fl = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+w-0.12), Inches(y+1.75), Inches(x+w+0.02), Inches(y+2.35))
     fl.line.color.rgb = MUTED; fl.line.width = Pt(1.3)
     text(s, x+w-0.98, y+2.32, 0.85, 0.22, "鞭毛", size=8.2, color=MUTED)
-    text(s, x+0.22, y+3.35, w-0.44, 1.4,
+    text(s, x+0.22, y+3.35, w-0.44, 1.2,
          "• 无核膜，遗传物质在拟核\n• 环状DNA；可有质粒\n• 70S 核糖体\n• 细胞壁、细胞膜、鞭毛",
-         size=10.0, color=INK)
+         size=9.6, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-16（矢量重绘）")
 
 def v_euk(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
     text(s, x+0.2, y+0.16, w-0.4, 0.3, "真核细胞的主要细胞器", size=11.5, color=BLUE, bold=True)
-    cell = box(s, x+0.22, y+0.62, w-0.44, 3.12, fill=RGBColor(0xF4,0xFA,0xF8), line=TEAL)
-    # nucleus
-    nu = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+0.55), Inches(y+0.92), Inches(1.05), Inches(0.9))
+    box(s, x+0.18, y+0.58, w-0.36, 3.05, fill=RGBColor(0xF4,0xFA,0xF8), line=TEAL)
+    nu = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+0.38), Inches(y+0.78), Inches(1.10), Inches(0.98))
     nu.fill.solid(); nu.fill.fore_color.rgb = RGBColor(0xD9,0xE7,0xF5); nu.line.color.rgb = BLUE
-    text(s, x+0.55, y+1.20, 1.05, 0.25, "细胞核", size=8.5, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
-    # mitochondria
-    for dx, dy in [(2.35,0.92),(2.55,1.72)]:
-        mi = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+dx), Inches(y+dy), Inches(1.0), Inches(0.45))
+    text(s, x+0.38, y+1.08, 1.10, 0.24, "细胞核", size=9.0, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+    for dx, dy in [(2.05,0.82),(2.18,1.55)]:
+        mi = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+dx), Inches(y+dy), Inches(1.05), Inches(0.50))
         mi.fill.solid(); mi.fill.fore_color.rgb = RGBColor(0xF7,0xDF,0xCF); mi.line.color.rgb = RED
-        text(s, x+dx, y+dy+0.10, 1.0, 0.22, "线粒体", size=7.5, color=RED, bold=True, align=PP_ALIGN.CENTER)
-    # ER wavy lines
-    for i in range(3):
-        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+1.82), Inches(y+1.10+i*0.22), Inches(x+2.55), Inches(y+1.10+i*0.22))
-        ln.line.color.rgb = BLUE; ln.line.width = Pt(1.2)
-    text(s, x+1.70, y+1.66, 0.9, 0.2, "内质网", size=7.2, color=BLUE)
-    # Golgi
-    for i in range(3):
-        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+0.80), Inches(y+2.28+i*0.13), Inches(x+1.55), Inches(y+2.28+i*0.13))
+        text(s, x+dx, y+dy+0.13, 1.05, 0.22, "线粒体", size=8.5, color=RED, bold=True, align=PP_ALIGN.CENTER)
+    box(s, x+1.55, y+2.18, 1.15, 0.55, fill=RGBColor(0xE3,0xEF,0xF8), line=BLUE)
+    for k in range(3):
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+1.64), Inches(y+2.28+k*0.10), Inches(x+2.58), Inches(y+2.28+k*0.10))
+        ln.line.color.rgb = BLUE; ln.line.width = Pt(0.9)
+    text(s, x+1.55, y+2.78, 1.15, 0.22, "内质网", size=8.2, color=BLUE, align=PP_ALIGN.CENTER)
+    for k in range(3):
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+0.48), Inches(y+2.18+k*0.12), Inches(x+1.18), Inches(y+2.18+k*0.12))
         ln.line.color.rgb = GOLD; ln.line.width = Pt(2)
-    text(s, x+0.76, y+2.65, 0.9, 0.2, "高尔基体", size=7.2, color=MUTED)
-    # lysosome
-    ly = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+2.70), Inches(y+2.50), Inches(0.38), Inches(0.38))
+    text(s, x+0.42, y+2.58, 0.85, 0.22, "高尔基体", size=8.0, color=MUTED)
+    ly = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+2.95), Inches(y+2.38), Inches(0.42), Inches(0.42))
     ly.fill.solid(); ly.fill.fore_color.rgb = RGBColor(0xE8,0xD7,0xF0); ly.line.color.rgb = RGBColor(0x8A,0x5A,0x9A)
-    text(s, x+2.62, y+2.92, 0.65, 0.2, "溶酶体", size=7.0, color=MUTED)
-    text(s, x+0.22, y+3.88, w-0.44, 0.95,
-         "• 核膜/细胞核\n• 线粒体、叶绿体（植物）\n• 内质网、高尔基体、溶酶体",
-         size=8.8, color=INK)
+    text(s, x+2.92, y+2.84, 0.62, 0.22, "溶酶体", size=7.6, color=MUTED, align=PP_ALIGN.CENTER)
+    text(s, x+0.22, y+3.78, w-0.44, 0.65, "核膜、细胞核、线粒体、叶绿体、\n内质网、高尔基体、溶酶体。", size=8.6, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-17（矢量重绘）")
 
 def v_chirality(s, x, y, w, h):
     box(s, x, y, w, h, fill=WHITE, line=LINE)
@@ -336,7 +333,8 @@ def v_water(s, x, y, w, h):
     for (px1,py1),(px2,py2) in [(pts[0],pts[1]),(pts[1],pts[2]),(pts[2],pts[0])]:
         ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(px1+0.3), Inches(py1+0.3), Inches(px2+0.3), Inches(py2+0.3))
         ln.line.color.rgb = GOLD; ln.line.width = Pt(1.5); ln.line.dash_style = MSO_LINE_DASH_STYLE.DASH
-    text(s, x+0.2, y+3.3, w-0.4, 1.2, "每个水分子最多形成4个氢键；\n氢键网络 → 高热容、高沸点、高表面张力。\n水是极性溶剂，也是许多反应的参与者。", size=11.0, color=MUTED)
+    text(s, x+0.2, y+3.15, w-0.4, 1.2, "每个水分子最多形成4个氢键；\n氢键网络 → 高热容、高沸点、高表面张力。\n水是极性溶剂，也是许多反应的参与者。", size=10.2, color=MUTED)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-12（矢量重绘）")
 
 def v_table(s, x, y, w, h):
     rows = [
@@ -391,6 +389,171 @@ def v_ph(s, x, y, w, h):
         text(s, bar_x+i*bar_w/14-0.12, bar_y+0.28, 0.3, 0.2, str(i), size=9.0, color=MUTED, align=PP_ALIGN.CENTER)
     text(s, bar_x, bar_y+0.62, bar_w, 0.28, "pH = pKa + lg([A⁻]/[HA])", size=14, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
     text(s, x+0.2, y+2.2, w-0.4, 1.9, "• 当[A⁻]=[HA]时，pH=pKa\n• 缓冲液抵抗少量酸/碱引起的pH变化\n• 蛋白质、核酸的电荷状态随pH改变\n• 等电点pI：净电荷为零", size=11.8, color=INK)
+
+def cap(s, x, y, w, txt):
+    text(s, x, y, w, 0.24, txt, size=8.0, color=MUTED, italic=True)
+
+def v_carbon(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "碳原子的四面体构型", size=11.5, color=BLUE, bold=True)
+    cx, cy = x+w/2, y+2.08
+    # tetrahedron
+    pts = [(cx, y+0.93), (cx, y+3.18), (x+0.72, y+2.45), (x+w-0.72, y+2.45)]
+    for px, py in pts:
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(cx), Inches(cy), Inches(px), Inches(py))
+        ln.line.color.rgb = BLUE; ln.line.width = Pt(2)
+    c = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(cx-0.22), Inches(cy-0.22), Inches(0.44), Inches(0.44))
+    c.fill.solid(); c.fill.fore_color.rgb = NAVY2; c.line.fill.background()
+    text(s, cx-0.22, cy-0.13, 0.44, 0.24, "C", size=12, color=WHITE, bold=True, align=PP_ALIGN.CENTER)
+    labels = [("H", pts[0][0], pts[0][1]-0.26), ("H", pts[1][0], pts[1][1]+0.02),
+              ("—OH", pts[2][0]-0.42, pts[2][1]-0.05), ("—NH₂", pts[3][0]-0.30, pts[3][1]-0.05)]
+    for lab, lx, ly in labels:
+        text(s, lx, ly, 0.85, 0.26, lab, size=9.5, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+    text(s, x+0.18, y+3.55, w-0.36, 0.9, "碳原子四价，四个单键指向四面体四个顶点；\n可连接 H、O、N、S 等，形成多样骨架。", size=9.0, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-2（矢量重绘）")
+
+def v_functional(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "生物分子中常见的官能团", size=11.5, color=BLUE, bold=True)
+    rows = [("羟基", "—OH"), ("羧基", "—COOH"), ("氨基", "—NH₂"), ("磷酸基", "—OPO₃²⁻"), ("巯基", "—SH")]
+    yy = y+0.62
+    for i, (name, formula) in enumerate(rows):
+        box(s, x+0.18, yy, w-0.36, 0.56, fill=(PALE if i % 2 == 0 else WHITE), line=None)
+        text(s, x+0.30, yy+0.13, 1.2, 0.26, name, size=9.6, color=NAVY, bold=True)
+        text(s, x+1.55, yy+0.12, w-1.7, 0.3, formula, size=11.0, color=TEAL, bold=True)
+        yy += 0.64
+    text(s, x+0.2, y+4.05, w-0.4, 0.6, "官能团决定极性和化学反应性，\n碳骨架决定分子形状。", size=9.0, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-3（矢量重绘）")
+
+def v_stereo(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "立体异构：顺反与对映", size=11.5, color=BLUE, bold=True)
+    for j, (lab, right_top) in enumerate([("顺式", "CH₃"), ("反式", "H")]):
+        bx = x + 0.28 + j*(w/2-0.10)
+        yy = y + 1.55
+        for dy in (-0.06, 0.06):
+            ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(bx+0.38), Inches(yy+dy), Inches(bx+0.95), Inches(yy+dy))
+            ln.line.color.rgb = NAVY2; ln.line.width = Pt(1.8)
+        for px in (bx+0.38, bx+0.95):
+            ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(px), Inches(yy-0.08), Inches(px), Inches(yy-0.42))
+            ln.line.color.rgb = NAVY2; ln.line.width = Pt(1.2)
+            ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(px), Inches(yy+0.08), Inches(px), Inches(yy+0.42))
+            ln.line.color.rgb = NAVY2; ln.line.width = Pt(1.2)
+        text(s, bx+0.18, yy-1.02, 0.55, 0.22, "CH₃", size=7.6, color=INK, align=PP_ALIGN.CENTER)
+        text(s, bx+0.78, yy-1.02, 0.55, 0.22, right_top, size=7.6, color=INK, align=PP_ALIGN.CENTER)
+        text(s, bx+0.18, yy+0.58, 0.55, 0.22, "H", size=7.6, color=INK, align=PP_ALIGN.CENTER)
+        text(s, bx+0.78, yy+0.58, 0.55, 0.22, ("H" if right_top == "CH₃" else "CH₃"), size=7.6, color=INK, align=PP_ALIGN.CENTER)
+        text(s, bx+0.30, yy+0.95, 0.8, 0.24, lab, size=8.6, color=(TEAL if j == 0 else GOLD), bold=True, align=PP_ALIGN.CENTER)
+    box(s, x+0.28, y+2.85, w-0.56, 1.15, fill=PALE, line=None)
+    text(s, x+0.42, y+2.98, w-0.84, 0.26, "对映体", size=9.0, color=NAVY, bold=True)
+    text(s, x+0.42, y+3.28, w-0.84, 0.62, "互为镜像、不能重合；\n旋光方向相反，生物活性可不同。\n具体 D/L 构型见下页。", size=8.2, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-4（矢量重绘）")
+
+def v_glyceraldehyde(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "甘油醛的 D/L 构型", size=11.5, color=BLUE, bold=True)
+    for j, lab in enumerate(["D-甘油醛", "L-甘油醛"]):
+        bx = x+0.45 + j*1.85
+        top = y+1.10; bot = y+3.25; mid = y+2.18
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(bx), Inches(top), Inches(bx), Inches(bot))
+        ln.line.color.rgb = NAVY2; ln.line.width = Pt(1.4)
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(bx-0.50), Inches(mid), Inches(bx+0.50), Inches(mid))
+        ln.line.color.rgb = NAVY2; ln.line.width = Pt(1.4)
+        text(s, bx-0.40, top-0.25, 0.8, 0.22, "CHO", size=8.6, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+        text(s, bx-0.40, bot+0.04, 0.8, 0.22, "CH₂OH", size=8.6, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+        if j == 0:
+            text(s, bx-0.85, mid-0.12, 0.32, 0.22, "H", size=9, color=RED, bold=True)
+            text(s, bx+0.50, mid-0.12, 0.36, 0.22, "OH", size=9, color=TEAL, bold=True)
+        else:
+            text(s, bx-0.85, mid-0.12, 0.36, 0.22, "HO", size=9, color=TEAL, bold=True)
+            text(s, bx+0.50, mid-0.12, 0.32, 0.22, "H", size=9, color=RED, bold=True)
+        text(s, bx-0.48, bot+0.34, 0.96, 0.24, lab, size=8.4, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+    ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+w/2-0.65), Inches(y+0.85), Inches(x+w/2-0.65), Inches(y+3.85))
+    ln.line.color.rgb = GOLD; ln.line.width = Pt(1.1); ln.line.dash_style = MSO_LINE_DASH_STYLE.DASH
+    text(s, x+w/2-1.0, y+3.92, 1.1, 0.22, "镜面", size=7.5, color=GOLD, align=PP_ALIGN.CENTER)
+    text(s, x+0.2, y+4.25, w-0.4, 0.4, "L-氨基酸、D-单糖是生物体常用构型", size=8.6, color=INK, bold=True)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-5（矢量重绘）")
+
+def v_models(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "三维结构的分子模型", size=11.5, color=BLUE, bold=True)
+    rows = [("骨架式", "显示连接次序"), ("球棍式", "显示键角与空间"), ("空间填充", "显示分子外形")]
+    for i, (name, note) in enumerate(rows):
+        yy = y + 0.62 + i*1.25
+        box(s, x+0.22, yy, w-0.44, 1.05, fill=(PALE if i % 2 == 0 else WHITE), line=LINE)
+        cx = x+0.95
+        if i == 0:
+            pts = [(cx-0.35,yy+0.72),(cx-0.12,yy+0.30),(cx+0.14,yy+0.70),(cx+0.40,yy+0.30),(cx+0.62,yy+0.66)]
+            for a,b in zip(pts,pts[1:]):
+                ln=s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(a[0]), Inches(a[1]), Inches(b[0]), Inches(b[1]))
+                ln.line.color.rgb=NAVY2; ln.line.width=Pt(1.6)
+        elif i == 1:
+            pts = [(cx-0.32,yy+0.62),(cx-0.08,yy+0.32),(cx+0.18,yy+0.66),(cx+0.44,yy+0.34)]
+            for a,b in zip(pts,pts[1:]):
+                ln=s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(a[0]), Inches(a[1]), Inches(b[0]), Inches(b[1]))
+                ln.line.color.rgb=MUTED; ln.line.width=Pt(2)
+            for k,(px,py) in enumerate(pts):
+                c=s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(px-0.10), Inches(py-0.10), Inches(0.20), Inches(0.20))
+                c.fill.solid(); c.fill.fore_color.rgb=[BLUE,TEAL,GOLD,RED][k]; c.line.fill.background()
+        else:
+            pts = [(cx-0.28,yy+0.52,0.48),(cx+0.02,yy+0.38,0.52),(cx+0.26,yy+0.62,0.40)]
+            for px,py,rr in pts:
+                c=s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(px), Inches(py), Inches(rr), Inches(rr))
+                c.fill.solid(); c.fill.fore_color.rgb=RGBColor(0xCF,0xE3,0xF0); c.line.color.rgb=BLUE
+        text(s, x+2.10, yy+0.18, 1.85, 0.26, name, size=10.2, color=NAVY, bold=True)
+        text(s, x+2.10, yy+0.50, 1.85, 0.24, note, size=8.4, color=MUTED)
+    text(s, x+0.2, y+4.35, w-0.4, 0.28, "不同模型强调不同结构信息", size=8.8, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-9（矢量重绘）")
+
+def v_tree(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "生物三域系统树", size=11.5, color=BLUE, bold=True)
+    root = (x+w/2, y+3.85)
+    tips = [(x+0.62, y+1.05, "细菌"), (x+w/2, y+0.88, "古菌"), (x+w-0.62, y+1.05, "真核生物")]
+    for tx, ty, lab in tips:
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(root[0]), Inches(root[1]), Inches(tx), Inches(ty+0.35))
+        ln.line.color.rgb = BLUE; ln.line.width = Pt(1.6)
+        c = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(tx-0.11), Inches(ty), Inches(0.22), Inches(0.22))
+        c.fill.solid(); c.fill.fore_color.rgb = [TEAL, GOLD, BLUE][tips.index((tx,ty,lab))]; c.line.fill.background()
+        text(s, tx-0.6, ty-0.30, 1.2, 0.24, lab, size=8.6, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+    text(s, root[0]-0.65, root[1]+0.08, 1.3, 0.24, "共同祖先", size=8.2, color=MUTED, align=PP_ALIGN.CENTER)
+    text(s, x+0.2, y+3.90, w-0.4, 0.55, "细菌、古菌为原核；真核生物有核膜和细胞器。", size=8.4, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-15（矢量重绘）")
+
+def v_rnaworld(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "“RNA 世界”假说", size=11.5, color=BLUE, bold=True)
+    items = [("RNA", "信息 + 催化", TEAL), ("复制", "自然选择", GOLD), ("DNA/蛋白质", "分工", BLUE)]
+    yy = y+0.78
+    for i, (a, b, col) in enumerate(items):
+        box(s, x+0.55, yy, w-1.1, 0.62, fill=col, line=None)
+        text(s, x+0.55, yy+0.07, w-1.1, 0.26, a, size=11.5, color=WHITE, bold=True, align=PP_ALIGN.CENTER)
+        text(s, x+0.55, yy+0.35, w-1.1, 0.2, b, size=8.2, color=WHITE, align=PP_ALIGN.CENTER)
+        if i < 2:
+            text(s, x+0.55, yy+0.64, w-1.1, 0.28, "↓", size=13, color=GOLD, bold=True, align=PP_ALIGN.CENTER)
+        yy += 1.02
+    text(s, x+0.2, y+3.82, w-0.4, 0.7, "RNA 既能贮存信息又能催化；\n后来 DNA 贮存信息、蛋白质承担催化。", size=8.8, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-19（矢量重绘）")
+
+def v_endosym(s, x, y, w, h):
+    box(s, x, y, w, h, fill=WHITE, line=LINE)
+    text(s, x+0.2, y+0.16, w-0.4, 0.3, "内共生学说", size=11.5, color=BLUE, bold=True)
+    host = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+0.35), Inches(y+1.05), Inches(1.55), Inches(1.55))
+    host.fill.solid(); host.fill.fore_color.rgb = RGBColor(0xE7,0xF1,0xF8); host.line.color.rgb = BLUE
+    text(s, x+0.55, y+1.70, 1.15, 0.24, "宿主细胞", size=8.6, color=NAVY, bold=True, align=PP_ALIGN.CENTER)
+    bact = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+1.10), Inches(y+1.55), Inches(0.60), Inches(0.36))
+    bact.fill.solid(); bact.fill.fore_color.rgb = RGBColor(0xF4,0xDA,0xCF); bact.line.color.rgb = RED
+    text(s, x+1.08, y+1.03, 0.75, 0.22, "细菌", size=7.5, color=RED, bold=True)
+    text(s, x+2.15, y+1.65, 0.5, 0.32, "→", size=18, color=GOLD, bold=True)
+    mito = s.shapes.add_shape(MSO_SHAPE.OVAL, Inches(x+2.65), Inches(y+1.35), Inches(1.15), Inches(0.58))
+    mito.fill.solid(); mito.fill.fore_color.rgb = RGBColor(0xF9,0xE1,0xD2); mito.line.color.rgb = RED
+    text(s, x+2.65, y+1.48, 1.15, 0.24, "线粒体", size=8.6, color=RED, bold=True, align=PP_ALIGN.CENTER)
+    # inner membrane cristae
+    for i in range(3):
+        ln = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x+2.78), Inches(y+1.62+i*0.10), Inches(x+2.95), Inches(y+1.55+i*0.10))
+        ln.line.color.rgb = RED; ln.line.width = Pt(0.8)
+    text(s, x+0.2, y+3.05, w-0.4, 1.0, "被吞入的需氧细菌未被消化，\n与宿主形成稳定内共生 → 线粒体。\n叶绿体同理来自蓝细菌。", size=8.8, color=INK)
+    cap(s, x+0.2, y+4.72, w-0.4, "仿原书 图1-20（矢量重绘）")
 
 # ---------- deck ----------
 slides = []
@@ -496,7 +659,7 @@ content_slide(12, "三、生命物质的化学组成 · 1/4", "（一）生命�
   "大量元素构成水和有机物；微量元素多作为酶、辅酶或激素的组成成分。",
   "元素种类与无机界相同，但比例和组合方式不同。"],
  "区分“大量/微量”按含量，不按重要性；微量元素含量低但常不可替代。考试常考：Fe、Zn、Cu、Mn、Co、Mo、I、Se 等。",
- None)
+ v_carbon)
 content_slide(13, "三、生命物质的化学组成 · 2/4", "（二）生物分子是碳的化合物", 23,
  ["碳原子四价，可形成四个稳定共价键。",
   "碳链可长可短、可分支、可成环，并可连接多种官能团。",
@@ -504,7 +667,7 @@ content_slide(13, "三、生命物质的化学组成 · 2/4", "（二）生物�
   "碳骨架的多样性 → 生物分子种类繁多、功能多样。",
   "生物分子是碳化合物，但并非所有含碳化合物都是生物分子。"],
  "强调碳的“四价”和“成链/成环”能力。官能团决定化学性质，碳骨架决定分子形状；二者共同决定生物分子功能。",
- None)
+ v_functional)
 content_slide(14, "三、生命物质的化学组成 · 3/4", "（三）生物小分子与代谢物", 24,
  ["生物小分子：氨基酸、核苷酸、单糖、脂肪酸、甘油等。",
   "代谢物是代谢途径中的中间产物和终产物。",
@@ -538,7 +701,7 @@ content_slide(18, "四、生物分子的三维结构 · 2/6", "（二）立体�
   "构型改变必须断裂共价键，不能靠单键旋转互变。",
   "手性碳：连接四个不同基团的碳原子。"],
  "先区分“连接次序”与“空间排列”，再讲构型。判断手性碳只看四个基团是否不同，不看碳上连了几根键。构型是“换了就回不去”的稳定空间排列。",
- v_chirality)
+ v_stereo)
 content_slide(19, "四、生物分子的三维结构 · 3/6", "（三）构型的命名系统", 29,
  ["D/L 命名：以甘油醛为参照，主要用于氨基酸和糖。",
   "L-氨基酸、D-单糖是生物体常用的构型。",
@@ -546,7 +709,7 @@ content_slide(19, "四、生物分子的三维结构 · 3/6", "（三）构型�
   "D/L 与 R/S 是两套独立系统，不能简单等同。",
   "构型命名必须结合具体分子，不能只看旋光方向。"],
  "易错点：D/L 不是“左/右旋”，而是相对甘油醛的构型；R/S 按原子序数排优先级。L-氨基酸与D-单糖是常见记忆点。",
- None)
+ v_glyceraldehyde)
 content_slide(20, "四、生物分子的三维结构 · 4/6", "（四）构象", 29,
  ["构象：同一构型下，通过单键旋转产生的不同空间形态。",
   "构象改变不需要断裂共价键，通常可快速互变。",
@@ -562,7 +725,7 @@ content_slide(21, "四、生物分子的三维结构 · 5/6", "（五）三维�
   "X射线晶体学、NMR、冷冻电镜是主要结构测定方法。",
   "模型是理解结构的工具，不同模型强调不同信息。"],
  "让学生建立“模型目的不同”的意识：球棍看键，空间填充看体积，飘带看折叠。结构测定方法只需知道X射线、NMR、冷冻电镜三者的基本特点。",
- None)
+ v_models)
 content_slide(22, "四、生物分子的三维结构 · 6/6", "（六）生物分子间的相互作用是立体专一的", 31,
  ["酶与底物、受体与配体、抗体与抗原的结合都具有立体专一性。",
   "结合位点的形状、电荷和氢键供受体必须互补。",
@@ -656,7 +819,7 @@ content_slide(35, "七、生命的基本单位——细胞 · 1/4", "（一）�
   "真核生物有核膜、细胞核和多种膜性细胞器。",
   "三域分类基于分子系统发生，而不仅是形态。"],
  "三域不是“细菌、植物、动物”，而是细菌、古菌、真核。古菌常被误认为细菌，要强调其分子特征和极端环境适应性。",
- None)
+ v_tree)
 content_slide(36, "七、生命的基本单位——细胞 · 2/4", "（二）细胞是所有生物的结构和功能单位", 43,
  ["细胞是生命结构和功能的基本单位。",
   "单细胞生物一个细胞即个体；多细胞生物由许多细胞协作。",
@@ -698,7 +861,7 @@ content_slide(41, "八、生物分子的起源与进化 · 2/4", "（二）RNA�
   "后来DNA更适合长期贮存信息，蛋白质催化效率更高。",
   "RNA世界是假说，不是已经证实的唯一路径。"],
  "RNA世界的核心逻辑：信息+催化双重功能，解决“先有DNA还是先有蛋白质”的循环。核酶是支持证据；要说明这是假说，不是定论。",
- None)
+ v_rnaworld)
 content_slide(42, "八、生物分子的起源与进化 · 3/4", "（三）原始细胞的出现——生物学进化的开始", 49,
  ["生物大分子聚集成膜包被的原始细胞（protocell）。",
   "膜将内部环境与外界分隔，形成相对独立的化学系统。",
@@ -714,7 +877,7 @@ content_slide(43, "八、生物分子的起源与进化 · 4/4", "（四）真�
   "细胞核、内膜系统、细胞骨架逐渐形成。",
   "内共生学说的证据：DNA、核糖体、双层膜、分裂方式。"],
  "内共生学说是重点：线粒体/叶绿体有自身环状DNA、70S核糖体、双层膜，支持其细菌起源。不要把“内共生”误解为“细胞吞了一个细胞器”。",
- None)
+ v_endosym)
 # Summary
 s = prs.slides.add_slide(BLANK); set_bg(s, LIGHT)
 box(s, 0, 0, 13.333, 0.10, fill=GOLD, line=None, radius=False)
@@ -773,7 +936,7 @@ y = 1.9
 for no, a, e in ans:
     text(s, 0.95, y, 0.35, 0.3, no, size=14, color=GOLD, bold=True)
     text(s, 1.35, y, 0.65, 0.35, a, size=16, color=WHITE, bold=True)
-    text(s, 2.1, y, 9.9, 0.38, e, size=11, color=RGBColor(0xD5,0xE3,0xEE))
+    text(s, 2.1, y, 9.9, 0.38, e, size=11.2, color=RGBColor(0xEE,0xF4,0xF8))
     y += 0.72
 text(s, 0.95, 5.55, 11.2, 0.32, "复习清单", size=12, color=GOLD, bold=True)
 text(s, 0.95, 5.9, 11.4, 1.3,
@@ -809,7 +972,7 @@ for i,(h,f1,f2,note) in enumerate(cards):
     text(s,x+0.28,y+0.18,4.9,0.3,h,size=12.5,color=NAVY,bold=True)
     text(s,x+0.28,y+0.58,5.3,0.35,f1,size=17,color=[BLUE,TEAL,GOLD,RED][i],bold=True)
     text(s,x+0.28,y+1.02,5.3,0.3,f2,size=13,color=INK)
-    text(s,x+0.28,y+1.45,5.3,0.28,note,size=9.8,color=MUTED)
+    text(s,x+0.28,y+1.45,5.3,0.28,note,size=10.2,color=INK)
 footer(s,48,0)
 s.notes_slide.notes_text_frame.text = "本章计算题核心是单位换算和守恒：n=cV、m=nM、c=1000ρw/M、pH与Henderson-Hasselbalch。先把已知量换成统一单位，再代公式。"
 
