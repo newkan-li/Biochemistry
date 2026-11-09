@@ -1051,7 +1051,7 @@
       });
     }
     if (ch.pptDeck) {
-      var pptA = el("a", "sub", "🎞 完整PPT原图");
+      var pptA = el("a", "sub", "🎞 完整" + (ch.pptLang || "") + "PPT原图");
       pptA.href = "ppt.html?ch=" + ch.pptDeck;
       aside.appendChild(pptA);
     }
