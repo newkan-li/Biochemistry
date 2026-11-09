@@ -1098,7 +1098,7 @@
 
     if (ch.guide && ch.guide.length) {
       var gbox = el("div", "statsbox chapter-guide");
-      gbox.innerHTML = '<h3 style="margin:0 0 8px">📘 本章知识点透彻讲解</h3><p class="hint" style="margin:0 0 8px">先按下面 9 个知识块理解“是什么、为什么、怎么考”，再进入逐页 PPT 和自测。</p>';
+      gbox.innerHTML = '<h3 style="margin:0 0 8px">📘 本章知识点透彻讲解</h3><p class="hint" style="margin:0 0 8px">先按下面 ' + ch.guide.length + ' 个知识块理解“是什么、为什么、怎么考”，再进入逐页 PPT 和自测。</p>';
       ch.guide.forEach(function (g, gi) {
         var d = el("details", "guide-item");
         d.open = false;
