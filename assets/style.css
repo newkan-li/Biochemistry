@@ -488,3 +488,16 @@ html[data-theme="dark"] .slide .sh .src-type{color:#9fb3c7;border-color:#33475a}
 .booktoc-link:hover{text-decoration:underline}
 html[data-theme="dark"] .booktoc-fold>summary,html[data-theme="dark"] .booktoc-link,html[data-theme="dark"] .booktoc-list .bt-no{color:#a8c6e0}
 html[data-theme="dark"] .booktoc-list .bt-pg{color:#d8b968}
+.booktoc-list>li{border-bottom:1px dotted var(--line)}
+.booktoc-list>li.bt-leaf{display:flex;gap:6px;align-items:baseline;padding:3px 0}
+.bt-sec{margin:0}
+.bt-sec>summary{display:flex;gap:6px;align-items:baseline;cursor:pointer;list-style:none;padding:3px 0}
+.bt-sec>summary::-webkit-details-marker{display:none}
+.bt-sec>summary::before{content:"▸ ";flex:0 0 10px;color:#7a5a00;font-size:10px}
+.bt-sec[open]>summary::before{content:"▾ "}
+.bt-sub-list{margin:1px 0 5px 24px;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px 12px}
+.bt-sub-list li{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;line-height:1.45;color:var(--muted);padding:1px 0}
+.bt-st{flex:1}
+.bt-sp{color:#9a6b00;white-space:nowrap;font-size:10.5px}
+html[data-theme="dark"] .bt-sub-list li,html[data-theme="dark"] .bt-st{color:#b8c7d6}
+html[data-theme="dark"] .bt-sp{color:#d8b968}

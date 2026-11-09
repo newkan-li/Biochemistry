@@ -1090,13 +1090,22 @@
     if (window.BOOKTOC && window.BOOKTOC[cid]) {
       var bt = window.BOOKTOC[cid];
       var bbox = el("div", "statsbox booktoc-box");
+      var nsub = 0;
       var rows = (bt.sections || []).map(function (sec, i) {
-        var pg = sec.page > 0 ? ("原书 p" + sec.page) : "原书页码待核";
-        return '<li><span class="bt-no">' + (i + 1) + '</span><span class="bt-title">' + esc(sec.title || "") + '</span><span class="bt-pg">' + pg + '</span></li>';
+        var pg = sec.page > 0 ? ("原书 p" + sec.page) : "页码待核";
+        var subs = sec.subs || [];
+        nsub += subs.length;
+        var head = '<span class="bt-no">' + (i + 1) + '</span><span class="bt-title">' + esc(sec.title || "") + '</span><span class="bt-pg">' + pg + '</span>';
+        if (!subs.length) return '<li class="bt-leaf">' + head + '</li>';
+        var sl = subs.map(function (z) {
+          var zp = z.page > 0 ? ("p" + z.page) : "—";
+          return '<li><span class="bt-st">' + esc(z.title || "") + '</span><span class="bt-sp">' + zp + '</span></li>';
+        }).join("");
+        return '<li><details class="bt-sec"><summary>' + head + '</summary><ul class="bt-sub-list">' + sl + '</ul></details></li>';
       }).join("");
       bbox.innerHTML = '<h3 style="margin:0 0 6px">📚 本章原书目录（朱圣庚第4版）</h3>' +
-        '<p class="hint" style="margin:0 0 7px">按原书节级目录列出的学习地图；原书页码不是本站PPT页码，PPT逐页入口见右侧。</p>' +
-        '<details class="booktoc-fold"><summary>展开本章 ' + (bt.sections || []).length + ' 节原书目录</summary><ol class="booktoc-list">' + rows + '</ol></details>' +
+        '<p class="hint" style="margin:0 0 7px">按原书节/子节目录列出的学习地图；原书页码不是本站PPT页码，PPT逐页入口见右侧。</p>' +
+        '<details class="booktoc-fold" open><summary>展开本章 ' + (bt.sections || []).length + ' 节 · ' + nsub + ' 个子节</summary><ol class="booktoc-list">' + rows + '</ol></details>' +
         '<a class="booktoc-link" href="learn.html#ch-' + esc(cid) + '">在36章详细目录中查看本章 →</a>';
       main.appendChild(bbox);
     }
