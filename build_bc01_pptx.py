@@ -779,7 +779,58 @@ text(s, 0.95, 5.55, 11.2, 0.32, "复习清单", size=12, color=GOLD, bold=True)
 text(s, 0.95, 5.9, 11.4, 1.3,
      "① 生命属性三方面  ② 生物大分子与单体  ③ 构型/构象  ④ 四类非共价作用  ⑤ 水与pH/缓冲  ⑥ 原核/真核  ⑦ RNA世界与内共生",
      size=10.5, color=WHITE)
-text(s, 11.8, 6.9, 0.8, 0.3, "47", size=9.5, color=RGBColor(0x9E,0xB6,0xC8), align=PP_ALIGN.RIGHT)
+text(s, 11.8, 6.9, 0.8, 0.3, "46", size=9.5, color=RGBColor(0x9E,0xB6,0xC8), align=PP_ALIGN.RIGHT)
+
+# ---------- appendix: calculation ----------
+s = prs.slides.add_slide(BLANK); set_bg(s, NAVY)
+box(s, 0, 0, 0.14, 7.5, fill=GOLD, line=None, radius=False)
+text(s, 0.95, 0.95, 9.0, 0.35, "APPENDIX · CALCULATION", size=11, color=GOLD, bold=True)
+text(s, 0.95, 1.55, 10.5, 0.9, "附录：计算题专项", size=40, color=WHITE, bold=True, font=SERIF)
+text(s, 0.98, 2.75, 10.8, 0.4, "原书第1章课后计算题涉及：溶液配制、稀释、pH、Ka、缓冲液。", size=15, color=RGBColor(0xD5,0xE3,0xEE))
+for i, q in enumerate(["① 0.4 mol/L NaOH 500 mL 怎么配？", "② 浓盐酸稀释：37%、1.20 g/mL 怎么换算？", "③ 弱酸 pH=4.6，Ka、pKa 怎么求？", "④ 醋酸缓冲液 pH 与配比怎么算？"]):
+    text(s, 1.05, 3.55 + i*0.58, 10.8, 0.35, q, size=13, color=WHITE)
+text(s, 0.98, 6.7, 9.0, 0.3, "计算题不靠背答案，抓住“单位—物质的量—守恒”三条线。", size=9.5, color=RGBColor(0x9E,0xB6,0xC8))
+text(s, 11.8, 6.85, 0.8, 0.3, "47", size=9.5, color=RGBColor(0x9E,0xB6,0xC8), align=PP_ALIGN.RIGHT)
+
+s = prs.slides.add_slide(BLANK); set_bg(s, LIGHT)
+box(s, 0, 0, 13.333, 0.10, fill=BLUE, line=None, radius=False)
+kicker(s, "附录 · 计算题专项", 0)
+text(s, 0.62, 0.78, 12.0, 0.55, "计算工具箱：四个公式解决本章计算", size=25, color=NAVY, bold=True, font=SERIF)
+cards = [
+ ("物质的量", "n = cV", "m = nM", "V 用 L；m 用 g"),
+ ("质量分数→浓度", "c = 1000ρw / M", "ρ: g/mL；w: 质量分数", "浓盐酸、浓硫酸换算"),
+ ("渗透压浓度", "i × c", "i=粒子数", "NaOH: i=2；葡萄糖: i=1"),
+ ("pH 与缓冲", "pH = −lg[H⁺]", "pH = pKa + lg([A⁻]/[HA])", "弱酸 Ka、缓冲配比"),
+]
+for i,(h,f1,f2,note) in enumerate(cards):
+    col=i%2; row=i//2; x=0.62+col*6.25; y=1.75+row*2.25
+    box(s,x,y,5.95,1.95,fill=WHITE,line=LINE)
+    box(s,x,y,0.08,1.95,fill=[BLUE,TEAL,GOLD,RED][i],line=None,radius=False)
+    text(s,x+0.28,y+0.18,4.9,0.3,h,size=12.5,color=NAVY,bold=True)
+    text(s,x+0.28,y+0.58,5.3,0.35,f1,size=17,color=[BLUE,TEAL,GOLD,RED][i],bold=True)
+    text(s,x+0.28,y+1.02,5.3,0.3,f2,size=13,color=INK)
+    text(s,x+0.28,y+1.45,5.3,0.28,note,size=9.8,color=MUTED)
+footer(s,48,0)
+s.notes_slide.notes_text_frame.text = "本章计算题核心是单位换算和守恒：n=cV、m=nM、c=1000ρw/M、pH与Henderson-Hasselbalch。先把已知量换成统一单位，再代公式。"
+
+s = prs.slides.add_slide(BLANK); set_bg(s, LIGHT)
+box(s, 0, 0, 13.333, 0.10, fill=GOLD, line=None, radius=False)
+kicker(s, "附录 · 计算题专项", 0)
+text(s, 0.62, 0.78, 12.0, 0.55, "例题：溶液配制、pH 与缓冲液", size=25, color=NAVY, bold=True, font=SERIF)
+# left column
+box(s, 0.62, 1.55, 6.05, 4.95, fill=WHITE, line=LINE)
+text(s, 0.85, 1.72, 5.6, 0.32, "例1  NaOH 与浓盐酸稀释", size=13, color=BLUE, bold=True)
+text(s, 0.85, 2.12, 5.55, 4.1,
+     "① 0.4 mol/L NaOH 500 mL\nn=0.4×0.500=0.20 mol\nm=0.20×40=8.0 g\n质量浓度=8.0÷0.500=16 g/L\n渗透压浓度=2×0.4=0.8 mol/L\n\n② 浓盐酸 37%、1.20 g/mL\nc=1000×1.20×0.37÷36.5\n  ≈12.16 mol/L\nn(HCl)=0.5×2.00=1.00 mol\nV=1.00÷12.16≈0.0822 L=82.2 mL",
+     size=11.3, color=INK, line_spacing=1.12)
+# right column
+box(s, 6.90, 1.55, 5.80, 4.95, fill=WHITE, line=LINE)
+text(s, 7.12, 1.72, 5.3, 0.32, "例2  弱酸 pH 与醋酸缓冲液", size=13, color=TEAL, bold=True)
+text(s, 7.12, 2.12, 5.3, 4.1,
+     "① 0.02 mol/L 弱酸，pH=4.6\n[H⁺]=10⁻⁴·⁶≈2.51×10⁻⁵ mol/L\nKa≈[H⁺]²/(c−[H⁺])\n  ≈(2.51×10⁻⁵)²/0.02\n  ≈3.15×10⁻⁸\npKa≈7.50\n\n② 0.20 mol/L NaAc + 0.60 mol/L HAc\npH=4.76+lg(0.20/0.60)\n  =4.76−0.477≈4.28\n\n③ pH=5.0 的 0.2 mol/L 缓冲液\nx/y=10⁰·²⁴≈1.74，x+y=0.2\nx≈0.127，y≈0.073 mol/L",
+     size=11.1, color=INK, line_spacing=1.10)
+footer(s,49,0)
+s.notes_slide.notes_text_frame.text = "例1强调配制与稀释：先求物质的量，再换算质量或体积。例2强调pH、Ka和缓冲液：先写平衡式/方程，再代入数据；缓冲液还可用总浓度守恒解方程组。"
 
 # Save
 prs.save(PPTX)
