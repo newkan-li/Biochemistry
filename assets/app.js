@@ -1042,7 +1042,7 @@
         sbox.innerHTML = "<summary>📑 本模块 PPT / 讲义逐页目录（" + m.slides.length + "页）</summary>";
         m.slides.forEach(function (s, si) {
           var sa = el("a", "sub", (si + 1) + ". " + (s.title || ("第" + (si + 1) + "页")));
-          sa.href = "#s_" + cid + "_s" + m.i + "_" + si;
+          sa.href = "#s_" + cid + "_s" + m.i + "_" + s.i;
           sbox.appendChild(sa);
         });
         aside.appendChild(sbox);
