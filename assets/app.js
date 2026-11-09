@@ -1090,6 +1090,16 @@
       pptA.href = "ppt.html?ch=" + ch.pptDeck + "&back=" + encodeURIComponent(cid);
       aside.appendChild(pptA);
     }
+    if (cid === "bc01") {
+      var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
+      dl.href = "downloads/bc01-original-style.pptx";
+      dl.download = "BC01_生命的分子基础_原书版课件.pptx";
+      aside.appendChild(dl);
+      var dlp = el("a", "sub", "📄 第1章课件PDF预览");
+      dlp.href = "downloads/bc01-original-style.pdf";
+      dlp.target = "_blank";
+      aside.appendChild(dlp);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");
