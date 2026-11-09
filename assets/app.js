@@ -991,6 +991,35 @@
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
     aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
+    if (window.BOOKTOC && window.BOOKTOC[cid]) {
+      var bt = window.BOOKTOC[cid];
+      var nsub = 0;
+      (bt.sections || []).forEach(function (sec) { nsub += (sec.subs || []).length; });
+      var bookBox = el("details", "toc-book");
+      bookBox.open = true;
+      var secHtml = "";
+      (bt.sections || []).forEach(function (sec, i) {
+        var pg = sec.page > 0 ? ("p" + sec.page) : "页码待核";
+        var subs = sec.subs || [];
+        var sh = '<summary>' + esc(sec.title || "") + '<span class="toc-meta">' + pg + '</span></summary>';
+        if (subs.length) {
+          sh += '<div class="book-sub-list">' + subs.map(function (z) {
+            var zp = z.page > 0 ? ("p" + z.page) : "—";
+            return '<div class="book-sub"><span>' + esc(z.title || "") + '</span><em>' + zp + '</em></div>';
+          }).join("") + '</div>';
+        }
+        var sd = el("details", "toc-block");
+        if (i === 0) sd.open = true;
+        sd.innerHTML = sh;
+        bookBox.appendChild(sd);
+      });
+      var bookA = el("a", "sub book-all", "📚 查看36章总目录");
+      bookA.href = "learn.html#ch-" + cid;
+      bookBox.appendChild(bookA);
+      bookBox.insertAdjacentHTML("afterbegin", '<summary>📚 本章原书目录（' + (bt.sections || []).length + '节 / ' + nsub + '子节）</summary>');
+      aside.appendChild(bookBox);
+    }
+
     aside.appendChild(el("div", "grp", (ch.toc || ch.guide) && (ch.toc || ch.guide).length ? "本章知识块（" + (ch.toc || ch.guide).length + "）" : "各模块（概念 + 考题）"));
     if (ch.toc && ch.toc.length) {
       var tocMod = ch.modules[0];
@@ -1086,29 +1115,6 @@
     var hero = el("div", "hero");
     hero.innerHTML = "<h1>" + esc(ch.title) + '</h1><div class="tag">' + esc(ch.sub2 || "") + " ｜ 概念逐页 + 全题型练习 + 错题本 + 手写</div>";
     main.appendChild(hero);
-
-    if (window.BOOKTOC && window.BOOKTOC[cid]) {
-      var bt = window.BOOKTOC[cid];
-      var bbox = el("div", "statsbox booktoc-box");
-      var nsub = 0;
-      var rows = (bt.sections || []).map(function (sec, i) {
-        var pg = sec.page > 0 ? ("原书 p" + sec.page) : "页码待核";
-        var subs = sec.subs || [];
-        nsub += subs.length;
-        var head = '<span class="bt-no">' + (i + 1) + '</span><span class="bt-title">' + esc(sec.title || "") + '</span><span class="bt-pg">' + pg + '</span>';
-        if (!subs.length) return '<li class="bt-leaf">' + head + '</li>';
-        var sl = subs.map(function (z) {
-          var zp = z.page > 0 ? ("p" + z.page) : "—";
-          return '<li><span class="bt-st">' + esc(z.title || "") + '</span><span class="bt-sp">' + zp + '</span></li>';
-        }).join("");
-        return '<li><details class="bt-sec"><summary>' + head + '</summary><ul class="bt-sub-list">' + sl + '</ul></details></li>';
-      }).join("");
-      bbox.innerHTML = '<h3 style="margin:0 0 6px">📚 本章原书目录（朱圣庚第4版）</h3>' +
-        '<p class="hint" style="margin:0 0 7px">按原书节/子节目录列出的学习地图；原书页码不是本站PPT页码，PPT逐页入口见右侧。</p>' +
-        '<details class="booktoc-fold" open><summary>展开本章 ' + (bt.sections || []).length + ' 节 · ' + nsub + ' 个子节</summary><ol class="booktoc-list">' + rows + '</ol></details>' +
-        '<a class="booktoc-link" href="learn.html#ch-' + esc(cid) + '">在36章详细目录中查看本章 →</a>';
-      main.appendChild(bbox);
-    }
 
     if (ch.preview) {
       var pv = el("div", "statsbox previewbox");
