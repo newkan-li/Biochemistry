@@ -547,6 +547,7 @@
       if (q.e) answerHTML += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtAns(q.e) + "</div></div>";
     }
     box.appendChild(el("p", "qq", title));
+    if (q.img) { var qimg = el("img", "q-img"); qimg.src = q.img; qimg.alt = "题目配图"; qimg.loading = "lazy"; box.appendChild(qimg); }
     var ta = el("textarea", "ta");
     ta.placeholder = (kind === "term")
       ? "在此用键盘输入你的定义（先自己写，再展开标准定义核对；内容会自动保存）"

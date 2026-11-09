@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="420" viewBox="0 0 520 420">
+  <rect width="520" height="420" rx="14" fill="#ffffff"/>
+  <text x="260" y="42" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="#1a2b45">L-鸟氨酸（Fischer 投影式）</text>
+  <text x="260" y="82" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#1a2b45">COO⁻</text>
+  <line x1="260" y1="94" x2="260" y2="150" stroke="#1a2b45" stroke-width="3"/>
+  <line x1="145" y1="170" x2="375" y2="170" stroke="#1a2b45" stroke-width="3"/>
+  <text x="118" y="178" text-anchor="end" font-family="sans-serif" font-size="24" font-weight="700" fill="#1a2b45">H₂N</text>
+  <text x="398" y="178" text-anchor="start" font-family="sans-serif" font-size="24" font-weight="700" fill="#1a2b45">H</text>
+  <circle cx="260" cy="170" r="6" fill="#1a2b45"/>
+  <text x="260" y="142" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#1a2b45">Cα</text>
+  <line x1="260" y1="178" x2="260" y2="245" stroke="#1a2b45" stroke-width="3"/>
+  <text x="260" y="278" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#1a2b45">(CH₂)₃NH₃⁺</text>
+  <text x="260" y="326" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#31516f">—COO⁻ 在上、侧链在下；α-碳上的 —NH₂ 在左</text>
+  <text x="260" y="352" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#31516f">按甘油醛 D/L 规则：—NH₂ 在左 = L 型</text>
+  <text x="260" y="386" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#6b7c8f">注：Fischer 投影式中横向键朝向观察者，纵向键背向观察者</text>
+</svg>
