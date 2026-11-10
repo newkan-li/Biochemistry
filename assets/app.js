@@ -963,6 +963,11 @@
     if (!q) return null;
     var box = el("div", "checkpoint examcheck");
     box.appendChild(el("div", "cp-h", "📝 本页考题（期末/章节考试风格）" + (q.src ? " · " + q.src : "")));
+    if (q.kind === "mcq") {
+      box.appendChild(el("div", "hint", "选一个选项；答错自动进入错题本，可点“再做一次”。"));
+      box.appendChild(renderMCQ(cid, q, 1));
+      return box;
+    }
     box.appendChild(el("div", "cp-q", esc(q.q || "")));
     var ta = el("textarea", "cp-in");
     ta.rows = 4;
@@ -1112,11 +1117,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dg";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dh";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dg";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dh";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
