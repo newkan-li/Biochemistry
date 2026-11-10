@@ -641,8 +641,7 @@
       var extra = q && q.o ? ("<div class='wopts'><b>选项</b>：" + q.o.map(esc).join("　") + "</div>") : "";
       item.innerHTML = '<div class="wq">' + esc(e.q) + '<span class="pill">' + esc(e.type) + "</span>" +
         (e.cause ? '<span class="cause-tag">' + esc((CAUSES.filter(function (c) { return c[0] === e.cause; })[0] || ["", "其他"])[1]) + "</span>" : "") + "</div>" +
-        extra +
-        '<div class="wa">正确答案：<div class="anspts">' + fmtAns(e.correct) + "</div></div>";
+        extra;
       var act = el("div", "act");
       var bm = el("button", "", "标记已掌握");
       bm.onclick = function () { clearWrong(cid, e.id); item.remove(); };
@@ -651,9 +650,27 @@
       redo.style.display = "none";
       var opts = (q && q.o) ? q.o : (e.type === "judge" ? ["对", "错"] : null);
       var rfb = el("div", "cp-fb");
-      function solved() {
-        clearWrong(cid, e.id);
-        rfb.innerHTML = '<span class="ok">✔ 正确，已从错题本移除</span>';
+      function correctDisplay() {
+        var cd = e.correct;
+        if (q && q.o) {
+          var hit = q.o.filter(function (o) { return String(o).trim().charAt(0) === String(cd).trim(); })[0];
+          if (hit) cd = hit;
+        }
+        return cd;
+      }
+      function reveal(ok) {
+        var ans = correctDisplay();
+        var html = (ok === true ? '<span class="ok">✔ 正确，已从错题本移除</span>' :
+                   ok === false ? '<span class="no">✘ 错误</span>' : '<b>参考答案</b>') +
+          '<div class="anspts" style="margin-top:4px"><b>答案：</b>' + fmtAns(ans) + "</div>";
+        if (q && q.e) html += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtAns(q.e) + "</div></div>";
+        if (q && q.oe && q.oe.length) {
+          html += '<div class="cp-oe"><b>选项解析</b><ul>' + q.oe.map(function (x, i) {
+            return "<li><b>" + String(q.o && q.o[i] ? q.o[i] : "").trim().charAt(0) + "</b>：" + esc(x) + "</li>";
+          }).join("") + "</ul></div>";
+        }
+        rfb.innerHTML = html;
+        if (ok === true) clearWrong(cid, e.id);
       }
       if (opts) {
         opts.forEach(function (o) {
@@ -661,8 +678,7 @@
           ob.style.cssText = "display:inline-block;margin:4px 6px 4px 0;width:auto";
           ob.onclick = function () {
             var chosen = e.type === "judge" ? o.trim() : o.trim().charAt(0);
-            if (chosen === String(e.correct).trim()) solved();
-            else rfb.innerHTML = '<span class="no">✘ 还不对，再试一次</span>';
+            reveal(chosen === String(e.correct).trim());
           };
           redo.appendChild(ob);
         });
@@ -671,17 +687,16 @@
         redo.appendChild(inp);
         var ib = el("button", "ok", "检查"); ib.style.cssText = "width:auto;margin:4px 0";
         ib.onclick = function () {
-          if (fuzzyMatch(e.correct, inp.value)) solved();
-          else rfb.innerHTML = '<span class="no">✘ 还不对，再试一次</span>';
+          reveal(fuzzyMatch(e.correct, inp.value));
         };
         redo.appendChild(ib);
       } else {
         var ta = el("textarea", "ta"); ta.rows = 4; ta.placeholder = "重新写出答案要点"; ta.style.cssText = "display:block;width:100%;margin:6px 0";
         redo.appendChild(ta);
-        var sb = el("button", "ok", "显示参考答案"); sb.style.cssText = "width:auto;margin:4px 6px 4px 0";
-        sb.onclick = function () { rfb.innerHTML = '<div class="anspts"><b>参考答案</b><br>' + fmtAns(e.correct) + "</div>"; };
+        var sb = el("button", "ok", "提交并查看答案解析"); sb.style.cssText = "width:auto;margin:4px 6px 4px 0";
+        sb.onclick = function () { reveal(null); };
         var mb = el("button", "ok", "我会了，移出"); mb.style.cssText = "width:auto;margin:4px 0";
-        mb.onclick = solved;
+        mb.onclick = function () { reveal(true); };
         redo.appendChild(sb); redo.appendChild(mb);
       }
       redo.appendChild(rfb);
@@ -1231,11 +1246,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108do";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dp";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108do";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dp";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
