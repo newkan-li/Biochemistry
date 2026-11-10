@@ -983,6 +983,37 @@
     return box;
   }
 
+  function renderQuizSet(cid, quiz) {
+    var box = el("div", "quizset");
+    box.appendChild(el("div", "qz-h", "🎯 课堂自测（网页互动）"));
+    box.appendChild(el("div", "hint", "选择或填空后立即判分；答错自动进入错题本，可再做一次。"));
+    quiz.forEach(function (q, i) {
+      if (q.kind === "fill") box.appendChild(renderFill(cid, q, i + 1));
+      else box.appendChild(renderMCQ(cid, q, i + 1));
+    });
+    return box;
+  }
+
+  function renderQuizReview(cid, ch) {
+    var box = el("div", "quizset quizreview");
+    box.appendChild(el("div", "qz-h", "📕 课堂自测后的复习清单"));
+    box.appendChild(el("div", "hint", "先完成上一页 5 道题；错题会自动记录到错题本。"));
+    var ul = el("ul", "qz-list");
+    ["错题本：查看做错的选择/填空，并重做。",
+     "本页自测：逐页短答，检查概念是否讲得出来。",
+     "本页选择题：79 道页级选择题，按页训练。",
+     "章末测试 / 附录C：15 道原书课后题，适合期末。",
+     "复习顺序：错题 → 本页短答 → 课后题 → 章末测试。"].forEach(function (t) {
+      var li = document.createElement("li"); li.textContent = t; ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    var b = el("button", "navbtn", "打开错题本");
+    b.style.cssText = "width:auto;display:inline-block;margin-top:8px";
+    b.onclick = function () { openWrongDrawer(cid, ch); };
+    box.appendChild(b);
+    return box;
+  }
+
   function renderChapterTest(cid, ch) {
     var counts = { mcq: (ch.mcq || []).length, judge: (ch.judge || []).length, fill: (ch.fill || []).length, short: (ch.short || []).length, calc: (ch.calc || []).length, term: (ch.term || []).length };
     var total = counts.mcq + counts.judge + counts.fill + counts.short + counts.calc + counts.term;
@@ -1117,11 +1148,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dh";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108di";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dh";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108di";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
@@ -1228,6 +1259,8 @@
             s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
           card.appendChild(pb);
         }
+        if (s.quiz && s.quiz.length) card.appendChild(renderQuizSet(cid, s.quiz));
+        if (s.quizReview) card.appendChild(renderQuizReview(cid, ch));
         if (s.fig) {
           var fb = el("div", "fignote");
           fb.innerHTML = '<div class="fn-h">🔍 图注解读</div><p>' + esc(s.fig).replace(/\n/g, "<br>") + "</p>";
