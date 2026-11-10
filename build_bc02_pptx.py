@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """bc02 AI PPT (bc01 style): amino acids, peptides, proteins."""
 import os
+from PIL import Image
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
@@ -273,6 +274,28 @@ qs=[('1','下列属于碱性氨基酸的是？','A. Asp  B. Glu  C. Lys  D. Ser'
 for i,(n,q,o) in enumerate(qs):
  y=1.55+i*1.02;box(s,.62,y,12,.86,fill=WHITE,line=LINE);text(s,.78,y+.12,.35,.3,n,size=14,color=GOLD,bold=True);text(s,1.12,y+.1,10.8,.28,q,size=15.0,color=INK,bold=True);text(s,1.12,y+.45,10.8,.26,o,size=13.0,color=MUTED)
 footer(s,num,96)
+
+def origfig(num,fig,title,page,items):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=TEAL,radius=False)
+ kicker(s,'原书配图 · 图%s（扫描原图）'%fig,page);text(s,.62,.70,12,.55,title,size=23,color=NAVY,bold=True,font=SERIF)
+ text(s,.64,1.18,8,.25,'原书 图%s · 原图未重绘'%fig,size=9,color=GOLD,bold=True)
+ path=os.path.join(ROOT,'assets/img/bc02orig/fig%s.png'%fig)
+ im=Image.open(path);iw,ih=im.size;ar=iw/ih;maxw,maxh=8.0,5.15
+ if ar>1.5:maxw,maxh=8.2,4.8
+ scale=min(maxw/iw,maxh/ih);w,h=iw*scale,ih*scale;x=.62+(maxw-w)/2;y=1.5+(maxh-h)/2
+ s.shapes.add_picture(path,Inches(x),Inches(y),Inches(w),Inches(h))
+ box(s,9.0,1.4,3.9,5.15,fill=WHITE,line=LINE);text(s,9.2,1.55,3.5,.28,'看图顺序 + 知识点',size=10.8,color=TEAL,bold=True)
+ bullets(s,9.2,1.95,3.5,4.35,['① '+x for x in items],size=9.6,gap=6)
+ footer(s,num,page);s.notes_slide.notes_text_frame.text='原书图%s：%s'%(fig,title)
+
+origfig(0,'2-1','图2-1 α-氨基酸的一般结构',54,['α-碳连接—NH₃⁺、—COO⁻、—H和R。','除Gly外，α-碳是手性碳。','20种氨基酸的R基不同。'])
+origfig(0,'2-5','图2-5 甘氨酸的滴定曲线',62,['羧基pK₁≈2.34，氨基pK₂≈9.60。','pI≈(pK₁+pK₂)/2≈5.97。','曲线平坦区是缓冲区。'])
+origfig(0,'2-9','图2-9 丙氨酸与甘油醛的构型关系',68,['L-丙氨酸的构型参照L-甘油醛。','D/L是构型，不是旋光方向。','蛋白质中常见L-氨基酸。'])
+origfig(0,'2-17','图2-17 氨基酸分析仪的洗脱顺序',73,['离子交换按电荷/pI分离。','不同氨基酸洗脱时间不同。','用pH/盐梯度洗脱。'])
+origfig(0,'2-19','图2-19 五肽的结构',74,['肽键—CO—NH—连接氨基酸。','N端→C端有方向性。','侧链决定肽的性质。'])
+origfig(0,'2-21','图2-21 肽键的结构特征',75,['肽键C—N有约40%双键性。','六个原子共平面，多为反式。','C=O与N—H形成氢键。'])
+origfig(0,'2-27','图2-27 蛋白质结构的组织层次',81,['一级：氨基酸序列。','二级：α螺旋/β折叠。','三级：三维折叠；四级：亚基。'])
+origfig(0,'2-42','图2-42 固相肽合成原理',96,['C端固定在树脂上。','循环：脱保护→偶联→洗涤。','最后裂解并脱侧链保护基。'])
 
 # renumber footers
 for i,sl in enumerate(prs.slides,1):
