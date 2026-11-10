@@ -203,6 +203,35 @@ def table20(num):
  text(s,.9,6.5,11.6,.3,'口诀：非极性—芳香—极性不带电—酸性—碱性；先分组，再记侧链特殊基团。',size=10.5,color=GOLD,bold=True)
  footer(s,num,56);s.notes_slide.notes_text_frame.text='20种氨基酸先按R基五类分组，再记每组的代表和特殊侧链。'
 
+def mechfig(num,fig,title,page,rows):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=RED,radius=False)
+ kicker(s,'反应式四步卡 · 图%s'%fig,page);text(s,.62,.70,12,.55,title,size=22,color=NAVY,bold=True,font=SERIF)
+ path=os.path.join(ROOT,'assets/img/bc02orig/fig%s.png'%fig);im=Image.open(path);iw,ih=im.size;ar=iw/ih
+ maxw,maxh=7.4,5.1
+ if ar>1.5:maxw,maxh=7.5,4.8
+ sc=min(maxw/iw,maxh/ih);w,h=iw*sc,ih*sc;x=.55;y=1.45+(maxh-h)/2
+ s.shapes.add_picture(path,Inches(x),Inches(y),Inches(w),Inches(h))
+ box(s,8.25,1.38,4.45,5.15,fill=WHITE,line=LINE)
+ labels=['① 反应物/条件','② 原子记账','③ 键数/键变化','④ 体内外对比']
+ yy=1.55
+ for i,(lab,txt) in enumerate(zip(labels,rows)):
+  text(s,8.45,yy,3.95,.26,lab,size=9.8,color=[BLUE,TEAL,GOLD,RED][i],bold=True)
+  text(s,8.45,yy+.27,3.95,.78,txt,size=8.9,color=INK)
+  yy+=1.15
+ footer(s,num,page);s.notes_slide.notes_text_frame.text='反应式四步卡：'+title+'。先找反应物条件，再原子记账、键数、体内外对比。'
+
+
+def peptide_map(num):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=GOLD,radius=False)
+ kicker(s,'第7节 · 肽化学反应式总览',74);text(s,.62,.70,12,.55,'肽化学：五类反应，一张图串起来',size=24,color=NAVY,bold=True,font=SERIF)
+ cards=[('肽键形成','氨基+羧基→肽键\n脱1分子水'),('肽键水解','肽键+H₂O→氨基+羧基\n酸/碱/酶'),('茚三酮','α-氨基氧化脱氨\n生成紫色色素'),('二硫键','2 Cys—SH→Cys—S—S—Cys\n氧化/还原'),('Edman/固相','N端标记测序\nC→N固相合成')]
+ for i,(h,b) in enumerate(cards):
+  x=.65+(i%5)*2.5;y=1.55;box(s,x,y,2.3,1.8,fill=WHITE,line=LINE);text(s,x+.12,y+.12,2.0,.3,h,size=10.5,color=NAVY,bold=True);text(s,x+.12,y+.55,2.0,1.0,b,size=8.8,color=INK,align=PP_ALIGN.CENTER)
+ text(s,.9,3.75,11.6,.35,'每类反应都按四步读：①条件 ②原子记账 ③键数 ④体内外对比',size=11,color=TEAL,bold=True)
+ text(s,.9,4.25,11.6,1.2,'例：肽键形成——羧基—OH与氨基—H脱去1分子水；形成1个C—N肽键；体内由核糖体催化并耗能，体外可加热/缩合剂。',size=10.5,color=INK)
+ footer(s,num,74);s.notes_slide.notes_text_frame.text='肽化学总览：肽键形成/水解、茚三酮、二硫键、Edman、固相合成；统一按四步卡读反应式。'
+
+# content data
 # content data
 # content data
 SECTIONS=[
@@ -291,6 +320,7 @@ footer(s,num,0);num+=1
 # Build sections
 for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
  section(num,si,title.split('、',1)[1],page,[it[0] for it in items][:3]);num+=1
+ if si==7: peptide_map(num);num+=1
  for j,(st,sp,bul,kp,pf,note) in enumerate(items):
   content(num,'%s · %d/%d'%(title,j+1,len(items)),st,sp,bul,kp,pf,note);num+=1
 
@@ -299,9 +329,11 @@ for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
   if si==2 and j==2: origfig(num,'2-4','图2-4 某些非蛋白质氨基酸',60,['不参与蛋白质合成。','如鸟氨酸、瓜氨酸。','可作代谢中间物/天然产物。']);num+=1
   if si==3 and j==1: origfig(num,'2-6','图2-6 谷氨酸和赖氨酸的滴定曲线',63,['酸性/碱性氨基酸有第三个pK。','pI要结合侧链pKR计算。','曲线平台对应缓冲区。']);num+=1
   if si==4 and j==1: origfig(num,'2-8','图2-8 氨基酸与茚三酮的反应',66,['茚三酮用于氨基酸检测。','多数氨基酸显蓝紫色。','脯氨酸显黄色。']);num+=1
+  if si==4 and j==1: mechfig(num,'2-8','图2-8 茚三酮反应：原子去哪了？',66,['α-氨基 + 水合茚三酮，加热。','脱羧、氧化脱氨，生成醛、CO₂、NH₃和还原茚三酮。','C—N/C—C断裂；生成紫色色素。','体外检测反应，不是体内正常代谢。']);num+=1
   if si==4 and j==2: fig_reaction(num);num+=1
   if si==5 and j==1: origfig(num,'2-11','图2-11 芳香族氨基酸的紫外吸收',69,['Phe/Tyr/Trp在280 nm吸收。','Trp/Tyr贡献最大。','用于蛋白质定量。']);num+=1
   if si==9 and j==1: origfig(num,'2-28','图2-28 牛胰岛素的一级结构',83,['A链21、B链30个残基。','链间/链内二硫键。','一级结构决定高级结构。']);num+=1
+  if si==10 and j==0: mechfig(num,'2-33','图2-33 Edman降解：N端怎么测？',87,['PITC + N端氨基，弱碱，无水。','PITC标记N端，酸处理切下N端残基。','每轮断1个肽键，只测1个N端。','体外化学测序；体内蛋白质降解不是Edman。']);num+=1
   # original textbook figures inline
   if si==2 and j==0: table20(num);num+=1
   if si==1 and j==1: origfig(num,'2-1','图2-1 α-氨基酸的一般结构',54,['α-碳连接—NH₃⁺、—COO⁻、—H和R。','除Gly外，α-碳是手性碳。','20种氨基酸的R基不同。']);num+=1
@@ -313,6 +345,7 @@ for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
     origfig(num,'2-21','图2-21 肽键的结构特征',75,['肽键C—N有约40%双键性。','六个原子共平面，多为反式。','C=O与N—H形成氢键。']);num+=1
   if si==8 and j==2: origfig(num,'2-27','图2-27 蛋白质结构的组织层次',81,['一级：氨基酸序列。','二级：α螺旋/β折叠。','三级：三维折叠；四级：亚基。']);num+=1
   if si==12 and j==0: origfig(num,'2-42','图2-42 固相肽合成原理',96,['C端固定在树脂上。','循环：脱保护→偶联→洗涤。','最后裂解并脱侧链保护基。']);num+=1
+  if si==12 and j==0: mechfig(num,'2-42','图2-42 固相肽合成：每轮成几个键？',96,['树脂固定C端；脱保护→活化→偶联→洗涤。','羧基与氨基缩合，脱1分子水。','每轮形成1个肽键。','固相C→N；生物合成N→C，需酶/能量。']);num+=1
   # figures after selected
   if si==1 and j==1: fig_amino(num);num+=1
   if si==3 and j==1: fig_charge(num);num+=1
@@ -343,27 +376,6 @@ qs=[('1','下列属于碱性氨基酸的是？','A. Asp  B. Glu  C. Lys  D. Ser'
 for i,(n,q,o) in enumerate(qs):
  y=1.55+i*1.02;box(s,.62,y,12,.86,fill=WHITE,line=LINE);text(s,.78,y+.12,.35,.3,n,size=14,color=GOLD,bold=True);text(s,1.12,y+.1,10.8,.28,q,size=15.0,color=INK,bold=True);text(s,1.12,y+.45,10.8,.26,o,size=13.0,color=MUTED)
 footer(s,num,96)
-
-def mechfig(num,fig,title,page,rows):
- s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=RED,radius=False)
- kicker(s,'反应式四步卡 · 图%s'%fig,page);text(s,.62,.70,12,.55,title,size=22,color=NAVY,bold=True,font=SERIF)
- path=os.path.join(ROOT,'assets/img/bc02orig/fig%s.png'%fig);im=Image.open(path);iw,ih=im.size;ar=iw/ih
- maxw,maxh=7.4,5.1
- if ar>1.5:maxw,maxh=7.5,4.8
- sc=min(maxw/iw,maxh/ih);w,h=iw*sc,ih*sc;x=.55;y=1.45+(maxh-h)/2
- s.shapes.add_picture(path,Inches(x),Inches(y),Inches(w),Inches(h))
- box(s,8.25,1.38,4.45,5.15,fill=WHITE,line=LINE)
- labels=['① 反应物/条件','② 原子记账','③ 键数/键变化','④ 体内外对比']
- yy=1.55
- for i,(lab,txt) in enumerate(zip(labels,rows)):
-  text(s,8.45,yy,3.95,.26,lab,size=9.8,color=[BLUE,TEAL,GOLD,RED][i],bold=True)
-  text(s,8.45,yy+.27,3.95,.78,txt,size=8.9,color=INK)
-  yy+=1.15
- footer(s,num,page);s.notes_slide.notes_text_frame.text='反应式四步卡：'+title+'。先找反应物条件，再原子记账、键数、体内外对比。'
-
-mechfig(0,'2-8','图2-8 茚三酮反应：原子去哪了？',66,['α-氨基 + 水合茚三酮，加热。','脱羧、氧化脱氨，生成醛、CO₂、NH₃和还原茚三酮。','C—N/C—C断裂；生成紫色色素。','体外检测反应，不是体内正常代谢。'])
-mechfig(0,'2-33','图2-33 Edman降解：N端怎么测？',87,['PITC + N端氨基，弱碱，无水。','PITC标记N端，酸处理切下N端残基。','每轮断1个肽键，只测1个N端。','体外化学测序；体内蛋白质降解不是Edman。'])
-mechfig(0,'2-42','图2-42 固相肽合成：每轮成几个键？',96,['树脂固定C端；脱保护→活化→偶联→洗涤。','羧基与氨基缩合，脱1分子水。','每轮形成1个肽键。','固相C→N；生物合成N→C，需酶/能量。'])
 
 # renumber footers
 for i,sl in enumerate(prs.slides,1):
