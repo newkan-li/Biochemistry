@@ -1506,7 +1506,18 @@ def mech_1_14(num):
   text(s,7.2,yy,5.2,.28,a,size=10.5,color=[BLUE,TEAL,GOLD,RED][i],bold=True);text(s,7.2,yy+.30,5.2,.65,b,size=9.5,color=INK);yy+=1.15
  footer(s,num,40);s.notes_slide.notes_text_frame.text='图1-14四步卡：弱酸用强碱滴定；OH⁻夺H⁺；pH=pKa时半解离；pKa±1缓冲。'
 
+def mech_water(num):
+ s=prs.slides.add_slide(BLANK);set_bg(s,LIGHT);box(s,0,0,13.333,.1,fill=RED,line=None,radius=False)
+ kicker(s,'反应式四步卡 · 水/酸碱',34);text(s,.62,.70,12,.55,'水、弱酸弱碱电离与缓冲：H⁺去哪了？',size=22,color=NAVY,bold=True,font=SERIF)
+ box(s,.62,1.40,12.0,1.15,fill=WHITE,line=LINE);text(s,.85,1.55,11.5,.28,'三条反应式',size=9.8,color=BLUE,bold=True);text(s,.85,1.88,11.5,.55,'H₂O ⇌ H⁺ + OH⁻    HA ⇌ H⁺ + A⁻    A⁻ + H⁺ ⇌ HA',size=14,color=INK,align=PP_ALIGN.CENTER)
+ rows=['水/弱酸弱碱；25℃；稀溶液。','水给出/接受H⁺；酸给出H⁺，碱接受H⁺。','平衡常数Ka、Kw；pH=−lg[H⁺]；缓冲对A⁻/HA。','体内由缓冲系统/蛋白质维持；体外用强酸强碱滴定。']
+ for i,(h,b) in enumerate(zip(['① 条件','② 原子记账','③ 平衡/键','④ 体内外对比'],rows)):
+  x=.62+i*3.03;box(s,x,2.85,2.85,2.55,fill=WHITE,line=LINE);text(s,x+.16,3.0,2.5,.28,h,size=9.8,color=[BLUE,TEAL,GOLD,RED][i],bold=True);text(s,x+.16,3.35,2.5,1.85,b,size=9.3,color=INK)
+ text(s,.9,5.75,11.8,.55,'学生任务：写出共轭酸碱对；用pH=pKa+lg([A⁻]/[HA])判断缓冲方向。',size=10.5,color=GOLD,bold=True)
+ footer(s,num,34);s.notes_slide.notes_text_frame.text='水/弱酸弱碱：H⁺转移；Kw、Ka、pH和缓冲对；体内缓冲 vs 体外滴定。'
+
 mech_1_14(0)
+mech_water(0)
 
 # ---------- renumber footers ----------
 # ---------- renumber footers ----------
