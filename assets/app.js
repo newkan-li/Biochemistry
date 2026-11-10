@@ -506,7 +506,8 @@
     var bChk = el("button", "ok", "检查"), bShow = el("button", "", "显示答案");
     bar.appendChild(bChk); bar.appendChild(bShow); box.appendChild(bar);
     var det = el("details", "sol");
-    det.innerHTML = '<summary>参考答案</summary><div class="ansbox"><b>' + esc(q.a) + "</b></div>";
+    det.innerHTML = '<summary>参考答案</summary><div class="ansbox"><b>' + esc(q.a) + "</b></div>" +
+      (q.e ? '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtAns(q.e) + "</div></div>" : "");
     box.appendChild(det);
     var res = el("div", "mres"); res.style.display = "none"; box.appendChild(res);
     var cb = causeBox(cid, q.id); box.appendChild(cb);
@@ -520,7 +521,8 @@
       store[q.id] = rec; jset(skey(cid, "fill"), store); touch(cid);
       inp.classList.remove("right", "wrong"); inp.classList.add(ok ? "right" : "wrong");
       res.style.display = "block";
-      res.innerHTML = ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 与参考答案不完全一致</span>，可点“显示答案”核对。';
+      res.innerHTML = (ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 与参考答案不完全一致</span>，可点“显示答案”核对。') +
+        (q.e ? '<div style="margin-top:4px">解析：' + esc(q.e) + "</div>" : "");
       cb.style.display = ok ? "none" : "flex";
       if (ok) { clearWrong(cid, q.id); } else { addWrong(cid, { id: q.id, type: "fill", q: q.q, correct: q.a, chosen: inp.value, cause: "", ts: Date.now() }); }
       kpRecord(q.kp, ok);
@@ -1148,11 +1150,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108di";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dj";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108di";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dj";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
