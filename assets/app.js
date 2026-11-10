@@ -1246,21 +1246,21 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dy";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dz";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dy";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dz";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
     if (cid === "bc02") {
       var d2 = el("a", "sub", "📥 第2章AI讲义（PPT）");
-      d2.href = "downloads/bc02-ai-style.pptx?v=20261108dy";
+      d2.href = "downloads/bc02-ai-style.pptx?v=20261108dz";
       d2.download = "BC02_氨基酸肽和蛋白质_AI讲义.pptx";
       aside.appendChild(d2);
       var d2p = el("a", "sub", "📄 第2章AI讲义PDF预览");
-      d2p.href = "downloads/bc02-ai-style.pdf?v=20261108dy";
+      d2p.href = "downloads/bc02-ai-style.pdf?v=20261108dz";
       d2p.target = "_blank";
       aside.appendChild(d2p);
     }

@@ -169,6 +169,25 @@ def origfig(num,fig,title,page,items):
  footer(s,num,page);s.notes_slide.notes_text_frame.text='原书图%s：%s'%(fig,title)
 
 
+def table20(num):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=TEAL,radius=False)
+ kicker(s,'第2章 · 20种氨基酸分类总表',56);text(s,.62,.72,12,.55,'20种蛋白质氨基酸：五类一次记住',size=25,color=NAVY,bold=True,font=SERIF)
+ rows=[('非极性/疏水','Gly 甘、Ala 丙、Val 缬、Leu 亮、Ile 异亮、Met 甲硫、Pro 脯','侧链疏水；Pro为环状亚氨基酸'),
+ ('芳香族','Phe 苯丙、Tyr 酪、Trp 色','280 nm吸收；Trp/Tyr最强'),
+ ('极性不带电','Ser 丝、Thr 苏、Cys 半胱、Asn 天冬酰胺、Gln 谷氨酰胺','—OH/—SH/—CONH₂，可形成氢键'),
+ ('酸性','Asp 天冬、Glu 谷','侧链含—COOH，pI偏低'),
+ ('碱性','Lys 赖、Arg 精、His 组','侧链含氨基/胍基/咪唑基，pI偏高')]
+ y=1.5
+ for i,(a,b,c) in enumerate(rows):
+  box(s,.65,y,12.0,.86,fill=WHITE if i%2==0 else PALE,line=LINE)
+  text(s,.85,y+.12,2.1,.3,a,size=11.5,color=[BLUE,TEAL,GOLD,RED,NAVY2][i],bold=True)
+  text(s,3.0,y+.08,6.7,.68,b,size=9.8,color=INK)
+  text(s,9.9,y+.12,2.6,.55,c,size=8.8,color=MUTED)
+  y+=1.0
+ text(s,.9,6.5,11.6,.3,'口诀：非极性—芳香—极性不带电—酸性—碱性；先分组，再记侧链特殊基团。',size=10.5,color=GOLD,bold=True)
+ footer(s,num,56);s.notes_slide.notes_text_frame.text='20种氨基酸先按R基五类分组，再记每组的代表和特殊侧链。'
+
+# content data
 # content data
 SECTIONS=[
 ('一、氨基酸—蛋白质的单体亚基',54,['蛋白质的水解','α-氨基酸的一般结构'],[
@@ -258,7 +277,16 @@ for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
  section(num,si,title.split('、',1)[1],page,[it[0] for it in items][:3]);num+=1
  for j,(st,sp,bul,kp,pf,note) in enumerate(items):
   content(num,'%s · %d/%d'%(title,j+1,len(items)),st,sp,bul,kp,pf,note);num+=1
+
+  if si==2 and j==0: origfig(num,'2-2','图2-2 20种常见的蛋白质氨基酸',56,['20种氨基酸按R基五类分组。','同一类侧链性质相似。','记名字、缩写和特殊侧链。']);num+=1
+  if si==2 and j==1: origfig(num,'2-3','图2-3 一些不常见的蛋白质氨基酸',59,['由常见氨基酸修饰而来。','多出现在胶原等特定蛋白。','修饰改变结构/功能。']);num+=1
+  if si==2 and j==2: origfig(num,'2-4','图2-4 某些非蛋白质氨基酸',60,['不参与蛋白质合成。','如鸟氨酸、瓜氨酸。','可作代谢中间物/天然产物。']);num+=1
+  if si==3 and j==1: origfig(num,'2-6','图2-6 谷氨酸和赖氨酸的滴定曲线',63,['酸性/碱性氨基酸有第三个pK。','pI要结合侧链pKR计算。','曲线平台对应缓冲区。']);num+=1
+  if si==4 and j==2: origfig(num,'2-8','图2-8 氨基酸与茚三酮的反应',66,['茚三酮用于氨基酸检测。','多数氨基酸显蓝紫色。','脯氨酸显黄色。']);num+=1
+  if si==5 and j==1: origfig(num,'2-11','图2-11 芳香族氨基酸的紫外吸收',69,['Phe/Tyr/Trp在280 nm吸收。','Trp/Tyr贡献最大。','用于蛋白质定量。']);num+=1
+  if si==9 and j==1: origfig(num,'2-28','图2-28 牛胰岛素的一级结构',83,['A链21、B链30个残基。','链间/链内二硫键。','一级结构决定高级结构。']);num+=1
   # original textbook figures inline
+  if si==2 and j==0: table20(num);num+=1
   if si==1 and j==1: origfig(num,'2-1','图2-1 α-氨基酸的一般结构',54,['α-碳连接—NH₃⁺、—COO⁻、—H和R。','除Gly外，α-碳是手性碳。','20种氨基酸的R基不同。']);num+=1
   if si==3 and j==1: origfig(num,'2-5','图2-5 甘氨酸的滴定曲线',62,['羧基pK₁≈2.34，氨基pK₂≈9.60。','pI≈(pK₁+pK₂)/2≈5.97。','曲线平坦区是缓冲区。']);num+=1
   if si==5 and j==0: origfig(num,'2-9','图2-9 丙氨酸与甘油醛的构型关系',68,['L-丙氨酸的构型参照L-甘油醛。','D/L是构型，不是旋光方向。','蛋白质中常见L-氨基酸。']);num+=1
