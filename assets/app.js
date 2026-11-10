@@ -32,6 +32,7 @@
   function setWrong(cid, arr) { jset(skey(cid, "wrong"), arr); }
 
   function addWrong(cid, entry) {
+    delete entry.chosen;
     var arr = wrongList(cid).filter(function (e) { return e.id !== entry.id; });
     arr.push(entry);
     setWrong(cid, arr);
@@ -626,21 +627,33 @@
     d.appendChild(head);
     var list = wrongList(cid);
     var qmap = {};
-    ch.mcq.forEach(function (q) { qmap[q.id] = q; });
+    ["mcq","judge","fill","short","calc","term"].forEach(function (k) { (ch[k]||[]).forEach(function (q) { qmap[q.id] = q; }); });
+    ch.modules.forEach(function (m) { m.slides.forEach(function (sl) {
+      if (sl.check) qmap[sl.check.id] = sl.check;
+      if (sl.exam) qmap[sl.exam.id] = sl.exam;
+      (sl.quiz || []).forEach(function (q) { qmap[q.id] = q; });
+    }); });
+    d.appendChild(el("p", "hint", "只记录题目和答案，不记录你的错误选项；点“重做本题”回原题重做。"));
     if (!list.length) { d.appendChild(el("p", "empty", "暂无错题，继续加油！")); }
     list.slice().reverse().forEach(function (e) {
       var item = el("div", "wb-entry");
       var q = qmap[e.id];
-      var extra = q ? ("<div style='margin-top:4px'>选项：" + q.o.map(esc).join("　") + "</div>") : "";
+      var extra = q && q.o ? ("<div class='wopts'><b>选项</b>：" + q.o.map(esc).join("　") + "</div>") : "";
       item.innerHTML = '<div class="wq">' + esc(e.q) + '<span class="pill">' + esc(e.type) + "</span>" +
         (e.cause ? '<span class="cause-tag">' + esc((CAUSES.filter(function (c) { return c[0] === e.cause; })[0] || ["", "其他"])[1]) + "</span>" : "") + "</div>" +
         extra +
-        '<div class="wa">正确答案：<div class="anspts">' + fmtAns(e.correct) + "</div></div>" +
-        (e.chosen ? '<div class="wa">你的作答：' + esc(e.chosen) + "</div>" : "");
+        '<div class="wa">正确答案：<div class="anspts">' + fmtAns(e.correct) + "</div></div>";
       var act = el("div", "act");
       var bm = el("button", "", "标记已掌握");
       bm.onclick = function () { clearWrong(cid, e.id); item.remove(); };
-      act.appendChild(bm); item.appendChild(act);
+      var br = el("button", "", "重做本题");
+      br.onclick = function () {
+        d.remove();
+        var t = document.getElementById("q_" + e.id);
+        if (t) { t.scrollIntoView({ behavior: "smooth", block: "center" }); t.style.outline = "3px solid #c9962e"; setTimeout(function(){ t.style.outline = ""; }, 1800); }
+        else { location.hash = "#q_" + e.id; }
+      };
+      act.appendChild(br); act.appendChild(bm); item.appendChild(act);
       d.appendChild(item);
     });
     document.body.appendChild(d);
@@ -1005,12 +1018,22 @@
     return box;
   }
 
+  function renderQuizIntro(items) {
+    var box = el("div", "quizset");
+    box.appendChild(el("div", "qz-h", "📚 原书课后题（网页互动）"));
+    box.appendChild(el("div", "hint", "下面 15 题来自《上册笔记和课后习题详解》第1章；先独立作答，再展开答案。"));
+    var ul = document.createElement("ul"); ul.className = "qz-list";
+    items.forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+    box.appendChild(ul); return box;
+  }
+
   function renderQuizSet(cid, quiz, title) {
     var box = el("div", "quizset");
     box.appendChild(el("div", "qz-h", title || "🎯 课堂自测（网页互动）"));
     box.appendChild(el("div", "hint", "选择或填空后立即判分；答错自动进入错题本，可再做一次。"));
     quiz.forEach(function (q, i) {
       if (q.kind === "fill") box.appendChild(renderFill(cid, q, i + 1));
+      else if (q.kind === "short") box.appendChild(renderSelf(cid, q, i + 1, "short"));
       else box.appendChild(renderMCQ(cid, q, i + 1));
     });
     return box;
@@ -1170,11 +1193,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dl";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dm";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dl";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dm";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
@@ -1281,6 +1304,7 @@
             s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
           card.appendChild(pb);
         }
+        if (s.quizIntro) card.appendChild(renderQuizIntro(s.quizIntro));
         if (s.symbols && s.symbols.length) card.appendChild(renderSymbols(s.symbols));
         if (s.quiz && s.quiz.length) card.appendChild(renderQuizSet(cid, s.quiz, s.quizTitle));
         if (s.quizReview) card.appendChild(renderQuizReview(cid, ch));
