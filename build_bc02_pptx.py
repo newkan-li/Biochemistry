@@ -67,24 +67,24 @@ def section(num,no,title,page,questions):
 
 def content(num,sec_label,title,page,items,keypoint,pitfall,notes):
  s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=BLUE,radius=False)
- kicker(s,sec_label,page);text(s,.62,.78,7.8,.72,title,size=26,color=NAVY,bold=True,font=SERIF)
- bullets(s,.7,1.70,7.3,4.85,items,size=17.2,gap=8)
- box(s,8.35,1.55,4.35,2.25,fill=WHITE,line=LINE);text(s,8.55,1.70,3.95,.28,'本页考点',size=10.5,color=TEAL,bold=True);text(s,8.55,2.02,3.95,1.55,keypoint,size=10.6,color=INK)
- box(s,8.35,3.98,4.35,1.60,fill=RGBColor(0xFB,0xF3,0xDE),line=None);text(s,8.55,4.10,3.95,.26,'易错点',size=10.3,color=RGBColor(0x7A,0x4A,0x10),bold=True);text(s,8.55,4.38,3.95,.95,pitfall,size=9.5,color=RGBColor(0x6B,0x3E,0x0E))
+ kicker(s,sec_label,page);text(s,.62,.78,7.8,.72,title,size=28,color=NAVY,bold=True,font=SERIF)
+ bullets(s,.7,1.70,7.3,4.85,items,size=19.5,gap=10)
+ box(s,8.35,1.55,4.35,2.25,fill=WHITE,line=LINE);text(s,8.55,1.70,3.95,.28,'本页考点',size=10.5,color=TEAL,bold=True);text(s,8.55,2.02,3.95,1.55,keypoint,size=12.2,color=INK)
+ box(s,8.35,3.98,4.35,1.60,fill=RGBColor(0xFB,0xF3,0xDE),line=None);text(s,8.55,4.10,3.95,.26,'易错点',size=10.3,color=RGBColor(0x7A,0x4A,0x10),bold=True);text(s,8.55,4.38,3.95,.95,pitfall,size=11.0,color=RGBColor(0x6B,0x3E,0x0E))
  footer(s,num,page);s.notes_slide.notes_text_frame.text=notes
 
 def wrap(num,no,title,sentences,questions,pitfall,notes):
  s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=GOLD,radius=False)
- kicker(s,'第 %d 节 · 本节收束'%no,0);text(s,.62,.72,12,.55,'第%d节 · 3句话 + 2题自测'%no,size=24,color=NAVY,bold=True,font=SERIF)
+ kicker(s,'第 %d 节 · 本节收束'%no,0);text(s,.62,.72,12,.55,'第%d节 · 3句话 + 2题自测'%no,size=26,color=NAVY,bold=True,font=SERIF)
  box(s,.62,1.42,7.55,4.55,fill=WHITE,line=LINE);text(s,.84,1.58,7.1,.28,'三句话记住',size=11,color=BLUE,bold=True)
  y=1.98
  for i,x in enumerate(sentences):
-  text(s,.86,y,.35,.28,str(i+1),size=11,color=GOLD,bold=True);text(s,1.20,y-.02,6.75,1.05,x,size=12.8,color=INK);y+=1.32
+  text(s,.86,y,.35,.28,str(i+1),size=11,color=GOLD,bold=True);text(s,1.20,y-.02,6.75,1.05,x,size=14.2,color=INK);y+=1.32
  box(s,8.35,1.42,4.35,4.55,fill=WHITE,line=LINE);text(s,8.55,1.58,3.95,.28,'2 题自测',size=10.5,color=RED,bold=True)
  qy=1.95
  for j,(q,a) in enumerate(questions):
-  text(s,8.55,qy,3.95,.55,'Q%d %s'%(j+1,q),size=9.3,color=INK,bold=True);text(s,8.55,qy+.55,3.95,.48,'答：'+a,size=8.7,color=MUTED);qy+=1.15
- box(s,.62,6.1,12.08,.62,fill=RGBColor(0xFB,0xF3,0xDE),line=None);text(s,.82,6.22,11.7,.36,'⚠ 易错点：'+pitfall,size=9.8,color=RGBColor(0x7A,0x4A,0x10),bold=True)
+  text(s,8.55,qy,3.95,.55,'Q%d %s'%(j+1,q),size=10.6,color=INK,bold=True);text(s,8.55,qy+.55,3.95,.48,'答：'+a,size=9.7,color=MUTED);qy+=1.15
+ box(s,.62,6.1,12.08,.62,fill=RGBColor(0xFB,0xF3,0xDE),line=None);text(s,.82,6.22,11.7,.36,'⚠ 易错点：'+pitfall,size=11.0,color=RGBColor(0x7A,0x4A,0x10),bold=True)
  footer(s,num,0);s.notes_slide.notes_text_frame.text=notes
 
 def breakdown(num,no,title,steps,example,pitfall,notes):
@@ -106,7 +106,7 @@ def fig_amino(num):
  box(s,cx-.34,cy-.34,.68,.68,fill=NAVY2,radius=True);text(s,cx-.34,cy-.17,.68,.3,'α-C',size=12,color=WHITE,bold=True,align=PP_ALIGN.CENTER)
  for dx,dy,lab in pts:
   text(s,cx+dx-1.0,cy+dy-.24,2.0,.4,lab,size=16,color=NAVY,bold=True,align=PP_ALIGN.CENTER)
- text(s,.8,5.7,11.8,.8,'α-碳连接 —NH₃⁺、—COO⁻、—H 和侧链 R；除甘氨酸外，α-碳是手性碳。',size=13,color=INK)
+ text(s,.8,5.7,11.8,.8,'α-碳连接 —NH₃⁺、—COO⁻、—H 和侧链 R；除甘氨酸外，α-碳是手性碳。',size=14.5,color=INK)
  text(s,.8,6.5,11.8,.3,'AI 示意图（非原书扫描）',size=8,color=MUTED)
  footer(s,num,54)
 
@@ -120,7 +120,6 @@ def fig_charge(num):
  for h,b,pos,col in cards:
   x=x0+pos*w/14-1.1
   box(s,x,4.0,2.4,1.55,fill=WHITE,line=LINE);text(s,x+.18,4.14,2.05,.3,h,size=11,color=col,bold=True);text(s,x+.18,4.48,2.05,.85,b,size=10,color=INK)
-  ln=s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT,Inches(x+1.2),Inches(4.0),Inches(x0+pos*w/14),Inches(2.85));ln.line.color.rgb=col;ln.line.width=Pt(1);ln.line.dash_style=MSO_LINE_DASH_STYLE.DASH
  text(s,.9,5.95,11.5,.6,'中性氨基酸 pI≈(pK₁+pK₂)/2；酸性/碱性氨基酸还要考虑侧链 pKR。',size=12,color=INK)
  footer(s,num,62)
 
@@ -132,15 +131,15 @@ def fig_peptide(num):
  ln=s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT,Inches(4.3),Inches(3.35),Inches(8.9),Inches(3.35));ln.line.color.rgb=GOLD;ln.line.width=Pt(2.2)
  text(s,5.0,2.65,3.2,.35,'—CO—NH— 肽键',size=15,color=GOLD,bold=True,align=PP_ALIGN.CENTER)
  text(s,5.4,3.45,2.4,.3,'+ H₂O',size=11,color=MUTED,align=PP_ALIGN.CENTER)
- text(s,.9,4.8,11.5,.9,'肽键具有部分双键性质：C—N 键不能自由旋转，六个原子共平面；多为反式构型。',size=13,color=INK)
- text(s,.9,5.8,11.5,.7,'肽链方向：N端 → C端；n 个氨基酸形成 n−1 个肽键，释放 n−1 分子水。',size=12,color=MUTED)
+ text(s,.9,4.8,11.5,.9,'肽键具有部分双键性质：C—N 键不能自由旋转，六个原子共平面；多为反式构型。',size=14.5,color=INK)
+ text(s,.9,5.8,11.5,.7,'肽链方向：N端 → C端；n 个氨基酸形成 n−1 个肽键，释放 n−1 分子水。',size=13.5,color=MUTED)
  footer(s,num,74)
 
 def fig_levels(num):
  s=prs.slides.add_slide(BLANK);bg(s,LIGHT);kicker(s,'第2章 · 结构层次',81);text(s,.62,.75,12,.55,'蛋白质的四级结构层次',size=27,color=NAVY,bold=True,font=SERIF)
  labels=[('一级结构','氨基酸序列\n共价键：肽键/二硫键'),('二级结构','α螺旋、β折叠\n主链氢键'),('三级结构','一条肽链的\n三维折叠'),('四级结构','多个亚基\n非共价缔合')]
  for i,(h,b) in enumerate(labels):
-  x=.7+i*3.1;box(s,x,1.75,2.75,2.15,fill=WHITE,line=LINE);box(s,x,1.7,2.75,.08,fill=[BLUE,TEAL,GOLD,RED][i],radius=False);text(s,x+.18,1.88,2.4,.3,h,size=13,color=NAVY,bold=True);text(s,x+.18,2.35,2.4,1.2,b,size=10.5,color=INK,align=PP_ALIGN.CENTER)
+  x=.7+i*3.1;box(s,x,1.75,2.75,2.15,fill=WHITE,line=LINE);box(s,x,1.7,2.75,.08,fill=[BLUE,TEAL,GOLD,RED][i],radius=False);text(s,x+.18,1.88,2.4,.3,h,size=13,color=NAVY,bold=True);text(s,x+.18,2.35,2.4,1.2,b,size=12.0,color=INK,align=PP_ALIGN.CENTER)
   if i<3: text(s,x+2.78,2.65,.35,.3,'→',size=18,color=GOLD,bold=True)
  text(s,.9,5.35,11.6,.7,'结构层次：一级→二级→三级→四级；一级结构决定高级结构，高级结构决定功能。',size=12.5,color=INK)
  footer(s,num,81)
@@ -150,7 +149,7 @@ def fig_seq(num):
  steps=[('1','末端与组成','Edman测N端；羧肽酶测C端；氨基酸组成分析'),('2','拆成肽段','Trypsin切Lys/Arg；CNBr切Met；得到可读短肽'),('3','测序与重叠','Edman/质谱测短肽；用重叠序列拼回全长；定位二硫键')]
  y=1.6
  for no,h,b in steps:
-  box(s,.8,y,11.7,1.25,fill=WHITE,line=LINE);text(s,1.0,y+.2,.5,.4,no,size=18,color=GOLD,bold=True);text(s,1.55,y+.18,3.2,.3,h,size=12.5,color=NAVY,bold=True);text(s,4.4,y+.18,7.7,.75,b,size=10.8,color=INK)
+  box(s,.8,y,11.7,1.25,fill=WHITE,line=LINE);text(s,1.0,y+.2,.5,.4,no,size=18,color=GOLD,bold=True);text(s,1.55,y+.18,3.2,.3,h,size=12.5,color=NAVY,bold=True);text(s,4.4,y+.18,7.7,.75,b,size=12.0,color=INK)
   y+=1.55
  text(s,.9,6.1,11.6,.5,'关键：两套裂解方式产生重叠肽段，才能确定片段先后次序。',size=11.5,color=MUTED)
  footer(s,num,87)
@@ -235,8 +234,8 @@ for i,sec in enumerate(SECTIONS):
  x=.62+(i%2)*6.25;y=1.55+(i//2)*.86
  box(s,x,y,5.95,.74,fill=WHITE,line=LINE);box(s,x,y,.07,.74,fill=GOLD if i<4 else TEAL,radius=False)
  text(s,x+.2,y+.10,.45,.25,'%02d'%(i+1),size=11,color=GOLD if i<4 else TEAL,bold=True)
- text(s,x+.72,y+.08,4.9,.3,sec[0].split('、',1)[1],size=9.8,color=NAVY,bold=True)
- text(s,x+.72,y+.38,4.9,.24,'原书 p%d · %d个子节'%(sec[1],len(sec[2])),size=7.5,color=MUTED)
+ text(s,x+.72,y+.08,4.9,.3,sec[0].split('、',1)[1],size=11.2,color=NAVY,bold=True)
+ text(s,x+.72,y+.38,4.9,.24,'原书 p%d · %d个子节'%(sec[1],len(sec[2])),size=8.8,color=MUTED)
 footer(s,num,0);num+=1
 
 # Build sections
@@ -265,14 +264,14 @@ kicker(s,'本章总结',96);text(s,.62,.78,12,.55,'第2章 · 三条主线',size
 cols=[('结构',['α-氨基酸：α-C、R基、L型','20种氨基酸按R基分类','肽键平面性/方向性']),('性质',['两性电解质，pI决定电荷','280 nm芳香族吸收','离子交换/层析分离']),('序列与合成',['一级结构决定功能','测序：末端—裂解—重叠','固相合成C→N'])]
 for i,(h,items) in enumerate(cols):
  x=.62+i*4.18;box(s,x,1.65,3.95,3.9,fill=WHITE,line=LINE);box(s,x,1.65,3.95,.08,fill=[BLUE,TEAL,GOLD][i],radius=False);text(s,x+.22,1.85,3.5,.3,h,size=13.5,color=NAVY,bold=True)
- for k,t in enumerate(items): text(s,x+.25,2.35+k*.72,3.45,.4,'▸ '+t,size=11.5,color=INK)
+ for k,t in enumerate(items): text(s,x+.25,2.35+k*.72,3.45,.4,'▸ '+t,size=13.0,color=INK)
 footer(s,num,96);num+=1
 # quiz
 s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=TEAL,radius=False)
 kicker(s,'课堂自测',96);text(s,.62,.78,12,.55,'5 道题检查本章掌握度',size=27,color=NAVY,bold=True,font=SERIF)
 qs=[('1','下列属于碱性氨基酸的是？','A. Asp  B. Glu  C. Lys  D. Ser'),('2','肽键的C—N键为什么不能自由旋转？','A. 离子键  B. 部分双键性质  C. 氢键  D. 二硫键'),('3','中性氨基酸pI近似等于？','A. pK₁  B. pK₂  C. (pK₁+pK₂)/2  D. 7.0'),('4','Edman降解测哪一端？','A. N端  B. C端  C. 侧链  D. 二硫键'),('5','固相肽合成方向是？','A. N→C  B. C→N  C. 任意  D. 只加Cys')]
 for i,(n,q,o) in enumerate(qs):
- y=1.55+i*1.02;box(s,.62,y,12,.86,fill=WHITE,line=LINE);text(s,.78,y+.12,.35,.3,n,size=14,color=GOLD,bold=True);text(s,1.12,y+.1,10.8,.28,q,size=11.5,color=INK,bold=True);text(s,1.12,y+.45,10.8,.26,o,size=10,color=MUTED)
+ y=1.55+i*1.02;box(s,.62,y,12,.86,fill=WHITE,line=LINE);text(s,.78,y+.12,.35,.3,n,size=14,color=GOLD,bold=True);text(s,1.12,y+.1,10.8,.28,q,size=13.0,color=INK,bold=True);text(s,1.12,y+.45,10.8,.26,o,size=11.5,color=MUTED)
 footer(s,num,96)
 
 # renumber footers
