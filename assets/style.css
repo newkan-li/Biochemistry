@@ -545,3 +545,9 @@ html[data-theme="dark"] .wb-entry .wopts{color:#b8c7d6}
 .wb-redo .mopt:hover{background:#eef4fb}
 html[data-theme="dark"] .wb-redo{background:#1b2531;border-color:#33475a}
 html[data-theme="dark"] .wb-redo .mopt{background:#22303d;border-color:#33475a;color:#d5e3ee}
+/* AI讲义章节：PPT页按大图显示，避免页内文字缩小 */
+body[data-ch="bc02"] main{max-width:1180px}
+body[data-ch="bc02"] .slide .body{flex-direction:column;gap:12px}
+body[data-ch="bc02"] .slide .body img{width:100%;max-width:100%;cursor:zoom-in}
+body[data-ch="bc02"] .slide .slide-text{width:100%}
+body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
