@@ -1494,6 +1494,21 @@ ac_one(0, 15,
 "(1) 代谢速率受扩散限制；S/V越大，单位体积可交换表面积越大，物质交换越快。\n(2) 球体 S/V=3/r。球菌：3/0.25=12 μm⁻¹；阿米巴：3/75=0.04 μm⁻¹。\n球菌S/V约为阿米巴的12÷0.04=300倍。",
 "注意用半径而不是直径；S/V=3/r，比较倍数直接相除。")
 
+def mech_1_14(num):
+ s=prs.slides.add_slide(BLANK);set_bg(s,LIGHT);box(s,0,0,13.333,.1,fill=RED,line=None,radius=False)
+ kicker(s,'反应式四步卡 · 图1-14',40);text(s,.62,.70,12,.55,'图1-14 醋酸滴定/缓冲：pH 怎么变？',size=22,color=NAVY,bold=True,font=SERIF)
+ path=os.path.join(ROOT,'assets/img/bc01orig/fig1-14.png');im=Image.open(path);iw,ih=im.size;maxw,maxh=5.6,5.1;sc=min(maxw/iw,maxh/ih);w,h=iw*sc,ih*sc
+ s.shapes.add_picture(path,Inches(.8),Inches(1.45),Inches(w),Inches(h))
+ box(s,7.0,1.38,5.7,5.15,fill=WHITE,line=LINE)
+ rows=[('① 反应物/条件','弱酸HA + 强碱NaOH；25℃；0.1 mol/L醋酸。'),('② 原子记账','NaOH的OH⁻夺取HA的H⁺，生成A⁻和H₂O。'),('③ 键数/曲线','pH=pKa时[A⁻]=[HA]；pKa±1为缓冲区。'),('④ 体内外对比','体外滴定用强碱；体内由缓冲对/蛋白质等维持pH。')]
+ yy=1.55
+ for i,(a,b) in enumerate(rows):
+  text(s,7.2,yy,5.2,.28,a,size=10.5,color=[BLUE,TEAL,GOLD,RED][i],bold=True);text(s,7.2,yy+.30,5.2,.65,b,size=9.5,color=INK);yy+=1.15
+ footer(s,num,40);s.notes_slide.notes_text_frame.text='图1-14四步卡：弱酸用强碱滴定；OH⁻夺H⁺；pH=pKa时半解离；pKa±1缓冲。'
+
+mech_1_14(0)
+
+# ---------- renumber footers ----------
 # ---------- renumber footers ----------
 for i, sl in enumerate(prs.slides, 1):
     for sh in sl.shapes:

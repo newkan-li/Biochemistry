@@ -344,6 +344,27 @@ for i,(n,q,o) in enumerate(qs):
  y=1.55+i*1.02;box(s,.62,y,12,.86,fill=WHITE,line=LINE);text(s,.78,y+.12,.35,.3,n,size=14,color=GOLD,bold=True);text(s,1.12,y+.1,10.8,.28,q,size=15.0,color=INK,bold=True);text(s,1.12,y+.45,10.8,.26,o,size=13.0,color=MUTED)
 footer(s,num,96)
 
+def mechfig(num,fig,title,page,rows):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=RED,radius=False)
+ kicker(s,'反应式四步卡 · 图%s'%fig,page);text(s,.62,.70,12,.55,title,size=22,color=NAVY,bold=True,font=SERIF)
+ path=os.path.join(ROOT,'assets/img/bc02orig/fig%s.png'%fig);im=Image.open(path);iw,ih=im.size;ar=iw/ih
+ maxw,maxh=7.4,5.1
+ if ar>1.5:maxw,maxh=7.5,4.8
+ sc=min(maxw/iw,maxh/ih);w,h=iw*sc,ih*sc;x=.55;y=1.45+(maxh-h)/2
+ s.shapes.add_picture(path,Inches(x),Inches(y),Inches(w),Inches(h))
+ box(s,8.25,1.38,4.45,5.15,fill=WHITE,line=LINE)
+ labels=['① 反应物/条件','② 原子记账','③ 键数/键变化','④ 体内外对比']
+ yy=1.55
+ for i,(lab,txt) in enumerate(zip(labels,rows)):
+  text(s,8.45,yy,3.95,.26,lab,size=9.8,color=[BLUE,TEAL,GOLD,RED][i],bold=True)
+  text(s,8.45,yy+.27,3.95,.78,txt,size=8.9,color=INK)
+  yy+=1.15
+ footer(s,num,page);s.notes_slide.notes_text_frame.text='反应式四步卡：'+title+'。先找反应物条件，再原子记账、键数、体内外对比。'
+
+mechfig(0,'2-8','图2-8 茚三酮反应：原子去哪了？',66,['α-氨基 + 水合茚三酮，加热。','脱羧、氧化脱氨，生成醛、CO₂、NH₃和还原茚三酮。','C—N/C—C断裂；生成紫色色素。','体外检测反应，不是体内正常代谢。'])
+mechfig(0,'2-33','图2-33 Edman降解：N端怎么测？',87,['PITC + N端氨基，弱碱，无水。','PITC标记N端，酸处理切下N端残基。','每轮断1个肽键，只测1个N端。','体外化学测序；体内蛋白质降解不是Edman。'])
+mechfig(0,'2-42','图2-42 固相肽合成：每轮成几个键？',96,['树脂固定C端；脱保护→活化→偶联→洗涤。','羧基与氨基缩合，脱1分子水。','每轮形成1个肽键。','固相C→N；生物合成N→C，需酶/能量。'])
+
 # renumber footers
 for i,sl in enumerate(prs.slides,1):
  for sh in sl.shapes:
