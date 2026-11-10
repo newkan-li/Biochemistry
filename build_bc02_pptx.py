@@ -66,6 +66,22 @@ def section(num,no,title,page,questions):
  text(s,.9,6.85,8,.3,'朱圣庚《生物化学》第4版 · 原书 p%d'%page,size=9.5,color=RGBColor(0x9E,0xB6,0xC8))
  text(s,11.8,6.85,.8,.3,'%02d'%num,size=9.5,color=RGBColor(0x9E,0xB6,0xC8),align=PP_ALIGN.RIGHT)
 
+def fig_reaction(num):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=GOLD,radius=False)
+ kicker(s,'第4节 · 反应式导读',65);text(s,.62,.72,12,.55,'图2-7 甘氨酸缩合与水解：怎么读反应式',size=25,color=NAVY,bold=True,font=SERIF)
+ # panels
+ for i,(h,b) in enumerate([('① 两分子甘氨酸','H₂N—CH₂—COOH\n+ H₂N—CH₂—COOH'),('② 二酮吡嗪','六元环，含两个肽键\n（环状二肽）'),('③ 双甘二肽','H₂N—CH₂—CO—NH—CH₂—COOH\n（线性二肽）')]):
+  x=.7+i*4.15;box(s,x,1.55,3.75,2.2,fill=WHITE,line=LINE);text(s,x+.18,1.7,3.4,.3,h,size=13,color=NAVY,bold=True);text(s,x+.18,2.15,3.4,1.4,b,size=10.5,color=INK,align=PP_ALIGN.CENTER)
+  if i<2: text(s,x+3.78,2.35,.35,.3,'→',size=20,color=GOLD,bold=True)
+ text(s,4.0,1.35,1.5,.3,'加热/乙二醇',size=9,color=GOLD,bold=True,align=PP_ALIGN.CENTER)
+ text(s,8.2,1.35,1.5,.3,'煮沸/浓HCl',size=9,color=GOLD,bold=True,align=PP_ALIGN.CENTER)
+ # steps
+ box(s,.7,4.15,11.9,1.95,fill=WHITE,line=LINE);text(s,.9,4.28,11.5,.28,'读反应式四步',size=11,color=TEAL,bold=True)
+ text(s,.9,4.62,11.5,.35,'① 找反应物和条件 → ② 圈出被脱去的 —OH 和 —H（2 H₂O）→ ③ 数环状/线性产物中的肽键 → ④ 对比体内酶促合成',size=10.2,color=INK)
+ text(s,.9,5.15,11.5,.7,'重点：缩合是“脱2分子水成环”；水解是“加2分子水开环”。环状二酮吡嗪有2个肽键，线性双甘二肽有1个肽键。',size=10.2,color=MUTED)
+ text(s,.9,5.95,11.5,.5,'体内不是简单加热缩合：需要酶、活化的羧基和能量，并防止肽键被水解。',size=10.5,color=GOLD,bold=True)
+ footer(s,num,65);s.notes_slide.notes_text_frame.text='图2-7反应式读法：两分子甘氨酸缩合脱2水成环状二酮吡嗪；浓盐酸水解开环成双甘二肽。反应式的核心是原子记账和肽键数。'
+
 def content(num,sec_label,title,page,items,keypoint,pitfall,notes):
  s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=BLUE,radius=False)
  kicker(s,sec_label,page);text(s,.62,.78,7.8,.72,title,size=30,color=NAVY,bold=True,font=SERIF)
@@ -283,6 +299,7 @@ for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
   if si==2 and j==2: origfig(num,'2-4','图2-4 某些非蛋白质氨基酸',60,['不参与蛋白质合成。','如鸟氨酸、瓜氨酸。','可作代谢中间物/天然产物。']);num+=1
   if si==3 and j==1: origfig(num,'2-6','图2-6 谷氨酸和赖氨酸的滴定曲线',63,['酸性/碱性氨基酸有第三个pK。','pI要结合侧链pKR计算。','曲线平台对应缓冲区。']);num+=1
   if si==4 and j==1: origfig(num,'2-8','图2-8 氨基酸与茚三酮的反应',66,['茚三酮用于氨基酸检测。','多数氨基酸显蓝紫色。','脯氨酸显黄色。']);num+=1
+  if si==4 and j==2: fig_reaction(num);num+=1
   if si==5 and j==1: origfig(num,'2-11','图2-11 芳香族氨基酸的紫外吸收',69,['Phe/Tyr/Trp在280 nm吸收。','Trp/Tyr贡献最大。','用于蛋白质定量。']);num+=1
   if si==9 and j==1: origfig(num,'2-28','图2-28 牛胰岛素的一级结构',83,['A链21、B链30个残基。','链间/链内二硫键。','一级结构决定高级结构。']);num+=1
   # original textbook figures inline
