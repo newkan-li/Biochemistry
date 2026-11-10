@@ -527,3 +527,13 @@ html[data-theme="dark"] .examcheck .cp-h{color:#eba99c}
 .qz-list{margin:8px 0 4px 18px;padding:0;font-size:13px;line-height:1.7}
 html[data-theme="dark"] .quizset{background:#1b2531;border-color:#2c3a4a}
 html[data-theme="dark"] .qz-h{color:#a8c6e0}
+.symbolbox{margin:10px 0;padding:10px 12px;border:1px solid #d5e1ec;border-radius:10px;background:#fbfdff}
+.sym-h{font-size:13px;font-weight:700;color:#1f5c8b;margin-bottom:6px}
+.sym-table{width:100%;border-collapse:collapse;font-size:12px}
+.sym-table th,.sym-table td{border-bottom:1px solid #e4edf5;padding:4px 6px;text-align:left;vertical-align:top}
+.sym-table th{color:#5d6d7e;font-weight:700;background:#f0f6fb}
+.sym-table td.sym{font-weight:700;color:#9b3a32;white-space:nowrap}
+html[data-theme="dark"] .symbolbox{background:#1b2531;border-color:#2c3a4a}
+html[data-theme="dark"] .sym-h{color:#a8c6e0}
+html[data-theme="dark"] .sym-table th{background:#22303d;color:#b8c7d6}
+html[data-theme="dark"] .sym-table td{border-bottom-color:#2c3a4a;color:#d5e3ee}

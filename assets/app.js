@@ -985,6 +985,26 @@
     return box;
   }
 
+  function renderSymbols(symbols) {
+    var box = el("div", "symbolbox");
+    box.appendChild(el("div", "sym-h", "🔤 符号说明（先看懂符号，再代公式）"));
+    var t = el("table", "sym-table");
+    var thead = document.createElement("thead");
+    var tr = document.createElement("tr");
+    ["符号", "代表什么", "单位 / 说明"].forEach(function (h) { var th = document.createElement("th"); th.textContent = h; tr.appendChild(th); });
+    thead.appendChild(tr); t.appendChild(thead);
+    var tb = document.createElement("tbody");
+    symbols.forEach(function (x) {
+      var r = document.createElement("tr");
+      [x.sym, x.mean, x.unit].forEach(function (v, i) {
+        var td = document.createElement("td"); td.textContent = v || ""; if (i === 0) td.className = "sym"; r.appendChild(td);
+      });
+      tb.appendChild(r);
+    });
+    t.appendChild(tb); box.appendChild(t);
+    return box;
+  }
+
   function renderQuizSet(cid, quiz, title) {
     var box = el("div", "quizset");
     box.appendChild(el("div", "qz-h", title || "🎯 课堂自测（网页互动）"));
@@ -1150,11 +1170,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dk";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dl";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dk";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dl";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
@@ -1261,6 +1281,7 @@
             s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
           card.appendChild(pb);
         }
+        if (s.symbols && s.symbols.length) card.appendChild(renderSymbols(s.symbols));
         if (s.quiz && s.quiz.length) card.appendChild(renderQuizSet(cid, s.quiz, s.quizTitle));
         if (s.quizReview) card.appendChild(renderQuizReview(cid, ch));
         if (s.fig) {
