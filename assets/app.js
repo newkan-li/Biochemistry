@@ -958,6 +958,26 @@
     window.__refreshHeat = draw;
   }
 
+  function renderExamBlock(cid, s, key) {
+    var q = s.exam;
+    if (!q) return null;
+    var box = el("div", "checkpoint examcheck");
+    box.appendChild(el("div", "cp-h", "📝 本页考题（期末/章节考试风格）" + (q.src ? " · " + q.src : "")));
+    box.appendChild(el("div", "cp-q", esc(q.q || "")));
+    var ta = el("textarea", "cp-in");
+    ta.rows = 4;
+    ta.placeholder = "先按考试要求写出答案要点/步骤，再展开参考答案核对";
+    box.appendChild(ta);
+    var fb = el("div", "cp-fb");
+    var b = el("button", "cp-opt", "显示参考答案");
+    b.onclick = function () {
+      fb.innerHTML = '<div class="cp-ans"><b>参考答案 / 得分点</b><div class="anspts">' + fmtAns(q.a || "") + '</div></div>';
+      b.disabled = true;
+    };
+    box.appendChild(b); box.appendChild(fb);
+    return box;
+  }
+
   function renderChapterTest(cid, ch) {
     var counts = { mcq: (ch.mcq || []).length, judge: (ch.judge || []).length, fill: (ch.fill || []).length, short: (ch.short || []).length, calc: (ch.calc || []).length, term: (ch.term || []).length };
     var total = counts.mcq + counts.judge + counts.fill + counts.short + counts.calc + counts.term;
@@ -1092,11 +1112,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108df";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dg";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108df";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dg";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
@@ -1219,6 +1239,8 @@
         }
         var cp = renderCheckpoint(cid, key, qByKp, s);
         if (cp) card.appendChild(cp);
+        var ex = renderExamBlock(cid, s, key);
+        if (ex) card.appendChild(ex);
         if (s.anim) {
           var aw = el("div", "animwrap");
           aw.appendChild(el("div", "animhead", "🎬 动画演示（在老师原图下方）"));

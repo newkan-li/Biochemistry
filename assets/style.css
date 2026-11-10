@@ -518,3 +518,7 @@ html[data-theme="dark"] aside .toc-book{background:#1b2531;border-color:#2c3a4a}
 html[data-theme="dark"] aside .toc-book>summary{color:#a8c6e0}
 html[data-theme="dark"] aside .book-sub-list{border-left-color:#33475a}
 html[data-theme="dark"] aside .book-sub{color:#b8c7d6}
+.examcheck{margin-top:9px;border-left:3px solid #9b3a32;background:#fffaf8}
+.examcheck .cp-h{color:#9b3a32}
+html[data-theme="dark"] .examcheck{background:#241f22;border-left-color:#d07a6c}
+html[data-theme="dark"] .examcheck .cp-h{color:#eba99c}
