@@ -647,13 +647,51 @@
       var bm = el("button", "", "标记已掌握");
       bm.onclick = function () { clearWrong(cid, e.id); item.remove(); };
       var br = el("button", "", "重做本题");
+      var redo = el("div", "wb-redo");
+      redo.style.display = "none";
+      var opts = (q && q.o) ? q.o : (e.type === "judge" ? ["对", "错"] : null);
+      var rfb = el("div", "cp-fb");
+      function solved() {
+        clearWrong(cid, e.id);
+        rfb.innerHTML = '<span class="ok">✔ 正确，已从错题本移除</span>';
+      }
+      if (opts) {
+        opts.forEach(function (o) {
+          var ob = el("button", "mopt", esc(o));
+          ob.style.cssText = "display:inline-block;margin:4px 6px 4px 0;width:auto";
+          ob.onclick = function () {
+            var chosen = e.type === "judge" ? o.trim() : o.trim().charAt(0);
+            if (chosen === String(e.correct).trim()) solved();
+            else rfb.innerHTML = '<span class="no">✘ 还不对，再试一次</span>';
+          };
+          redo.appendChild(ob);
+        });
+      } else if (e.type === "fill") {
+        var inp = el("input", "ans"); inp.placeholder = "重新输入答案"; inp.style.cssText = "display:block;width:100%;margin:6px 0";
+        redo.appendChild(inp);
+        var ib = el("button", "ok", "检查"); ib.style.cssText = "width:auto;margin:4px 0";
+        ib.onclick = function () {
+          if (fuzzyMatch(e.correct, inp.value)) solved();
+          else rfb.innerHTML = '<span class="no">✘ 还不对，再试一次</span>';
+        };
+        redo.appendChild(ib);
+      } else {
+        var ta = el("textarea", "ta"); ta.rows = 4; ta.placeholder = "重新写出答案要点"; ta.style.cssText = "display:block;width:100%;margin:6px 0";
+        redo.appendChild(ta);
+        var sb = el("button", "ok", "显示参考答案"); sb.style.cssText = "width:auto;margin:4px 6px 4px 0";
+        sb.onclick = function () { rfb.innerHTML = '<div class="anspts"><b>参考答案</b><br>' + fmtAns(e.correct) + "</div>"; };
+        var mb = el("button", "ok", "我会了，移出"); mb.style.cssText = "width:auto;margin:4px 0";
+        mb.onclick = solved;
+        redo.appendChild(sb); redo.appendChild(mb);
+      }
+      redo.appendChild(rfb);
       br.onclick = function () {
-        d.remove();
-        var t = document.getElementById("q_" + e.id);
-        if (t) { t.scrollIntoView({ behavior: "smooth", block: "center" }); t.style.outline = "3px solid #c9962e"; setTimeout(function(){ t.style.outline = ""; }, 1800); }
-        else { location.hash = "#q_" + e.id; }
+        var on = redo.style.display === "none";
+        redo.style.display = on ? "block" : "none";
+        br.textContent = on ? "收起重做" : "重做本题";
       };
       act.appendChild(br); act.appendChild(bm); item.appendChild(act);
+      item.appendChild(redo);
       d.appendChild(item);
     });
     document.body.appendChild(d);
@@ -1193,11 +1231,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dn";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108do";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dn";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108do";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }

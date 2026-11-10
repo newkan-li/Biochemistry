@@ -540,3 +540,8 @@ html[data-theme="dark"] .sym-table td{border-bottom-color:#2c3a4a;color:#d5e3ee}
 .wb-entry .wopts{font-size:12px;color:#5d6d7e;line-height:1.65;margin:4px 0}
 .wb-entry .wq{font-size:13px;line-height:1.6}
 html[data-theme="dark"] .wb-entry .wopts{color:#b8c7d6}
+.wb-redo{margin-top:8px;padding:8px;border:1px dashed #cbd9ea;border-radius:8px;background:#f8fbfe}
+.wb-redo .mopt{border:1px solid #cbd9ea;background:#fff;border-radius:7px;padding:4px 8px;font-size:12px;cursor:pointer}
+.wb-redo .mopt:hover{background:#eef4fb}
+html[data-theme="dark"] .wb-redo{background:#1b2531;border-color:#33475a}
+html[data-theme="dark"] .wb-redo .mopt{background:#22303d;border-color:#33475a;color:#d5e3ee}
