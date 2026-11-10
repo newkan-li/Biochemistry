@@ -985,9 +985,9 @@
     return box;
   }
 
-  function renderQuizSet(cid, quiz) {
+  function renderQuizSet(cid, quiz, title) {
     var box = el("div", "quizset");
-    box.appendChild(el("div", "qz-h", "🎯 课堂自测（网页互动）"));
+    box.appendChild(el("div", "qz-h", title || "🎯 课堂自测（网页互动）"));
     box.appendChild(el("div", "hint", "选择或填空后立即判分；答错自动进入错题本，可再做一次。"));
     quiz.forEach(function (q, i) {
       if (q.kind === "fill") box.appendChild(renderFill(cid, q, i + 1));
@@ -1150,11 +1150,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dj";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dk";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dj";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dk";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
@@ -1261,7 +1261,7 @@
             s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>";
           card.appendChild(pb);
         }
-        if (s.quiz && s.quiz.length) card.appendChild(renderQuizSet(cid, s.quiz));
+        if (s.quiz && s.quiz.length) card.appendChild(renderQuizSet(cid, s.quiz, s.quizTitle));
         if (s.quizReview) card.appendChild(renderQuizReview(cid, ch));
         if (s.fig) {
           var fb = el("div", "fignote");
