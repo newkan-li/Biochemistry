@@ -231,6 +231,16 @@ def peptide_map(num):
  text(s,.9,4.25,11.6,1.2,'例：肽键形成——羧基—OH与氨基—H脱去1分子水；形成1个C—N肽键；体内由核糖体催化并耗能，体外可加热/缩合剂。',size=10.5,color=INK)
  footer(s,num,74);s.notes_slide.notes_text_frame.text='肽化学总览：肽键形成/水解、茚三酮、二硫键、Edman、固相合成；统一按四步卡读反应式。'
 
+def reaction_card(num,title,equation,rows,notes):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=RED,radius=False)
+ kicker(s,'反应式四步卡',74);text(s,.62,.70,12,.55,title,size=22,color=NAVY,bold=True,font=SERIF)
+ box(s,.62,1.40,12.0,1.15,fill=WHITE,line=LINE);text(s,.85,1.55,11.5,.28,'反应式（抓底物/产物/条件）',size=9.8,color=BLUE,bold=True);text(s,.85,1.88,11.5,.55,equation,size=13.5,color=INK,align=PP_ALIGN.CENTER)
+ for i,(h,b) in enumerate(zip(['① 条件','② 原子记账','③ 键数/键变化','④ 体内外对比'],rows)):
+  x=.62+i*3.03;box(s,x,2.85,2.85,2.55,fill=WHITE,line=LINE);text(s,x+.16,3.0,2.5,.28,h,size=9.8,color=[BLUE,TEAL,GOLD,RED][i],bold=True);text(s,x+.16,3.35,2.5,1.85,b,size=9.3,color=INK)
+ text(s,.9,5.75,11.8,.55,'学生任务：圈出被加入/脱去的原子，数键数，再解释体内为什么需要酶或能量。',size=10.5,color=GOLD,bold=True)
+ footer(s,num,74);s.notes_slide.notes_text_frame.text=notes
+
+# content data
 # content data
 # content data
 # content data
@@ -334,6 +344,8 @@ for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
   if si==5 and j==1: origfig(num,'2-11','图2-11 芳香族氨基酸的紫外吸收',69,['Phe/Tyr/Trp在280 nm吸收。','Trp/Tyr贡献最大。','用于蛋白质定量。']);num+=1
   if si==9 and j==1: origfig(num,'2-28','图2-28 牛胰岛素的一级结构',83,['A链21、B链30个残基。','链间/链内二硫键。','一级结构决定高级结构。']);num+=1
   if si==10 and j==0: mechfig(num,'2-33','图2-33 Edman降解：N端怎么测？',87,['PITC + N端氨基，弱碱，无水。','PITC标记N端，酸处理切下N端残基。','每轮断1个肽键，只测1个N端。','体外化学测序；体内蛋白质降解不是Edman。']);num+=1
+  if si==7 and j==1: reaction_card(num,'肽键水解：水加到哪？','—CO—NH— + H₂O  →  —COOH + H₂N—',['酸/碱/蛋白酶催化；加热或酶。','H₂O的—H加到N，—OH加到羰基C。','断1个C—N肽键；生成1个—COOH和1个—NH₂。','体内由蛋白酶/肽酶催化；强酸强碱是体外水解。'],'肽键水解：加水断1个肽键，体内靠蛋白酶。');num+=1
+  if si==10 and j==1: reaction_card(num,'二硫键：氧化成键/还原断键','2 Cys—SH  ⇌  Cys—S—S—Cys + 2H⁺ + 2e⁻',['氧化剂/还原剂；体内由巯基交换/还原系统。','两个—SH脱2H成S—S；还原加2H断键。','形成/断裂1个S—S键（二硫键）。','体外用DTT/过甲酸；体内由谷氧还蛋白等调控。'],'二硫键：氧化脱2H成S—S，还原加2H断键。');num+=1
   # original textbook figures inline
   if si==2 and j==0: table20(num);num+=1
   if si==1 and j==1: origfig(num,'2-1','图2-1 α-氨基酸的一般结构',54,['α-碳连接—NH₃⁺、—COO⁻、—H和R。','除Gly外，α-碳是手性碳。','20种氨基酸的R基不同。']);num+=1
