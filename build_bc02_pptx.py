@@ -240,6 +240,24 @@ def reaction_card(num,title,equation,rows,notes):
  text(s,.9,5.75,11.8,.55,'学生任务：圈出被加入/脱去的原子，数键数，再解释体内为什么需要酶或能量。',size=10.5,color=GOLD,bold=True)
  footer(s,num,74);s.notes_slide.notes_text_frame.text=notes
 
+def hydrolysis_detail(num):
+ s=prs.slides.add_slide(BLANK);bg(s,LIGHT);box(s,0,0,13.333,.1,fill=BLUE,radius=False)
+ kicker(s,'第1节 · 蛋白质水解精讲',54);text(s,.62,.70,12,.55,'蛋白质水解：三种方法怎么选？',size=25,color=NAVY,bold=True,font=SERIF)
+ rows=[('方法','试剂/条件','水解程度','主要破坏','适用/考点'),('酸水解','6 mol/L HCl，110℃，20 h','完全','Trp被破坏；酰胺键水解','测氨基酸组成；Trp需另法'),('碱水解','NaOH，加热','完全','引起消旋；Trp保留','少用；会破坏Arg/Cys等'),('酶水解','蛋白酶，温和条件','通常不完全','不消旋；条件温和','部分水解/肽段测序；专一性')]
+ y=1.45
+ for i,row in enumerate(rows):
+  h=.62 if i==0 else .82
+  box(s,.55,y,12.25,h,fill=NAVY2 if i==0 else (WHITE if i%2 else PALE),line=LINE)
+  cols=[.8,3.1,6.4,8.7,10.7]
+  for j,cell in enumerate(row):
+   text(s,cols[j],y+.12,[1.9,3.0,2.0,1.9,2.0][j],h-.15,cell,size=9.6 if i else 10.2,color=WHITE if i==0 else INK,bold=(i==0))
+  y+=h+.06
+ text(s,.8,4.75,11.9,.35,'机制：肽键 + H₂O → 氨基 + 羧基；酸/碱是化学水解，酶是专一性催化水解。',size=11,color=TEAL,bold=True)
+ text(s,.8,5.2,11.9,.65,'选法：测组成用酸水解（但Trp另测）；要保留Trp/避免消旋可考虑酶解或碱解；测序用专一蛋白酶做部分水解。',size=10.5,color=INK)
+ text(s,.8,6.0,11.9,.4,'学生任务：给“测氨基酸组成/保留Trp/测肽段序列”各选一种水解方法，并说明理由。',size=10.5,color=GOLD,bold=True)
+ footer(s,num,54);s.notes_slide.notes_text_frame.text='蛋白质水解三种方法对比：酸水解完全但破坏Trp，碱水解消旋，酶解温和专一但常不完全；按目的选择。'
+
+# content data
 # content data
 # content data
 # content data
@@ -348,6 +366,7 @@ for si,(title,page,subs,items,wqs,wrap_pit) in enumerate(SECTIONS,1):
   if si==10 and j==1: reaction_card(num,'二硫键：氧化成键/还原断键','2 Cys—SH  ⇌  Cys—S—S—Cys + 2H⁺ + 2e⁻',['氧化剂/还原剂；体内由巯基交换/还原系统。','两个—SH脱2H成S—S；还原加2H断键。','形成/断裂1个S—S键（二硫键）。','体外用DTT/过甲酸；体内由谷氧还蛋白等调控。'],'二硫键：氧化脱2H成S—S，还原加2H断键。');num+=1
   # original textbook figures inline
   if si==2 and j==0: table20(num);num+=1
+  if si==1 and j==0: hydrolysis_detail(num);num+=1
   if si==1 and j==1: origfig(num,'2-1','图2-1 α-氨基酸的一般结构',54,['α-碳连接—NH₃⁺、—COO⁻、—H和R。','除Gly外，α-碳是手性碳。','20种氨基酸的R基不同。']);num+=1
   if si==3 and j==0: origfig(num,'2-5','图2-5 甘氨酸的滴定曲线',62,['羧基pK₁≈2.34，氨基pK₂≈9.60。','pI≈(pK₁+pK₂)/2≈5.97。','曲线平坦区是缓冲区。']);num+=1
   if si==5 and j==0: origfig(num,'2-9','图2-9 丙氨酸与甘油醛的构型关系',68,['L-丙氨酸的构型参照L-甘油醛。','D/L是构型，不是旋光方向。','蛋白质中常见L-氨基酸。']);num+=1
