@@ -991,7 +991,7 @@
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
     aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
-    if (window.BOOKTOC && window.BOOKTOC[cid]) {
+    if (window.BOOKTOC && window.BOOKTOC[cid] && !(ch.toc && ch.toc.length)) {
       var bt = window.BOOKTOC[cid];
       var nsub = 0;
       (bt.sections || []).forEach(function (sec) { nsub += (sec.subs || []).length; });
@@ -1092,11 +1092,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108de";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108df";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108de";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108df";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
