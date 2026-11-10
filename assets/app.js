@@ -1246,11 +1246,11 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261108dp";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261108dr";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dp";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261108dr";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
