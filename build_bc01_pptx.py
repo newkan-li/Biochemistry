@@ -1397,6 +1397,90 @@ text(s, 7.12, 2.12, 5.3, 4.1,
 footer(s,49,0)
 s.notes_slide.notes_text_frame.text = "例1强调配制与稀释：先求物质的量，再换算质量或体积。例2强调pH、Ka和缓冲液：先写平衡式/方程，再代入数据；缓冲液还可用总浓度守恒解方程组。"
 
+# ---------- appendix C: textbook after-class questions ----------
+def ac_divider(num):
+    s = prs.slides.add_slide(BLANK); set_bg(s, NAVY)
+    box(s, 0, 0, 0.14, 7.5, fill=GOLD, line=None, radius=False)
+    text(s, 0.95, 0.95, 10.0, 0.35, "APPENDIX C · TEXTBOOK QUESTIONS", size=11, color=GOLD, bold=True)
+    text(s, 0.95, 1.55, 11.2, 0.9, "附录C：原书课后题", size=40, color=WHITE, bold=True, font=SERIF)
+    text(s, 0.98, 2.75, 11.2, 0.4, "朱圣庚第4版第1章课后题 12 题：概念题 + 计算题", size=15, color=RGBColor(0xD5,0xE3,0xEE))
+    text(s, 0.98, 3.45, 11.2, 1.2, "这套题比“本页自测”更综合：\n要求把多个知识点串起来，或完成溶液/pH/缓冲液计算。", size=13, color=WHITE, line_spacing=1.2)
+    text(s, 0.98, 6.7, 10.0, 0.3, "建议：先独立作答，再对照答案；章末测试中也会再次出现。", size=9.5, color=RGBColor(0x9E,0xB6,0xC8))
+
+def ac_one(num, no, q, a, notes):
+    s = prs.slides.add_slide(BLANK); set_bg(s, LIGHT)
+    box(s, 0, 0, 13.333, 0.10, fill=GOLD, line=None, radius=False)
+    kicker(s, "原书课后题 · 第 %d 题" % no, 0)
+    text(s, 0.62, 0.72, 12.0, 0.55, "第 %d 题" % no, size=26, color=NAVY, bold=True, font=SERIF)
+    box(s, 0.62, 1.38, 12.05, 2.05, fill=WHITE, line=LINE)
+    text(s, 0.85, 1.52, 11.6, 0.28, "题目", size=10.5, color=BLUE, bold=True)
+    text(s, 0.85, 1.85, 11.55, 1.45, q, size=11.8, color=INK, line_spacing=1.12)
+    box(s, 0.62, 3.58, 12.05, 2.65, fill=RGBColor(0xF4,0xF8,0xFB), line=LINE)
+    text(s, 0.85, 3.72, 11.6, 0.28, "参考答案 / 答题要点", size=10.5, color=TEAL, bold=True)
+    text(s, 0.85, 4.04, 11.55, 2.05, a, size=10.4, color=INK, line_spacing=1.12)
+    footer(s, num, 0)
+    s.notes_slide.notes_text_frame.text = notes
+
+def ac_pair(num, no1, q1, a1, no2, q2, a2, notes):
+    s = prs.slides.add_slide(BLANK); set_bg(s, LIGHT)
+    box(s, 0, 0, 13.333, 0.10, fill=GOLD, line=None, radius=False)
+    kicker(s, "原书课后题 · 第 %d—%d 题" % (no1, no2), 0)
+    text(s, 0.62, 0.72, 12.0, 0.55, "第 %d—%d 题" % (no1, no2), size=24, color=NAVY, bold=True, font=SERIF)
+    for i, (no, q, a) in enumerate([(no1,q1,a1),(no2,q2,a2)]):
+        x = 0.62 + i*6.18
+        box(s, x, 1.40, 5.95, 5.15, fill=WHITE, line=LINE)
+        text(s, x+0.20, 1.54, 5.55, 0.28, "第 %d 题" % no, size=10.2, color=GOLD, bold=True)
+        text(s, x+0.20, 1.86, 5.55, 1.15, q, size=9.6, color=INK, bold=True, line_spacing=1.08)
+        text(s, x+0.20, 3.05, 5.55, 0.24, "参考答案", size=9.2, color=TEAL, bold=True)
+        text(s, x+0.20, 3.34, 5.55, 2.95, a, size=8.8, color=INK, line_spacing=1.08)
+    footer(s, num, 0)
+    s.notes_slide.notes_text_frame.text = notes
+
+ac_divider(0)
+ac_one(0, 1,
+"生物化学研究什么？它作为一门学科是怎样发展起来的？它与分子生物学有什么关系？",
+"(1) 生物化学研究生命属性的化学本质，包括生物分子结构与功能、物质代谢与调节、遗传信息传递与表达。\n(2) 三阶段：静态/叙述（1770—1900，组成与结构）→ 动态（1900—1950，代谢与酶）→ 分子（1950—，大分子与机制）。\n(3) 分子生物学是生物化学发展的新阶段，研究 DNA、RNA、蛋白质及其关系。",
+"先定义，再按三阶段，最后说关系。")
+ac_one(0, 2,
+"进化过程中生命元素是怎样被选择的？硅和碳同为 IVA 族、都能形成 4 个单键，为什么硅没有成为生命骨架？",
+"(1) 元素选择取决于环境可得性，也取决于元素/化合物对生命过程的适合性。\n(2) 碳能形成稳定 C—C 单键、双键、三键，可构成链、分支、环；CO₂ 溶于水，利于碳循环。\n(3) 硅原子较大，Si—Si 键较弱，Si 多聚物遇水不稳定，SiO₂ 难溶，不利于需氧环境中的循环。",
+"答“选择原因 + 碳优势 + 硅局限”三点。")
+ac_pair(0, 3,
+"原始生物分子有立体异构体时，为什么生物几乎只利用一种异构体（如 L-氨基酸、D-单糖）？",
+"酶对底物具有立体专一性；进化出的酶只与特定构型底物结合，因此代谢反应优先使用一种对映体。",
+4,
+"苯丙胺消旋体与右旋苯丙胺：为什么达到同样效应，消旋体剂量约为右旋体的 2 倍？",
+"药物含一个手性碳，有一对对映体；右旋体是主要活性形式，消旋体中只有一半是右旋体，另一半活性低，所以剂量约 2 倍。",
+"Q3 抓“酶立体专一性”；Q4 抓“消旋体=等量对映体”。")
+ac_pair(0, 5,
+"生物分子间和分子内的非共价相互作用有哪些？它们有什么区别？",
+"离子相互作用（电荷吸引，受盐/介电常数影响）；氢键（方向性、饱和性）；范德华力（瞬时偶极，距离短）；疏水作用（非极性基团避水，熵驱动）。",
+6,
+"解释为什么水分子之间形成氢键会造成高比热容。",
+"水有大量氢键网络；加热时部分能量用于断氢键，而非全部提高分子动能，所以升温需更多热量。",
+"Q5 按“本质—特点—例子”比较四类作用；Q6 抓“断氢键耗能”。")
+ac_pair(0, 7,
+"配制 0.4 mol/L NaOH 溶液 500 mL：(1) 需要多少克 NaOH？(2) 用质量浓度和摩尔渗透压浓度表示。",
+"n=0.4×0.500=0.20 mol；m=0.20×40=8.0 g。质量浓度=16 g/L；NaOH 完全解离，渗透压浓度=2×0.4=0.8 mol/L。",
+8,
+"配制 0.5 mol/L 盐酸 2000 mL，需要浓盐酸（37%，1.20 g/mL）多少 mL？",
+"c=1000×1.20×0.37÷36.5≈12.16 mol/L；n=0.5×2.00=1.00 mol；V=1.00÷12.16≈0.0822 L=82.2 mL。",
+"Q7 注意 500 mL=0.500 L、NaOH 粒子数 i=2；Q8 先换算浓盐酸浓度。")
+ac_pair(0, 9,
+"0.02 mol/L 弱酸溶液 pH=4.6：(1) 求[H⁺]；(2) 求 Ka 和 pKa。",
+"[H⁺]=10⁻⁴·⁶≈2.51×10⁻⁵ mol/L；Ka≈[H⁺]²/(c−[H⁺])≈3.15×10⁻⁸；pKa≈7.50。",
+10,
+"判断共轭酸碱对：H₂PO₄⁻/HPO₄²⁻、HCO₃⁻/CO₃²⁻、HCOOH/HCOO⁻中，哪个是共轭酸？",
+"每对中多一个 H⁺ 的为共轭酸：H₂PO₄⁻、HCO₃⁻、HCOOH。它们给出 H⁺ 后形成对应共轭碱。",
+"Q9 弱酸近似 Ka≈[H⁺]²/c；Q10 找“多一个质子”的物种。")
+ac_pair(0, 11,
+"溶液含 0.20 mol/L 醋酸钠和 0.60 mol/L 醋酸（pKa=4.76），求 pH。",
+"pH=pKa+lg([NaAc]/[HAc])=4.76+lg(0.20/0.60)=4.76−0.477≈4.28。",
+12,
+"配制 0.2 mol/L、pH=5.0 醋酸盐缓冲液，求醋酸和醋酸钠浓度（pKa=4.76）。",
+"x+y=0.2；x/y=10^(5.0−4.76)=1.74；解得 x≈0.127 mol/L（盐），y≈0.073 mol/L（酸）。",
+"Q11 盐/酸不要代反；Q12 先求比值，再用总浓度解方程。")
+
 # ---------- renumber footers ----------
 for i, sl in enumerate(prs.slides, 1):
     for sh in sl.shapes:
