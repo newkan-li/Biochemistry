@@ -16,7 +16,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 .ppt-btn{border:1px solid #33506f;background:#1b3049;color:#d7e6f7;border-radius:8px;padding:5px 9px;font:inherit;font-size:12px;cursor:pointer}
 .ppt-btn:hover{background:#25415f}
 .ppt-stage{height:calc(100% - 52px);display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:0}
-.ppt-stage.noimg{grid-template-columns:1fr}
+.ppt-stage.noimg{grid-template-columns:1fr;grid-template-rows:1fr}
 .ppt-fig{min-height:0;background:#0b1522;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
 .ppt-fig img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,.45);cursor:zoom-in}
 .ppt-fig.none{display:none}
@@ -36,7 +36,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 .ppt-zoom{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:99;padding:20px;cursor:zoom-out}
 .ppt-zoom.on{display:flex}
 .ppt-zoom img{max-width:100%;max-height:100%;object-fit:contain}
-@media (max-width:850px){.ppt-stage{grid-template-columns:1fr;grid-template-rows:46vh 1fr}.ppt-side{padding:18px}.ppt-side h1{font-size:20px}.ppt-side .notes{font-size:14px}.ppt-top .meta{display:none}}
+@media (max-width:850px){.ppt-stage{grid-template-columns:1fr;grid-template-rows:46vh 1fr}.ppt-stage.noimg{grid-template-rows:1fr}.ppt-side{padding:18px}.ppt-side h1{font-size:20px}.ppt-side .notes{font-size:14px}.ppt-top .meta{display:none}}
 </style>
 </head>
 <body class="ppt">
@@ -67,7 +67,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 <script>
 (function(){
   var ch=(new URLSearchParams(location.search).get('ch')||'u01_protein').replace(/[^a-z0-9_-]/gi,'');
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112c';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112d';
   s.onload=function(){init()};s.onerror=function(){document.getElementById('ttl').textContent='数据加载失败'};document.head.appendChild(s);
   function init(){
     var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c){document.getElementById('ttl').textContent='未找到单元';return;}
