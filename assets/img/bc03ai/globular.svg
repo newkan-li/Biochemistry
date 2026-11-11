@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f7fbff"/>
+  <text x="450" y="42" text-anchor="middle" font-size="28" font-family="sans-serif" fill="#12324d">球状蛋白三级结构（AI示意图）</text>
+  <g font-family="sans-serif">
+    <circle cx="330" cy="280" r="150" fill="#e8f1fb" stroke="#2c6da8" stroke-width="3"/>
+    <circle cx="330" cy="280" r="80" fill="#f4d6a6" stroke="#b57a2a" stroke-width="2"/>
+    <text x="330" y="275" text-anchor="middle" font-size="18" fill="#6b4314">疏水核心</text>
+    <text x="330" y="300" text-anchor="middle" font-size="14" fill="#6b4314">Phe/Leu/Val/Ile</text>
+    <g fill="#2c6da8">
+      <circle cx="230" cy="220" r="8"/><circle cx="260" cy="180" r="8"/><circle cx="320" cy="155" r="8"/><circle cx="390" cy="180" r="8"/>
+      <circle cx="430" cy="235" r="8"/><circle cx="445" cy="300" r="8"/><circle cx="415" cy="360" r="8"/><circle cx="350" cy="405" r="8"/>
+      <circle cx="270" cy="400" r="8"/><circle cx="215" cy="350" r="8"/><circle cx="200" cy="280" r="8"/>
+    </g>
+    <text x="330" y="455" text-anchor="middle" font-size="16" fill="#1f3b57">亲水/带电残基朝外</text>
+    <path d="M415 250 q35 30 10 70 q-20 30 -55 20" fill="none" stroke="#c0392b" stroke-width="5"/>
+    <text x="500" y="270" font-size="17" fill="#8e2b20">活性位点/裂隙</text>
+    <text x="500" y="295" font-size="14" fill="#8e2b20">结合底物/配体</text>
+    <text x="500" y="340" font-size="15" fill="#1f3b57">三级结构 = 一条链的三维折叠</text>
+    <text x="500" y="368" font-size="15" fill="#1f3b57">稳定力：疏水作用、氢键、离子键、范德华力、二硫键</text>
+    <text x="500" y="396" font-size="15" fill="#1f3b57">球状蛋白常含多个结构域</text>
+  </g>
+</svg>

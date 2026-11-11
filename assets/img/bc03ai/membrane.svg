@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fcff"/>
+  <text x="450" y="40" text-anchor="middle" font-size="28" font-family="sans-serif" fill="#12324d">膜蛋白结构（AI示意图）</text>
+  <g font-family="sans-serif">
+    <rect x="60" y="180" width="780" height="150" fill="#fff3d6" stroke="#d8b25a" stroke-width="2"/>
+    <g fill="#e2a93b">
+      <circle cx="90" cy="195" r="9"/><circle cx="120" cy="195" r="9"/><circle cx="150" cy="195" r="9"/><circle cx="180" cy="195" r="9"/><circle cx="210" cy="195" r="9"/><circle cx="240" cy="195" r="9"/><circle cx="270" cy="195" r="9"/><circle cx="300" cy="195" r="9"/><circle cx="330" cy="195" r="9"/><circle cx="360" cy="195" r="9"/><circle cx="390" cy="195" r="9"/><circle cx="420" cy="195" r="9"/><circle cx="450" cy="195" r="9"/><circle cx="480" cy="195" r="9"/><circle cx="510" cy="195" r="9"/><circle cx="540" cy="195" r="9"/><circle cx="570" cy="195" r="9"/><circle cx="600" cy="195" r="9"/><circle cx="630" cy="195" r="9"/><circle cx="660" cy="195" r="9"/><circle cx="690" cy="195" r="9"/><circle cx="720" cy="195" r="9"/><circle cx="750" cy="195" r="9"/><circle cx="780" cy="195" r="9"/>
+      <circle cx="90" cy="315" r="9"/><circle cx="120" cy="315" r="9"/><circle cx="150" cy="315" r="9"/><circle cx="180" cy="315" r="9"/><circle cx="210" cy="315" r="9"/><circle cx="240" cy="315" r="9"/><circle cx="270" cy="315" r="9"/><circle cx="300" cy="315" r="9"/><circle cx="330" cy="315" r="9"/><circle cx="360" cy="315" r="9"/><circle cx="390" cy="315" r="9"/><circle cx="420" cy="315" r="9"/><circle cx="450" cy="315" r="9"/><circle cx="480" cy="315" r="9"/><circle cx="510" cy="315" r="9"/><circle cx="540" cy="315" r="9"/><circle cx="570" cy="315" r="9"/><circle cx="600" cy="315" r="9"/><circle cx="630" cy="315" r="9"/><circle cx="660" cy="315" r="9"/><circle cx="690" cy="315" r="9"/><circle cx="720" cy="315" r="9"/><circle cx="750" cy="315" r="9"/><circle cx="780" cy="315" r="9"/>
+    </g>
+    <text x="450" y="165" text-anchor="middle" font-size="15" fill="#7a5a12">膜脂双分子层</text>
+    <g fill="#2c6da8" stroke="#12324d" stroke-width="2">
+      <rect x="260" y="130" width="18" height="210" rx="9"/><rect x="290" y="130" width="18" height="210" rx="9"/><rect x="320" y="130" width="18" height="210" rx="9"/><rect x="350" y="130" width="18" height="210" rx="9"/><rect x="380" y="130" width="18" height="210" rx="9"/><rect x="410" y="130" width="18" height="210" rx="9"/>
+    </g>
+    <text x="340" y="105" text-anchor="middle" font-size="16" fill="#1f3b57">7次跨膜α螺旋</text>
+    <path d="M600 150 q20 -20 40 0 v180 q-20 20 -40 0 z" fill="#dceaf8" stroke="#2c6da8" stroke-width="3"/>
+    <path d="M620 175 h0" stroke="#2c6da8"/>
+    <text x="700" y="105" text-anchor="middle" font-size="16" fill="#1f3b57">β桶（孔蛋白）</text>
+    <text x="700" y="245" text-anchor="middle" font-size="14" fill="#1f3b57">β折叠卷成筒</text>
+    <text x="450" y="420" text-anchor="middle" font-size="16" fill="#1f3b57">膜内在蛋白：跨膜α螺旋或β桶；膜外周蛋白：靠离子键/氢键附着表面</text>
+  </g>
+</svg>

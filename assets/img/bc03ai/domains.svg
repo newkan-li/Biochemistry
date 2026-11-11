@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#fffdf7"/>
+  <text x="450" y="42" text-anchor="middle" font-size="28" font-family="sans-serif" fill="#12324d">超二级结构与结构域（AI示意图）</text>
+  <g font-family="sans-serif" font-size="18" fill="#1f3b57">
+    <rect x="60" y="90" width="220" height="120" rx="12" fill="#e8f1fb" stroke="#4a90d9" stroke-width="2"/>
+    <text x="170" y="120" text-anchor="middle" font-size="20" font-weight="bold">βαβ motif</text>
+    <path d="M90 160 h50 l20 -25 h50 l20 25 h40" fill="none" stroke="#2c6da8" stroke-width="6"/>
+    <text x="170" y="195" text-anchor="middle" font-size="14">β-α-β 组合</text>
+    <rect x="340" y="90" width="220" height="120" rx="12" fill="#eef8ee" stroke="#5aa35a" stroke-width="2"/>
+    <text x="450" y="120" text-anchor="middle" font-size="20" font-weight="bold">ββ motif</text>
+    <path d="M370 165 l35 -35 l35 35 l35 -35 l35 35 l35 -35" fill="none" stroke="#3b7d3b" stroke-width="6"/>
+    <text x="450" y="195" text-anchor="middle" font-size="14">发夹/β-转角</text>
+    <rect x="620" y="90" width="220" height="120" rx="12" fill="#fdf0e8" stroke="#c77b3a" stroke-width="2"/>
+    <text x="730" y="120" text-anchor="middle" font-size="20" font-weight="bold">αα motif</text>
+    <path d="M650 170 q20 -50 40 0 q20 50 40 0 q20 -50 40 0" fill="none" stroke="#b55a1f" stroke-width="6"/>
+    <text x="730" y="195" text-anchor="middle" font-size="14">卷曲螺旋/螺旋束</text>
+    <rect x="180" y="280" width="540" height="170" rx="18" fill="#f3f7fb" stroke="#12324d" stroke-width="2" stroke-dasharray="10 6"/>
+    <text x="450" y="315" text-anchor="middle" font-size="20" font-weight="bold">结构域（domain）</text>
+    <rect x="230" y="340" width="150" height="70" rx="10" fill="#dceaf8" stroke="#4a90d9" stroke-width="2"/>
+    <text x="305" y="382" text-anchor="middle" font-size="15">独立折叠区 A</text>
+    <rect x="520" y="340" width="150" height="70" rx="10" fill="#dceaf8" stroke="#4a90d9" stroke-width="2"/>
+    <text x="595" y="382" text-anchor="middle" font-size="15">独立折叠区 B</text>
+    <path d="M380 375 h140" stroke="#12324d" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="450" y="425" text-anchor="middle" font-size="14">结构域之间常由短链连接，可重组/演化</text>
+  </g>
+</svg>
