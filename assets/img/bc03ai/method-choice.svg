@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fcff"/>
+  <text x="450" y="40" text-anchor="middle" font-size="27" font-family="sans-serif" fill="#12324d">结构测定方法怎么选（AI示意图）</text>
+  <g font-family="sans-serif" font-size="16" fill="#1f3b57">
+    <rect x="30" y="80" width="220" height="70" rx="12" fill="#e8f1fb" stroke="#4a90d9" stroke-width="2"/>
+    <text x="140" y="108" text-anchor="middle" font-weight="bold">样品是晶体？</text>
+    <text x="140" y="132" text-anchor="middle" font-size="13">能长高质量晶体</text>
+    <path d="M250 115 h70" stroke="#888" stroke-width="3" marker-end="url(#ar)"/>
+    <rect x="330" y="80" width="230" height="70" rx="12" fill="#e8f1fb" stroke="#4a90d9" stroke-width="2"/>
+    <text x="445" y="108" text-anchor="middle" font-weight="bold">X射线衍射</text>
+    <text x="445" y="132" text-anchor="middle" font-size="13">高分辨率；需晶体/相位</text>
+    <path d="M140 150 v55" stroke="#888" stroke-width="3" marker-end="url(#ar)"/>
+    <rect x="30" y="210" width="220" height="70" rx="12" fill="#eef8ee" stroke="#5aa35a" stroke-width="2"/>
+    <text x="140" y="238" text-anchor="middle" font-weight="bold">溶液中小蛋白？</text>
+    <text x="140" y="262" text-anchor="middle" font-size="13">可同位素标记</text>
+    <path d="M250 245 h70" stroke="#888" stroke-width="3" marker-end="url(#ar)"/>
+    <rect x="330" y="210" width="230" height="70" rx="12" fill="#eef8ee" stroke="#5aa35a" stroke-width="2"/>
+    <text x="445" y="238" text-anchor="middle" font-weight="bold">NMR</text>
+    <text x="445" y="262" text-anchor="middle" font-size="13">溶液/动态；NOE约束</text>
+    <path d="M140 280 v55" stroke="#888" stroke-width="3" marker-end="url(#ar)"/>
+    <rect x="30" y="340" width="220" height="70" rx="12" fill="#fdf0e8" stroke="#c77b3a" stroke-width="2"/>
+    <text x="140" y="368" text-anchor="middle" font-weight="bold">只想看二级结构？</text>
+    <text x="140" y="392" text-anchor="middle" font-size="13">快速/低样品量</text>
+    <path d="M250 375 h70" stroke="#888" stroke-width="3" marker-end="url(#ar)"/>
+    <rect x="330" y="340" width="230" height="70" rx="12" fill="#fdf0e8" stroke="#c77b3a" stroke-width="2"/>
+    <text x="445" y="368" text-anchor="middle" font-weight="bold">CD</text>
+    <text x="445" y="392" text-anchor="middle" font-size="13">α/β含量、Tm</text>
+    <rect x="620" y="115" width="250" height="280" rx="14" fill="#f5f0fb" stroke="#8e6bb5" stroke-width="2"/>
+    <text x="745" y="150" text-anchor="middle" font-weight="bold">大复合物/膜蛋白？</text>
+    <text x="745" y="185" text-anchor="middle">难结晶、样品量大</text>
+    <text x="745" y="235" text-anchor="middle" font-size="22" font-weight="bold">冷冻电镜</text>
+    <text x="745" y="270" text-anchor="middle">近原子分辨率</text>
+    <text x="745" y="300" text-anchor="middle">可处理膜蛋白/大复合物</text>
+    <text x="450" y="465" text-anchor="middle" font-size="15">选择顺序：样品状态 → 分辨率需求 → 样品量/动态信息 → 方法组合验证</text>
+  </g>
+  <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#888"/></marker></defs>
+</svg>
