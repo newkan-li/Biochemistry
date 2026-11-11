@@ -1273,6 +1273,9 @@
       d3p.href = "downloads/bc03-ai-style.pdf?v=20261112k";
       d3p.target = "_blank";
       aside.appendChild(d3p);
+      var d3e = el("a", "sub", "📝 课后习题（网页题）");
+      d3e.href = "exercises.html?ch=bc03";
+      aside.appendChild(d3e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);

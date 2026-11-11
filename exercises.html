@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>课后习题 · 生物化学</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#1c2c3e;--muted:#62748a;--line:#dbe5f0;--blue:#1f5c8b;--blue2:#2f7ab3;--soft:#eaf3fb;--green:#237a4b;--amber:#9a6514}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1b28;--card:#162536;--ink:#e6eef7;--muted:#9db2c7;--line:#294057;--soft:#1a3047;--green:#6fca9b;--amber:#e2b15f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans CJK SC","Microsoft YaHei",sans-serif;line-height:1.65}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 14px 60px}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:8px 12px;font:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--blue2)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 16px}
+.bar .grow{flex:1}
+.pill{font-size:12px;padding:5px 9px;border-radius:999px;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:17px 18px;margin:14px 0;box-shadow:0 4px 18px rgba(30,60,90,.05)}
+.card.done{border-color:#7fc49e;background:linear-gradient(180deg,var(--card),rgba(90,190,140,.08))}
+.head{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.no{width:36px;height:36px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 auto}
+.card h2{font-size:17px;margin:2px 0 0}
+.meta{font-size:12px;color:var(--muted);margin-top:2px}
+.block{margin-top:12px;padding:12px 13px;border-radius:10px;background:var(--soft);border-left:3px solid var(--blue2)}
+.block b{display:block;font-size:12px;color:var(--blue2);margin-bottom:4px}
+.block.answer{border-left-color:var(--green)}.block.answer b{color:var(--green)}
+.block.analysis{border-left-color:#c58a32}.block.analysis b{color:var(--amber)}
+.hide{display:none}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.actions .btn{font-size:13px;padding:7px 10px}
+.donebtn.on{background:#e7f7ee;border-color:#7fc49e;color:var(--green)}
+.foot{color:var(--muted);font-size:12px;margin-top:24px;text-align:center}
+@media(max-width:620px){.wrap{padding:12px 10px 48px}.card{padding:14px 13px}h1{font-size:19px}.no{width:32px;height:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>📝 课后习题 · 网页题</h1>
+      <div class="sub" id="sub">按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT</div>
+    </div>
+    <a class="btn" href="bc03.html">← 返回第3章</a>
+  </div>
+  <div class="bar">
+    <button class="btn primary" data-filter="all">全部</button>
+    <button class="btn" data-filter="计算">计算</button>
+    <button class="btn" data-filter="简答">简答</button>
+    <button class="btn" data-filter="综合">综合</button>
+    <span class="grow"></span>
+    <span class="pill" id="progress">已掌握 0 / 0</span>
+    <button class="btn" id="reset">重置掌握标记</button>
+  </div>
+  <div id="list"></div>
+  <div class="foot">个人学习页面 · 进度保存在本机浏览器</div>
+</div>
+<script>
+(function(){
+  var ch=(new URLSearchParams(location.search).get('ch')||'bc03').replace(/[^a-z0-9_-]/gi,'');
+  var storeKey='ex_done_'+ch, done={};
+  try{done=JSON.parse(localStorage.getItem(storeKey)||'{}')||{};}catch(e){done={};}
+  var cards=[];
+  function esc(s){return String(s==null?'':s);}
+  function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+  function save(){localStorage.setItem(storeKey,JSON.stringify(done));updateProgress();}
+  function updateProgress(){var n=0;cards.forEach(function(c){if(done[c.id])n++;});var all=cards.length;document.getElementById('progress').textContent='已掌握 '+n+' / '+all;}
+  function render(exs){
+    var list=document.getElementById('list');list.innerHTML='';cards=[];
+    exs.forEach(function(q){
+      var card=el('article','card'+(done[q.id]?' done':''));card.dataset.type=q.type;
+      var head=el('div','head');
+      var no=el('div','no',q.no);var tt=el('div');
+      tt.appendChild(el('h2','',q.q?q.q.split(/[。？?]/)[0].slice(0,38)+(q.q.length>38?'…':''):'第'+q.no+'题'));
+      tt.appendChild(el('div','meta','第 '+q.no+' 题 · '+q.type+' · 对应 PPT：'+q.slideTitle));
+      head.appendChild(no);head.appendChild(tt);card.appendChild(head);
+      function block(cls,title,text){var b=el('div','block '+cls);b.appendChild(el('b','',title));b.appendChild(el('div','',text));card.appendChild(b);return b;}
+      block('q','原题',q.q);block('kp','考察知识点',q.kp);
+      var ana=block('analysis hide','解析',q.analysis);var ans=block('answer hide','答案',q.answer);
+      var act=el('div','actions');
+      var bA=el('button','btn','显示解析');var bN=el('button','btn','显示答案');
+      bA.onclick=function(){ana.classList.toggle('hide');bA.textContent=ana.classList.contains('hide')?'显示解析':'收起解析';};
+      bN.onclick=function(){ans.classList.toggle('hide');bN.textContent=ans.classList.contains('hide')?'显示答案':'收起答案';};
+      var bD=el('button','btn donebtn'+(done[q.id]?' on':''),done[q.id]?'✓ 已掌握':'标记掌握');
+      bD.onclick=function(){done[q.id]=!done[q.id];save();card.classList.toggle('done',!!done[q.id]);bD.classList.toggle('on',!!done[q.id]);bD.textContent=done[q.id]?'✓ 已掌握':'标记掌握';};
+      var link=el('a','btn primary','对应 PPT →');link.href='ppt.html?ch='+ch+'&slide='+(q.slide+1)+'&back='+ch;link.target='_blank';link.rel='noopener';
+      act.appendChild(bA);act.appendChild(bN);act.appendChild(bD);act.appendChild(link);card.appendChild(act);
+      list.appendChild(card);cards.push({id:q.id,el:card});card.dataset.done=done[q.id]?'1':'0';
+    });
+    updateProgress();
+  }
+  var data=null;
+  function applyFilter(f){
+    cards.forEach(function(c){var show=f==='all'||c.el.dataset.type===f;c.el.classList.toggle('hide',!show);});
+    document.querySelectorAll('[data-filter]').forEach(function(b){b.classList.toggle('primary',b.dataset.filter===f);});
+  }
+  document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){applyFilter(b.dataset.filter);};});
+  document.getElementById('reset').onclick=function(){if(confirm('清除本机掌握标记？')){done={};save();render(data);applyFilter('all');}};
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112l';
+  s.onload=function(){var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c||!c.exercises){document.getElementById('list').textContent='未找到习题数据。';return;}data=c.exercises;document.getElementById('sub').textContent='共 '+data.length+' 题 · 按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT';render(data);};
+  s.onerror=function(){document.getElementById('list').textContent='数据加载失败，请确认 data/'+ch+'.js 存在。';};
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
