@@ -16,6 +16,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 .ppt-btn{border:1px solid #33506f;background:#1b3049;color:#d7e6f7;border-radius:8px;padding:5px 9px;font:inherit;font-size:12px;cursor:pointer}
 .ppt-btn:hover{background:#25415f}
 .ppt-stage{height:calc(100% - 52px);display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:0}
+.ppt-stage.noimg{grid-template-columns:1fr}
 .ppt-fig{min-height:0;background:#0b1522;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
 .ppt-fig img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,.45);cursor:zoom-in}
 .ppt-fig.none{display:none}
@@ -44,7 +45,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
   <button class="ppt-btn" id="testBtn">📝 对应章节测试</button>
   <button class="ppt-btn" id="fsBtn">全屏</button>
 </div>
-<div class="ppt-stage">
+<div class="ppt-stage" id="pptStage">
   <div class="ppt-fig" id="figBox"><img id="figImg" alt="教材页"></div>
   <div class="ppt-side">
     <div class="mod" id="mod"></div>
@@ -63,7 +64,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 <script>
 (function(){
   var ch=(new URLSearchParams(location.search).get('ch')||'u01_protein').replace(/[^a-z0-9_-]/gi,'');
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261108el';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261111b';
   s.onload=function(){init()};s.onerror=function(){document.getElementById('ttl').textContent='数据加载失败'};document.head.appendChild(s);
   function init(){
     var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c){document.getElementById('ttl').textContent='未找到单元';return;}
@@ -74,6 +75,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
     function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,function(z){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[z]})}
     function render(){
       var x=slides[i], z=x.s;
+      document.getElementById('pptStage').classList.toggle('noimg',!z.img);
       document.getElementById('count').textContent=(i+1)+' / '+n;
       document.getElementById('mod').textContent=x.mod||'';
       document.getElementById('title').textContent=z.title||'';
