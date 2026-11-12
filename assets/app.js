@@ -1259,54 +1259,54 @@
     }
     if (cid === "bc02") {
       var d2 = el("a", "sub", "📥 第2章AI讲义（PPT）");
-      d2.href = "downloads/bc02-ai-style.pptx?v=20261112ba";
+      d2.href = "downloads/bc02-ai-style.pptx?v=20261112bb";
       d2.download = "BC02_氨基酸肽和蛋白质_AI讲义.pptx";
       aside.appendChild(d2);
       var d2p = el("a", "sub", "📄 第2章AI讲义PDF预览");
-      d2p.href = "downloads/bc02-ai-style.pdf?v=20261112ba";
+      d2p.href = "downloads/bc02-ai-style.pdf?v=20261112bb";
       d2p.target = "_blank";
       aside.appendChild(d2p);
       var d2e = el("a", "sub", "📝 第2章网页题");
-      d2e.href = "exercises.html?ch=bc02&v=20261112ba";
+      d2e.href = "exercises.html?ch=bc02&v=20261112bb";
       aside.appendChild(d2e);
     }
     if (cid === "bc03") {
       var d3 = el("a", "sub", "📥 第3章AI讲义（PPT）");
-      d3.href = "downloads/bc03-ai-style.pptx?v=20261112ba";
+      d3.href = "downloads/bc03-ai-style.pptx?v=20261112bb";
       d3.download = "BC03_蛋白质的三维结构_AI讲义.pptx";
       aside.appendChild(d3);
       var d3p = el("a", "sub", "📄 第3章AI讲义PDF预览");
-      d3p.href = "downloads/bc03-ai-style.pdf?v=20261112ba";
+      d3p.href = "downloads/bc03-ai-style.pdf?v=20261112bb";
       d3p.target = "_blank";
       aside.appendChild(d3p);
       var d3e = el("a", "sub", "📝 课后习题（网页题）");
-      d3e.href = "exercises.html?ch=bc03&v=20261112ba";
+      d3e.href = "exercises.html?ch=bc03&v=20261112bb";
       aside.appendChild(d3e);
     }
     if (cid === "bc04") {
       var d4 = el("a", "sub", "📥 第4章AI讲义（PPT）");
-      d4.href = "downloads/bc04-ai-style.pptx?v=20261112ba";
+      d4.href = "downloads/bc04-ai-style.pptx?v=20261112bb";
       d4.download = "BC04_蛋白质的生物学功能_AI讲义.pptx";
       aside.appendChild(d4);
       var d4p = el("a", "sub", "📄 第4章AI讲义PDF预览");
-      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112ba";
+      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112bb";
       d4p.target = "_blank";
       aside.appendChild(d4p);
       var d4e = el("a", "sub", "📝 蛋白质功能网页题");
-      d4e.href = "exercises.html?ch=bc04&v=20261112ba";
+      d4e.href = "exercises.html?ch=bc04&v=20261112bb";
       aside.appendChild(d4e);
     }
     if (cid === "bc05") {
       var d5 = el("a", "sub", "📥 第5章AI讲义（PPT）");
-      d5.href = "downloads/bc05-ai-style.pptx?v=20261112ba";
+      d5.href = "downloads/bc05-ai-style.pptx?v=20261112bb";
       d5.download = "BC05_蛋白质的性质分离纯化和鉴定_AI讲义.pptx";
       aside.appendChild(d5);
       var d5p = el("a", "sub", "📄 第5章AI讲义PDF预览");
-      d5p.href = "downloads/bc05-ai-style.pdf?v=20261112ba";
+      d5p.href = "downloads/bc05-ai-style.pdf?v=20261112bb";
       d5p.target = "_blank";
       aside.appendChild(d5p);
       var d5e = el("a", "sub", "📝 第5章网页题");
-      d5e.href = "exercises.html?ch=bc05&v=20261112ba";
+      d5e.href = "exercises.html?ch=bc05&v=20261112bb";
       aside.appendChild(d5e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
