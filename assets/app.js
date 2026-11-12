@@ -1298,15 +1298,15 @@
     }
     if (cid === "bc05") {
       var d5 = el("a", "sub", "📥 第5章AI讲义（PPT）");
-      d5.href = "downloads/bc05-ai-style.pptx?v=20261112au";
+      d5.href = "downloads/bc05-ai-style.pptx?v=20261112ax";
       d5.download = "BC05_蛋白质的性质分离纯化和鉴定_AI讲义.pptx";
       aside.appendChild(d5);
       var d5p = el("a", "sub", "📄 第5章AI讲义PDF预览");
-      d5p.href = "downloads/bc05-ai-style.pdf?v=20261112au";
+      d5p.href = "downloads/bc05-ai-style.pdf?v=20261112ax";
       d5p.target = "_blank";
       aside.appendChild(d5p);
       var d5e = el("a", "sub", "📝 第5章网页题");
-      d5e.href = "exercises.html?ch=bc05&v=20261112au";
+      d5e.href = "exercises.html?ch=bc05&v=20261112ax";
       aside.appendChild(d5e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
