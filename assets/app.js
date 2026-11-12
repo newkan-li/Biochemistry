@@ -1326,6 +1326,19 @@
       d5e.href = "exercises.html?ch=bc05&v=20261112bd";
       aside.appendChild(d5e);
     }
+    if (cid === "bc06") {
+      var d6 = el("a", "sub", "📥 第6章AI讲义（PPT）");
+      d6.href = "downloads/bc06-ai-style.pptx?v=20261112bj";
+      d6.download = "BC06_酶的催化作用_AI讲义.pptx";
+      aside.appendChild(d6);
+      var d6p = el("a", "sub", "📄 第6章AI讲义PDF预览");
+      d6p.href = "downloads/bc06-ai-style.pdf?v=20261112bj";
+      d6p.target = "_blank";
+      aside.appendChild(d6p);
+      var d6e = el("a", "sub", "📝 第6章网页题");
+      d6e.href = "exercises.html?ch=bc06&v=20261112bj";
+      aside.appendChild(d6e);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");
@@ -1876,7 +1889,7 @@
     var ctl = document.getElementById("diagctl"), host = document.getElementById("diaghost"), res = document.getElementById("diagresult");
     if (!ctl || !host) return;
     var names = chNames();
-    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05"];
+    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05", "bc06"];
     var want = "";
     try { want = new URLSearchParams(location.search).get("ch") || ""; } catch (e) { }
     if (ids.indexOf(want) < 0) want = "bc02";
