@@ -1276,15 +1276,15 @@
     }
     if (cid === "bc02") {
       var d2 = el("a", "sub", "📥 第2章AI讲义（PPT）");
-      d2.href = "downloads/bc02-ai-style.pptx?v=20261112bd";
+      d2.href = "downloads/bc02-ai-style.pptx?v=20261112be";
       d2.download = "BC02_氨基酸肽和蛋白质_AI讲义.pptx";
       aside.appendChild(d2);
       var d2p = el("a", "sub", "📄 第2章AI讲义PDF预览");
-      d2p.href = "downloads/bc02-ai-style.pdf?v=20261112bd";
+      d2p.href = "downloads/bc02-ai-style.pdf?v=20261112be";
       d2p.target = "_blank";
       aside.appendChild(d2p);
       var d2e = el("a", "sub", "📝 第2章网页题");
-      d2e.href = "exercises.html?ch=bc02&v=20261112bd";
+      d2e.href = "exercises.html?ch=bc02&v=20261112be";
       aside.appendChild(d2e);
     }
     if (cid === "bc03") {
