@@ -454,7 +454,7 @@
     } else {
       clearWrong(cid, q.id);
     }
-    kpRecord(q.kp, ok);
+    kpRecord(q.kpId || q.kp, ok);
     if (!ok) srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
   }
 
@@ -494,7 +494,7 @@
     box._cause.style.display = ok ? "none" : "flex";
     if (!ok) addWrong(cid, { id: q.id, type: "judge", q: q.q, correct: correct, chosen: chosen, cause: "", ts: Date.now() });
     else clearWrong(cid, q.id);
-    kpRecord(q.kp, ok);
+    kpRecord(q.kpId || q.kp, ok);
     if (!ok) srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
   }
 
@@ -526,7 +526,7 @@
         (q.e ? '<div style="margin-top:4px">解析：' + esc(q.e) + "</div>" : "");
       cb.style.display = ok ? "none" : "flex";
       if (ok) { clearWrong(cid, q.id); } else { addWrong(cid, { id: q.id, type: "fill", q: q.q, correct: q.a, chosen: inp.value, cause: "", ts: Date.now() }); }
-      kpRecord(q.kp, ok);
+      kpRecord(q.kpId || q.kp, ok);
       if (!ok) srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
     };
     bChk.onclick = box._check;
@@ -583,7 +583,7 @@
       if (state === "no") {
         addWrong(cid, { id: q.id, type: kind, q: (kind === "term" ? q.term : q.q), correct: (kind === "term" ? q.def : (kind === "calc" ? (q.a || q.steps) : q.a)), chosen: "(自评不会)", cause: "", ts: Date.now() });
       } else { clearWrong(cid, q.id); }
-      kpRecord(q.kp, state === "ok");
+      kpRecord(q.kpId || q.kp, state === "ok");
       if (state === "no") srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
     }
     bOk.onclick = function () { mark("ok"); };
@@ -1144,7 +1144,7 @@
     HW.init(cid);
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
-    aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
+    aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="diag.html?ch=' + esc(cid) + '">🩺 本章诊断测</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
     var findBox = document.createElement("div");
     findBox.style.cssText = "margin:8px 0;padding:8px;border:1px solid #d7e0ea;border-radius:8px;background:#f7fafc";
     findBox.innerHTML = '<input id="chfind" type="search" placeholder="搜索本页标题/关键词，如：诊断页、pI、Hill" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #c9d6e3;border-radius:6px"><div id="chfindres" style="font-size:12px;margin-top:6px;max-height:180px;overflow:auto"></div>';
@@ -1839,6 +1839,105 @@
   }
 
   /* ================= mock exam ================= */
+
+  /* ================= diagnostic ================= */
+  function diagPool(cid) {
+    var ch = window.CHAPTERS[cid]; if (!ch) return [];
+    var out = [];
+    ["mcq", "judge", "fill"].forEach(function (kind) {
+      (ch[kind] || []).forEach(function (q) { if (q.kpId) out.push({ cid: cid, kind: kind, q: q }); });
+    });
+    return out;
+  }
+  function diagPick(cid) {
+    var pool = diagPool(cid), by = {}, picked = [];
+    pool.forEach(function (it) { (by[it.q.kpId] = by[it.q.kpId] || []).push(it); });
+    var keys = Object.keys(by);
+    for (var round = 0; round < 6 && picked.length < 15; round++) {
+      keys.forEach(function (k) {
+        if (picked.length < 15 && by[k][round]) picked.push(by[k][round]);
+      });
+    }
+    return picked;
+  }
+  function diagCorrect(it) {
+    var q = it.q, r;
+    if (it.kind === "mcq") { r = mcqStore(it.cid)[q.id]; return !!(r && r.last === String(q.a)); }
+    if (it.kind === "judge") { r = judgeStore(it.cid)[q.id]; return !!(r && r.last === String(q.a)); }
+    r = fillStore(it.cid)[q.id]; return !!(r && fuzzyMatch(q.a, r.last));
+  }
+  function diagSlide(cid, kpId) {
+    var ch = window.CHAPTERS[cid]; if (!ch) return null;
+    var m = /_s0_(\d+)$/.exec(kpId || "" );
+    if (!m) return null;
+    return ch.modules[0].slides[parseInt(m[1], 10)] || null;
+  }
+  function renderDiag() {
+    var ctl = document.getElementById("diagctl"), host = document.getElementById("diaghost"), res = document.getElementById("diagresult");
+    if (!ctl || !host) return;
+    var names = chNames();
+    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05"];
+    var want = "";
+    try { want = new URLSearchParams(location.search).get("ch") || ""; } catch (e) { }
+    if (ids.indexOf(want) < 0) want = "bc02";
+    ctl.innerHTML = '<div class="ex-row"><b>章节：</b><select id="dch">' + ids.map(function (id) {
+      return '<option value="' + id + '"' + (id === want ? " selected" : "") + '>' + esc(names[id] || id) + '</option>';
+    }).join("") + '</select><button id="dstart" class="navbtn" style="width:auto;margin:0 0 0 8px">开始诊断</button></div>' +
+      '<p class="hint">15 道客观题，覆盖本章主要知识点；未作答按薄弱处理。诊断后给出薄弱点和对应页面。</p>';
+    var current = [];
+    function start() {
+      var cid = document.getElementById("dch").value;
+      current = diagPick(cid);
+      host.innerHTML = ""; res.innerHTML = "";
+      if (!current.length) { host.innerHTML = "<p>该章还没有足够的客观题。</p>"; return; }
+      var intro = el("div", "statsbox");
+      intro.innerHTML = "<b>诊断中：</b>" + current.length + " 题。先独立作答，最后点“提交诊断”。";
+      host.appendChild(intro);
+      current.forEach(function (it, i) {
+        var wrap = el("div", "ex-item");
+        wrap.appendChild(el("div", "ex-num", "第 " + (i + 1) + " 题 · " + esc(names[it.cid] || it.cid)));
+        var box;
+        if (it.kind === "mcq") box = renderMCQ(it.cid, it.q, i + 1);
+        else if (it.kind === "judge") box = renderJudge(it.cid, it.q, i + 1);
+        else box = renderFill(it.cid, it.q, i + 1);
+        wrap.appendChild(box); host.appendChild(wrap);
+      });
+      var bar = el("div", "ex-bar");
+      var b = el("button", "navbtn", "📋 提交诊断");
+      b.onclick = function () { submit(); };
+      bar.appendChild(b); host.appendChild(bar);
+    }
+    function submit() {
+      var cid = document.getElementById("dch").value, ch = window.CHAPTERS[cid];
+      var ok = 0, weak = {};
+      current.forEach(function (it) {
+        if (diagCorrect(it)) ok++;
+        else weak[it.q.kpId] = (weak[it.q.kpId] || 0) + 1;
+      });
+      var rows = Object.keys(weak).map(function (kp) {
+        var s = diagSlide(cid, kp), meta = (ch.kpMap && ch.kpMap[kp]) || {};
+        var label = meta.label || (s ? s.title : kp);
+        var idx = s ? s.i : (meta.slide != null ? meta.slide : 0);
+        return { kp: kp, label: label, slide: idx, n: weak[kp] };
+      }).sort(function (a, b) { return b.n - a.n; });
+      var rate = Math.round(ok * 100 / (current.length || 1));
+      var html = '<div class="statsbox"><h3 style="margin:0">🩺 诊断结果</h3>' +
+        '<p>正确：<b>' + ok + " / " + current.length + '</b>（' + rate + '%）</p>' +
+        (rows.length ? '<p>薄弱点按错误数排序：</p><ol>' + rows.map(function (r) {
+          return '<li><b>' + esc(r.label) + '</b>（错 ' + r.n + '）｜<a href="' + cid + '.html#s_' + cid + '_s0_' + r.slide + '">看讲解</a>｜' +
+            '<a href="ppt.html?ch=' + cid + '&slide=' + (r.slide + 1) + '&back=' + cid + '">PPT定位</a>｜' +
+            '<a href="exercises.html?ch=' + cid + '">做题</a></li>';
+        }).join("") + "</ol>" : "<p>全部正确，本章状态很好。</p>") +
+        '<p class="hint">建议顺序：先看薄弱点对应页 → 做该页自测 → 再做本章章测。24 小时后再复测。</p>' +
+        '<button id="dagain" class="navbtn" style="width:auto">重新诊断</button></div>';
+      res.innerHTML = html;
+      var again = document.getElementById("dagain");
+      if (again) again.onclick = function () { res.innerHTML = ""; start(); };
+      res.scrollIntoView({ behavior: "smooth" });
+    }
+    document.getElementById("dstart").onclick = start;
+  }
+
   function renderExam() {
     var ctl = document.getElementById("examctl"), host = document.getElementById("examhost");
     var timerEl = document.getElementById("examtimer");
@@ -1916,7 +2015,7 @@
       stopTimer();
       if (timerEl) timerEl.textContent = "⏱ 已交卷";
       var ok = 0, weak = {};
-      current.forEach(function (it) { if (isCorrect(it)) ok++; else if (it.q.kp) weak[it.q.kp] = 1; });
+      current.forEach(function (it) { if (isCorrect(it)) ok++; else if (it.q.kpId || it.q.kp) weak[it.q.kpId || it.q.kp] = (weak[it.q.kpId || it.q.kp] || 0) + 1; });
       var total = current.length || 1;
       var h = '<div class="statsbox"><h3 style="margin:0">📊 成绩</h3>' +
         "<p>得分（客观自动 + 主观自评）：<b>" + ok + " / " + current.length + "</b>（" + Math.round(ok * 100 / total) + "%）" + (auto ? " · 时间到自动交卷" : "") + "</p>" +
@@ -2397,6 +2496,7 @@
     else if (page === "review") renderReview();
     else if (page === "flashcards") renderFlashcards();
     else if (page === "exam") renderExam();
+    else if (page === "diag") renderDiag();
     else if (page === "textbook") renderTextbook();
     else if (page === "zhenti") renderZhenti();
   });
