@@ -1936,6 +1936,7 @@
       res.scrollIntoView({ behavior: "smooth" });
     }
     document.getElementById("dstart").onclick = start;
+    start();
   }
 
   function renderExam() {
