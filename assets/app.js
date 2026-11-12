@@ -1279,15 +1279,15 @@
     }
     if (cid === "bc04") {
       var d4 = el("a", "sub", "📥 第4章AI讲义（PPT）");
-      d4.href = "downloads/bc04-ai-style.pptx?v=20261112ad";
+      d4.href = "downloads/bc04-ai-style.pptx?v=20261112ae";
       d4.download = "BC04_蛋白质的生物学功能_AI讲义.pptx";
       aside.appendChild(d4);
       var d4p = el("a", "sub", "📄 第4章AI讲义PDF预览");
-      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112ad";
+      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112ae";
       d4p.target = "_blank";
       aside.appendChild(d4p);
       var d4e = el("a", "sub", "📝 蛋白质功能网页题");
-      d4e.href = "exercises.html?ch=bc04&v=20261112ad";
+      d4e.href = "exercises.html?ch=bc04&v=20261112ae";
       aside.appendChild(d4e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
@@ -1369,7 +1369,7 @@
         var lv = s.level || "掌握";
         var head = el("div", "sh");
         var imgType = /待逐页视觉复核/.test(String(s.notes || "") + String(s.imageExplain || "")) ? "待复核" : (!s.img ? "讲义" : (/\/bc\d+ppt\//i.test(s.img) ? "老师PPT" : (/\/full\d*\.jpg/i.test(s.img) || /\/note\d*\.jpg/i.test(s.img) ? "笔记原页" : (/\/ppt\d*\.jpg/i.test(s.img) ? "PPT" : "图片"))));
-        head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="src-type">' + imgType + '</span><span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
+        head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="src-type">' + imgType + '</span>' + (s.source ? '<span class="src-type">' + esc(s.source) + '</span>' : '') + '<span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
         card.appendChild(head);
         var body = el("div", "body");
         if (s.img) {
