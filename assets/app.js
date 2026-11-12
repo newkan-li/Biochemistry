@@ -1249,6 +1249,9 @@
       dl.href = "downloads/bc01-original-style.pptx?v=20261108ek";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
+      var d1e = el("a", "sub", "📝 第1章网页题");
+      d1e.href = "exercises.html?ch=bc01&v=20261112aq";
+      aside.appendChild(d1e);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
       dlp.href = "downloads/bc01-original-style.pdf?v=20261108ek";
       dlp.target = "_blank";
@@ -1263,6 +1266,9 @@
       d2p.href = "downloads/bc02-ai-style.pdf?v=20261108ek";
       d2p.target = "_blank";
       aside.appendChild(d2p);
+      var d2e = el("a", "sub", "📝 第2章网页题");
+      d2e.href = "exercises.html?ch=bc02&v=20261112aq";
+      aside.appendChild(d2e);
     }
     if (cid === "bc03") {
       var d3 = el("a", "sub", "📥 第3章AI讲义（PPT）");
