@@ -1145,6 +1145,23 @@
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
     aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
+    var findBox = document.createElement("div");
+    findBox.style.cssText = "margin:8px 0;padding:8px;border:1px solid #d7e0ea;border-radius:8px;background:#f7fafc";
+    findBox.innerHTML = '<input id="chfind" type="search" placeholder="搜索本页标题/关键词，如：诊断页、pI、Hill" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #c9d6e3;border-radius:6px"><div id="chfindres" style="font-size:12px;margin-top:6px;max-height:180px;overflow:auto"></div>';
+    aside.appendChild(findBox);
+    var findInput = findBox.querySelector("#chfind"), findRes = findBox.querySelector("#chfindres"), findMod = ch.modules[0];
+    findInput.oninput = function () {
+      var q = (this.value || "").trim().toLowerCase();
+      if (!q) { findRes.innerHTML = ""; return; }
+      var hits = [];
+      (findMod.slides || []).forEach(function (s) {
+        var hay = (s.title || "") + " " + (s.notes || "") + " " + ((s.points || []).join(" ")) + " " + (s.table ? JSON.stringify(s.table) : "");
+        if (hay.toLowerCase().indexOf(q) >= 0) hits.push(s);
+      });
+      findRes.innerHTML = hits.length ? hits.slice(0, 25).map(function (s) {
+        return '<a class="sub" style="display:block;padding:3px 0;text-decoration:none" href="#s_' + cid + '_s0_' + s.i + '">' + (s.i + 1) + '. ' + esc(s.title || ("第" + (s.i + 1) + "页")) + '</a>';
+      }).join("") + (hits.length > 25 ? '<div style="color:#667">仅显示前25条，请更具体搜索</div>' : "") : '<div style="color:#667">没有匹配</div>';
+    };
     if (window.BOOKTOC && window.BOOKTOC[cid] && !(ch.toc && ch.toc.length)) {
       var bt = window.BOOKTOC[cid];
       var nsub = 0;
@@ -1246,67 +1263,67 @@
     }
     if (cid === "bc01") {
       var dl = el("a", "sub", "📥 第1章原书版PPT（自制课件）");
-      dl.href = "downloads/bc01-original-style.pptx?v=20261112bc";
+      dl.href = "downloads/bc01-original-style.pptx?v=20261112bd";
       dl.download = "BC01_生命的分子基础_原书版课件.pptx";
       aside.appendChild(dl);
       var d1e = el("a", "sub", "📝 第1章网页题");
-      d1e.href = "exercises.html?ch=bc01&v=20261112bc";
+      d1e.href = "exercises.html?ch=bc01&v=20261112bd";
       aside.appendChild(d1e);
       var dlp = el("a", "sub", "📄 第1章课件PDF预览");
-      dlp.href = "downloads/bc01-original-style.pdf?v=20261112bc";
+      dlp.href = "downloads/bc01-original-style.pdf?v=20261112bd";
       dlp.target = "_blank";
       aside.appendChild(dlp);
     }
     if (cid === "bc02") {
       var d2 = el("a", "sub", "📥 第2章AI讲义（PPT）");
-      d2.href = "downloads/bc02-ai-style.pptx?v=20261112bc";
+      d2.href = "downloads/bc02-ai-style.pptx?v=20261112bd";
       d2.download = "BC02_氨基酸肽和蛋白质_AI讲义.pptx";
       aside.appendChild(d2);
       var d2p = el("a", "sub", "📄 第2章AI讲义PDF预览");
-      d2p.href = "downloads/bc02-ai-style.pdf?v=20261112bc";
+      d2p.href = "downloads/bc02-ai-style.pdf?v=20261112bd";
       d2p.target = "_blank";
       aside.appendChild(d2p);
       var d2e = el("a", "sub", "📝 第2章网页题");
-      d2e.href = "exercises.html?ch=bc02&v=20261112bc";
+      d2e.href = "exercises.html?ch=bc02&v=20261112bd";
       aside.appendChild(d2e);
     }
     if (cid === "bc03") {
       var d3 = el("a", "sub", "📥 第3章AI讲义（PPT）");
-      d3.href = "downloads/bc03-ai-style.pptx?v=20261112bc";
+      d3.href = "downloads/bc03-ai-style.pptx?v=20261112bd";
       d3.download = "BC03_蛋白质的三维结构_AI讲义.pptx";
       aside.appendChild(d3);
       var d3p = el("a", "sub", "📄 第3章AI讲义PDF预览");
-      d3p.href = "downloads/bc03-ai-style.pdf?v=20261112bc";
+      d3p.href = "downloads/bc03-ai-style.pdf?v=20261112bd";
       d3p.target = "_blank";
       aside.appendChild(d3p);
       var d3e = el("a", "sub", "📝 课后习题（网页题）");
-      d3e.href = "exercises.html?ch=bc03&v=20261112bc";
+      d3e.href = "exercises.html?ch=bc03&v=20261112bd";
       aside.appendChild(d3e);
     }
     if (cid === "bc04") {
       var d4 = el("a", "sub", "📥 第4章AI讲义（PPT）");
-      d4.href = "downloads/bc04-ai-style.pptx?v=20261112bc";
+      d4.href = "downloads/bc04-ai-style.pptx?v=20261112bd";
       d4.download = "BC04_蛋白质的生物学功能_AI讲义.pptx";
       aside.appendChild(d4);
       var d4p = el("a", "sub", "📄 第4章AI讲义PDF预览");
-      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112bc";
+      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112bd";
       d4p.target = "_blank";
       aside.appendChild(d4p);
       var d4e = el("a", "sub", "📝 蛋白质功能网页题");
-      d4e.href = "exercises.html?ch=bc04&v=20261112bc";
+      d4e.href = "exercises.html?ch=bc04&v=20261112bd";
       aside.appendChild(d4e);
     }
     if (cid === "bc05") {
       var d5 = el("a", "sub", "📥 第5章AI讲义（PPT）");
-      d5.href = "downloads/bc05-ai-style.pptx?v=20261112bc";
+      d5.href = "downloads/bc05-ai-style.pptx?v=20261112bd";
       d5.download = "BC05_蛋白质的性质分离纯化和鉴定_AI讲义.pptx";
       aside.appendChild(d5);
       var d5p = el("a", "sub", "📄 第5章AI讲义PDF预览");
-      d5p.href = "downloads/bc05-ai-style.pdf?v=20261112bc";
+      d5p.href = "downloads/bc05-ai-style.pdf?v=20261112bd";
       d5p.target = "_blank";
       aside.appendChild(d5p);
       var d5e = el("a", "sub", "📝 第5章网页题");
-      d5e.href = "exercises.html?ch=bc05&v=20261112bc";
+      d5e.href = "exercises.html?ch=bc05&v=20261112bd";
       aside.appendChild(d5e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
