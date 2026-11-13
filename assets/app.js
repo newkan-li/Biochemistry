@@ -1328,41 +1328,41 @@
     }
     if (cid === "bc06") {
       var d6 = el("a", "sub", "📥 第6章AI讲义（PPT）");
-      d6.href = "downloads/bc06-ai-style.pptx?v=20261112bzj";
+      d6.href = "downloads/bc06-ai-style.pptx?v=20261112bzk";
       d6.download = "BC06_酶的催化作用_AI讲义.pptx";
       aside.appendChild(d6);
       var d6p = el("a", "sub", "📄 第6章AI讲义PDF预览");
-      d6p.href = "downloads/bc06-ai-style.pdf?v=20261112bzj";
+      d6p.href = "downloads/bc06-ai-style.pdf?v=20261112bzk";
       d6p.target = "_blank";
       aside.appendChild(d6p);
       var d6e = el("a", "sub", "📝 第6章网页题");
-      d6e.href = "exercises.html?ch=bc06&v=20261112bzj";
+      d6e.href = "exercises.html?ch=bc06&v=20261112bzk";
       aside.appendChild(d6e);
     }
     if (cid === "bc07") {
       var d7 = el("a", "sub", "📥 第7章AI讲义（PPT）");
-      d7.href = "downloads/bc07-ai-style.pptx?v=20261112bzi";
+      d7.href = "downloads/bc07-ai-style.pptx?v=20261112bzk";
       d7.download = "BC07_酶动力学_AI讲义.pptx";
       aside.appendChild(d7);
       var d7p = el("a", "sub", "📄 第7章AI讲义PDF预览");
-      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112bzi";
+      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112bzk";
       d7p.target = "_blank";
       aside.appendChild(d7p);
       var d7e = el("a", "sub", "📝 第7章网页题");
-      d7e.href = "exercises.html?ch=bc07&v=20261112bzi";
+      d7e.href = "exercises.html?ch=bc07&v=20261112bzk";
       aside.appendChild(d7e);
     }
     if (cid === "bc08") {
       var d8 = el("a", "sub", "📥 第8章AI讲义（PPT）");
-      d8.href = "downloads/bc08-ai-style.pptx?v=20261112bzgg";
+      d8.href = "downloads/bc08-ai-style.pptx?v=20261112bzk";
       d8.download = "BC08_酶作用机制和酶活性调节_AI讲义.pptx";
       aside.appendChild(d8);
       var d8p = el("a", "sub", "📄 第8章AI讲义PDF预览");
-      d8p.href = "downloads/bc08-ai-style.pdf?v=20261112bzgg";
+      d8p.href = "downloads/bc08-ai-style.pdf?v=20261112bzk";
       d8p.target = "_blank";
       aside.appendChild(d8p);
       var d8e = el("a", "sub", "📝 第8章网页题");
-      d8e.href = "exercises.html?ch=bc08&v=20261112bzgg";
+      d8e.href = "exercises.html?ch=bc08&v=20261112bzk";
       aside.appendChild(d8e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
