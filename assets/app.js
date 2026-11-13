@@ -1302,15 +1302,15 @@
     }
     if (cid === "bc04") {
       var d4 = el("a", "sub", "📥 第4章AI讲义（PPT）");
-      d4.href = "downloads/bc04-ai-style.pptx?v=20261112bd";
+      d4.href = "downloads/bc04-ai-style.pptx?v=20261112bw";
       d4.download = "BC04_蛋白质的生物学功能_AI讲义.pptx";
       aside.appendChild(d4);
       var d4p = el("a", "sub", "📄 第4章AI讲义PDF预览");
-      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112bd";
+      d4p.href = "downloads/bc04-ai-style.pdf?v=20261112bw";
       d4p.target = "_blank";
       aside.appendChild(d4p);
       var d4e = el("a", "sub", "📝 蛋白质功能网页题");
-      d4e.href = "exercises.html?ch=bc04&v=20261112bd";
+      d4e.href = "exercises.html?ch=bc04&v=20261112bw";
       aside.appendChild(d4e);
     }
     if (cid === "bc05") {
