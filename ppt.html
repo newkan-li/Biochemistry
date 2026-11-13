@@ -67,7 +67,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 <script>
 (function(){
   var ch=(new URLSearchParams(location.search).get('ch')||'u01_protein').replace(/[^a-z0-9_-]/gi,'');
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112bzp';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112bzq';
   s.onload=function(){init()};s.onerror=function(){document.getElementById('ttl').textContent='数据加载失败'};document.head.appendChild(s);
   function init(){
     var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c){document.getElementById('ttl').textContent='未找到单元';return;}
@@ -97,7 +97,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
       }
       var srcText=(z.source||'')+(z.fig?' · '+z.fig:'')+(z.page?' · 教材 p'+z.page:'');var srcEl=document.getElementById('src');srcEl.textContent=srcText;srcEl.style.display=srcText?'':'none';
       var fb=document.getElementById('figBox'), im=document.getElementById('figImg');
-      if(z.img){fb.classList.remove('none');im.src=z.img;im.style.display='';}else{fb.classList.add('none');im.removeAttribute('src');}
+      if(z.img){fb.classList.remove('none');im.src=z.preview||z.img;im.dataset.full=z.img;im.loading='lazy';im.decoding='async';im.style.display='';}else{fb.classList.add('none');im.removeAttribute('src');}
       document.getElementById('bar').style.width=((i+1)*100/n)+'%';
       document.getElementById('prevBtn').disabled=i<=0;document.getElementById('nextBtn').disabled=i>=n-1;
     }
@@ -112,7 +112,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
     if(!backParam){testBtn.style.display='none';}else{testBtn.onclick=function(){location.href=backCid+'.html#chapter-test'};}
     document.getElementById('fsBtn').onclick=function(){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}else{document.exitFullscreen&&document.exitFullscreen()}};
     document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(-1)}else if(e.key==='Escape'){location.href=ch+'.html'}});
-    document.getElementById('figImg').onclick=function(){if(this.src){document.getElementById('zoomImg').src=this.src;document.getElementById('zoom').classList.add('on')}};
+    document.getElementById('figImg').onclick=function(){if(this.dataset.full||this.src){document.getElementById('zoomImg').src=this.dataset.full||this.src;document.getElementById('zoom').classList.add('on')}};
     document.getElementById('zoom').onclick=function(){this.classList.remove('on')};
     render();
   }
