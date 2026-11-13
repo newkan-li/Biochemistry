@@ -1390,7 +1390,7 @@
     var hero = el("div", "hero");
     hero.innerHTML = "<h1>" + esc(ch.title) + '</h1><div class="tag">' + esc(ch.sub2 || "") + " ｜ 概念逐页 + 全题型练习 + 错题本 + 手写</div>";
     main.appendChild(hero);
-    main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释，非原书原文。"));
+    main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释。学习顺序：主线=AI主讲/精读/学习支持；练习=过程/变式/卡点/专题；查阅=老师原页/原书图卡。"));
 
     if (ch.preview) {
       var pv = el("div", "statsbox previewbox");
@@ -1445,7 +1445,7 @@
         var lv = s.level || "掌握";
         var head = el("div", "sh");
         var imgType = /待逐页视觉复核/.test(String(s.notes || "") + String(s.imageExplain || "")) ? "待复核" : (!s.img ? "讲义" : (/\/bc\d+ppt\//i.test(s.img) ? "老师PPT" : (/\/full\d*\.jpg/i.test(s.img) || /\/note\d*\.jpg/i.test(s.img) ? "笔记原页" : (/\/ppt\d*\.jpg/i.test(s.img) ? "PPT" : "图片"))));
-        head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="src-type">' + imgType + '</span>' + (s.srcType ? '<span class="src-type">' + esc(s.srcType) + '</span>' : '') + (s.source ? '<span class="src-type">' + esc(s.source) + '</span>' : '') + '<span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
+        head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="src-type">' + imgType + '</span>' + (s.srcType ? '<span class="src-type">' + esc(s.srcType) + '</span>' : '') + (s.role ? '<span class="src-type">' + esc(s.role) + '</span>' : '') + (s.source ? '<span class="src-type">' + esc(s.source) + '</span>' : '') + '<span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
         card.appendChild(head);
         var body = el("div", "body");
         if (s.img) {
