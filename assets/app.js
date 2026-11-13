@@ -1328,15 +1328,15 @@
     }
     if (cid === "bc06") {
       var d6 = el("a", "sub", "📥 第6章AI讲义（PPT）");
-      d6.href = "downloads/bc06-ai-style.pptx?v=20261112bu";
+      d6.href = "downloads/bc06-ai-style.pptx?v=20261112bzj";
       d6.download = "BC06_酶的催化作用_AI讲义.pptx";
       aside.appendChild(d6);
       var d6p = el("a", "sub", "📄 第6章AI讲义PDF预览");
-      d6p.href = "downloads/bc06-ai-style.pdf?v=20261112bu";
+      d6p.href = "downloads/bc06-ai-style.pdf?v=20261112bzj";
       d6p.target = "_blank";
       aside.appendChild(d6p);
       var d6e = el("a", "sub", "📝 第6章网页题");
-      d6e.href = "exercises.html?ch=bc06&v=20261112bu";
+      d6e.href = "exercises.html?ch=bc06&v=20261112bzj";
       aside.appendChild(d6e);
     }
     if (cid === "bc07") {
