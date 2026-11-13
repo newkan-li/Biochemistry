@@ -1289,15 +1289,15 @@
     }
     if (cid === "bc03") {
       var d3 = el("a", "sub", "📥 第3章AI讲义（PPT）");
-      d3.href = "downloads/bc03-ai-style.pptx?v=20261112bd";
+      d3.href = "downloads/bc03-ai-style.pptx?v=20261112bx";
       d3.download = "BC03_蛋白质的三维结构_AI讲义.pptx";
       aside.appendChild(d3);
       var d3p = el("a", "sub", "📄 第3章AI讲义PDF预览");
-      d3p.href = "downloads/bc03-ai-style.pdf?v=20261112bd";
+      d3p.href = "downloads/bc03-ai-style.pdf?v=20261112bx";
       d3p.target = "_blank";
       aside.appendChild(d3p);
       var d3e = el("a", "sub", "📝 课后习题（网页题）");
-      d3e.href = "exercises.html?ch=bc03&v=20261112bd";
+      d3e.href = "exercises.html?ch=bc03&v=20261112bx";
       aside.appendChild(d3e);
     }
     if (cid === "bc04") {
