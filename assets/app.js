@@ -979,7 +979,7 @@
       box.appendChild(inp0);
       var showB = el("button", "cp-opt", "显示参考答案");
       showB.onclick = function () {
-        fb.innerHTML = '<div class="cp-ans"><b>参考答案</b>：<div class="anspts">' + fmtAns(q.a || "本页为过渡页，无文字要点。") + "</div></div>";
+        fb.innerHTML = '<div class="cp-ans"><b>参考答案</b>：<div class="anspts">' + fmtAns(q.a || "本页为过渡页，无文字要点。") + "</div>" + (q.e ? '<div class="cp-exp"><b>解析</b>：'+fmtAns(String(q.e).replace(/^解析：/,''))+'</div>' : '') + '</div>';
         showB.disabled = true;
       };
       box.appendChild(showB);
@@ -1044,7 +1044,7 @@
     var fb = el("div", "cp-fb");
     var b = el("button", "cp-opt", "显示参考答案");
     b.onclick = function () {
-      fb.innerHTML = '<div class="cp-ans"><b>参考答案 / 得分点</b><div class="anspts">' + fmtAns(q.a || "") + '</div></div>';
+      fb.innerHTML = '<div class="cp-ans"><b>参考答案 / 得分点</b><div class="anspts">' + fmtAns(q.a || "") + '</div>' + (q.e ? '<div class="cp-exp"><b>解析</b>：'+fmtAns(String(q.e).replace(/^解析：/,''))+'</div>' : '') + '</div>';
       b.disabled = true;
     };
     box.appendChild(b); box.appendChild(fb);
