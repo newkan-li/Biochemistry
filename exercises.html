@@ -85,7 +85,7 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
       bN.onclick=function(){ans.classList.toggle('hide');bN.textContent=ans.classList.contains('hide')?'显示答案':'收起答案';};
       var bD=el('button','btn donebtn'+(done[q.id]?' on':''),done[q.id]?'✓ 已掌握':'标记掌握');
       bD.onclick=function(){done[q.id]=!done[q.id];save();card.classList.toggle('done',!!done[q.id]);bD.classList.toggle('on',!!done[q.id]);bD.textContent=done[q.id]?'✓ 已掌握':'标记掌握';};
-      var link=el('a','btn primary','对应 PPT →');link.href='ppt.html?ch='+ch+'&slide='+(q.slide+1)+'&back='+ch+'&v=20261112cab';link.target='_blank';link.rel='noopener';
+      var link=el('a','btn primary','对应 PPT →');link.href='ppt.html?ch='+ch+'&slide='+(q.slide+1)+'&back='+ch+'&v=20261112caf';link.target='_blank';link.rel='noopener';
       act.appendChild(bA);act.appendChild(bN);act.appendChild(bD);act.appendChild(link);card.appendChild(act);
       list.appendChild(card);cards.push({id:q.id,el:card});card.dataset.done=done[q.id]?'1':'0';
     });
@@ -98,7 +98,7 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
   }
   document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){applyFilter(b.dataset.filter);};});
   document.getElementById('reset').onclick=function(){if(confirm('清除本机掌握标记？')){done={};save();render(data);applyFilter('all');}};
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112cab';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112caf';
   s.onload=function(){var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c||!c.exercises){document.getElementById('list').textContent='未找到习题数据。';return;}data=c.exercises;document.getElementById('title').textContent=(c.exerciseTitle||'📝 课后习题 · 网页题');document.getElementById('sub').textContent='共 '+data.length+' 题 · 按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT';render(data);};
   s.onerror=function(){document.getElementById('list').textContent='数据加载失败，请确认 data/'+ch+'.js 存在。';};
   document.head.appendChild(s);
