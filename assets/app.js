@@ -1341,15 +1341,15 @@
     }
     if (cid === "bc07") {
       var d7 = el("a", "sub", "📥 第7章AI讲义（PPT）");
-      d7.href = "downloads/bc07-ai-style.pptx?v=20261112bn";
+      d7.href = "downloads/bc07-ai-style.pptx?v=20261112bo";
       d7.download = "BC07_酶动力学_AI讲义.pptx";
       aside.appendChild(d7);
       var d7p = el("a", "sub", "📄 第7章AI讲义PDF预览");
-      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112bn";
+      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112bo";
       d7p.target = "_blank";
       aside.appendChild(d7p);
       var d7e = el("a", "sub", "📝 第7章网页题");
-      d7e.href = "exercises.html?ch=bc07&v=20261112bn";
+      d7e.href = "exercises.html?ch=bc07&v=20261112bo";
       aside.appendChild(d7e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
