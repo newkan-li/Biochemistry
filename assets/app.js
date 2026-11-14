@@ -155,9 +155,18 @@
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (m) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m]; }); }
+  function cleanOCR(s) {
+    var t = String(s == null ? "" : s).replace(/\u000b/g, "\n").replace(/\u0000/g, "").replace(/\r/g, "");
+    t = t.replace(/CL\)/g, "(1)").replace(/C(10|[1-9])\)/g, "($1)");
+    t = t.replace(/¢\s*\)/g, "（ ）").replace(/〈/g, "（").replace(/〉/g, "）");
+    t = t.replace(/\bA\?\s*/g, "Δ9 ").replace(/CA[”\"\)]/g, "(Δ9)");
+    t = t.replace(/Cl(?=\d)/g, "C").replace(/C(\d+)一C(\d+)/g, "C$1—C$2");
+    t = t.replace(/豆薄酸/g, "豆蔻酸");
+    return t.replace(/[ \t]+/g, " ").trim();
+  }
   /* 把连排的参考答案拆成易读的分点（圈号 / 【小标题】 / 换行） */
   function fmtAns(s) {
-    var t = esc(s).replace(/\r/g, "");
+    var t = esc(cleanOCR(s)).replace(/\r/g, "");
     t = t.replace(/\n+/g, "<br>");
     t = t.replace(/\s*([①-⑳])/g, "<br>$1");
     t = t.replace(/\s*(【[^】]{1,24}】)/g, "<br>$1");
@@ -167,7 +176,7 @@
     return t;
   }
   function fmtExp(s) {
-    var t = esc(String(s == null ? "" : s)).replace(/^解析\s*[:：]\s*/, "").replace(/\r/g, "");
+    var t = esc(cleanOCR(s)).replace(/^解析\s*[:：]\s*/, "").replace(/\r/g, "");
     var out = [];
     t.split(/\n+/).forEach(function (p) {
       p = p.trim(); if (!p) return;
@@ -409,11 +418,11 @@
   /* ================= MCQ ================= */
   function renderMCQ(cid, q, idx) {
     var box = el("div", "q"); box.id = "q_" + q.id;
-    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(q.q) + (q.mod ? '<span class="src">[' + esc(q.mod) + "]</span>" : "")));
+    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(cleanOCR(q.q)) + (q.mod ? '<span class="src">[' + esc(cleanOCR(q.mod)) + "]</span>" : "")));
     var opts = el("div", "mcq");
     q.o.forEach(function (o) {
       var letter = o.trim().charAt(0);
-      var b = el("button", "mopt", esc(o));
+      var b = el("button", "mopt", esc(cleanOCR(o)));
       b.dataset.l = letter;
       b.onclick = function () { gradeMCQ(cid, q, box, letter); };
       opts.appendChild(b);
@@ -471,7 +480,7 @@
   /* ================= 判断题 ================= */
   function renderJudge(cid, q, idx) {
     var box = el("div", "q"); box.id = "q_" + q.id;
-    box.appendChild(el("p", "qq", "第 " + idx + " 题（判断对错） " + esc(q.q)));
+    box.appendChild(el("p", "qq", "第 " + idx + " 题（判断对错） " + esc(cleanOCR(q.q))));
     var opts = el("div", "mcq");
     ["对", "错"].forEach(function (v) {
       var b = el("button", "mopt", v); b.dataset.l = v;
@@ -511,13 +520,13 @@
   /* ================= fill ================= */
   function renderFill(cid, q, idx) {
     var box = el("div", "q"); box.id = "q_" + q.id;
-    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(q.q)));
+    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(cleanOCR(q.q))));
     var inp = el("input", "ans"); inp.placeholder = "输入答案（多个空用逗号分隔）"; box.appendChild(inp);
     var bar = el("div", "self");
     var bChk = el("button", "ok", "检查"), bShow = el("button", "", "显示答案");
     bar.appendChild(bChk); bar.appendChild(bShow); box.appendChild(bar);
     var det = el("details", "sol");
-    det.innerHTML = '<summary>参考答案</summary><div class="ansbox"><b>' + esc(q.a) + "</b></div>" +
+    det.innerHTML = '<summary>参考答案</summary><div class="ansbox"><b>' + esc(cleanOCR(q.a)) + "</b></div>" +
       (q.e ? '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>" : "");
     box.appendChild(det);
     var res = el("div", "mres"); res.style.display = "none"; box.appendChild(res);
@@ -549,12 +558,12 @@
     var box = el("div", "q"); box.id = "q_" + q.id;
     var title, answerHTML, kps = "";
     if (kind === "term") {
-      title = "名词解释 " + idx + "：" + esc(q.term);
+      title = "名词解释 " + idx + "：" + esc(cleanOCR(q.term));
       answerHTML = "<b>标准定义：</b><div class=\"anspts\">" + fmtAns(q.def) + "</div>";
       kps = q.kps || "";
     } else {
-      title = (kind === "short" ? "简答题 " : "论述/推导 ") + idx + "：" + esc(q.q) +
-        (q.src ? ' <span class="src">[' + esc(q.src) + ']</span>' : "");
+      title = (kind === "short" ? "简答题 " : "论述/推导 ") + idx + "：" + esc(cleanOCR(q.q)) +
+        (q.src ? ' <span class="src">[' + esc(cleanOCR(q.src)) + ']</span>' : "");
       answerHTML = "<b>参考答案：</b><div class=\"anspts\">" + fmtAns(kind === "calc" ? (q.steps || q.a) : q.a) + "</div>";
       kps = q.kps || "";
       if (q.e) answerHTML += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>";
@@ -684,7 +693,7 @@
       }
       if (opts) {
         opts.forEach(function (o) {
-          var ob = el("button", "mopt", esc(o));
+          var ob = el("button", "mopt", esc(cleanOCR(o)));
           ob.style.cssText = "display:inline-block;margin:4px 6px 4px 0;width:auto";
           ob.onclick = function () {
             var chosen = e.type === "judge" ? o.trim() : o.trim().charAt(0);
@@ -793,11 +802,11 @@
         P.push('<h3>一、选择题</h3>');
         m.mcq.forEach(function (q, i) {
           var rec = mc[q.id] || {};
-          P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(q.q) + '</div>');
-          P.push('<div class="opts">' + q.o.map(function (o) { return '<div>' + esc(o) + '</div>'; }).join('') + '</div>');
+          P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(cleanOCR(q.q)) + '</div>');
+          P.push('<div class="opts">' + q.o.map(function (o) { return '<div>' + esc(cleanOCR(o)) + '</div>'; }).join('') + '</div>');
           P.push('<div class="stu">我的作答：<b>' + esc(rec.last || "（未作答）") + '</b></div>');
           P.push('<div class="ans">正确答案：<div class="anspts">' + fmtAns(q.a) + '</div></div>');
-          if (q.e) P.push('<div class="exp">解析：' + esc(q.e) + '</div>');
+          if (q.e) P.push('<div class="exp">解析：' + esc(cleanOCR(q.e)) + '</div>');
           var im = strokesToDataURL(hw[q.id], 900, 150);
           if (im) P.push('<img class="hwimg" src="' + im + '">');
           P.push('</div>');
@@ -807,10 +816,10 @@
         P.push('<h3>二、判断题</h3>');
         m.judge.forEach(function (q, i) {
           var rec = jg[q.id] || {};
-          P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(q.q) + '</div>');
+          P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(cleanOCR(q.q)) + '</div>');
           P.push('<div class="stu">我的作答：<b>' + esc(rec.last || "（未作答）") + '</b></div>');
           P.push('<div class="ans">正确答案：<div class="anspts">' + fmtAns(q.a) + '</div></div>');
-          if (q.e) P.push('<div class="exp">解析：' + esc(q.e) + '</div>');
+          if (q.e) P.push('<div class="exp">解析：' + esc(cleanOCR(q.e)) + '</div>');
           P.push('</div>');
         });
       }
@@ -818,7 +827,7 @@
         P.push('<h3>三、填空题</h3>');
         m.fill.forEach(function (q, i) {
           var rec = fi[q.id] || {};
-          P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(q.q) + '</div>');
+          P.push('<div class="q"><div class="qt">' + (i + 1) + '. ' + esc(cleanOCR(q.q)) + '</div>');
           P.push('<div class="stu">我的作答：<b>' + esc(rec.last || tx[q.id] || "（未作答）") + '</b></div>');
           P.push('<div class="ans">参考答案：<div class="anspts">' + fmtAns(q.a) + '</div></div>');
           var im = strokesToDataURL(hw[q.id], 900, 150);
@@ -997,17 +1006,17 @@
       return box;
     }
     if (kind === "mcq") {
-      box.appendChild(el("div", "cp-q", esc(q.q)));
+      box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q))));
       var opts = el("div", "cp-opts");
-      q.o.forEach(function (o, i) { var b = el("button", "cp-opt", esc(o)); b.onclick = function () { grade(optLetter(o) === String(q.a).trim(), opts, b); }; opts.appendChild(b); });
+      q.o.forEach(function (o, i) { var b = el("button", "cp-opt", esc(cleanOCR(o))); b.onclick = function () { grade(optLetter(o) === String(q.a).trim(), opts, b); }; opts.appendChild(b); });
       box.appendChild(opts);
     } else if (kind === "judge") {
-      box.appendChild(el("div", "cp-q", esc(q.q)));
+      box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q))));
       var o2 = el("div", "cp-opts");
       ["对", "错"].forEach(function (v) { var b = el("button", "cp-opt", v); b.onclick = function () { grade(v === q.a, o2, b); }; o2.appendChild(b); });
       box.appendChild(o2);
     } else {
-      box.appendChild(el("div", "cp-q", esc(q.q)));
+      box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q))));
       var inp = el("input", "cp-in"); inp.placeholder = "输入答案";
       var bc = el("button", "cp-opt", "检查"); bc.onclick = function () { grade(fuzzyMatch(q.a, inp.value)); };
       box.appendChild(inp); box.appendChild(bc);
@@ -2188,7 +2197,7 @@
       if (info.kind === "mcq" && q.o) {
         var opts = el("div", "rev-opts");
         q.o.forEach(function (o, i) {
-          var b = el("button", "rev-opt", esc(o));
+          var b = el("button", "rev-opt", esc(cleanOCR(o)));
           b.onclick = function () {
             var cl = function (s) { return String(s).trim().charAt(0); };
             Array.prototype.forEach.call(opts.children, function (x) { if (cl(x.textContent) === String(q.a).trim()) x.classList.add("right"); });
