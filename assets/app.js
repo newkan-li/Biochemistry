@@ -1388,7 +1388,7 @@
       d8.download = "BC08_酶作用机制和酶活性调节_AI讲义.pptx";
       aside.appendChild(d8);
       var d8p = el("a", "sub", "📄 第8章AI讲义PDF预览");
-      d8p.href = "downloads/bc08-ai-style.pdf?v=20261112cdq";
+      d8p.href = "downloads/bc08-ai-style.pdf?v=20261112cdr";
       d8p.target = "_blank";
       aside.appendChild(d8p);
       var d8e = el("a", "sub", "📝 第8章网页题");
