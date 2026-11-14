@@ -1381,7 +1381,7 @@
       d9.download = "BC09_糖类和糖生物学_AI讲义.pptx";
       aside.appendChild(d9);
       var d9p = el("a", "sub", "📄 第9章AI讲义PDF预览");
-      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112cbf";
+      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112cbl";
       d9p.target = "_blank";
       aside.appendChild(d9p);
       var d9e = el("a", "sub", "📝 第9章网页题");
