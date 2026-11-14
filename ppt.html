@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>PPT 放映 · 生物化学</title>
-<link rel="stylesheet" href="assets/style.css?v=20261112cbuk">
+<link rel="stylesheet" href="assets/style.css?v=20261112cbvk">
 <script src="assets/theme.js?v=20261106a"></script>
 <style>
 html,body{height:100%}
@@ -67,7 +67,7 @@ body.ppt{overflow:hidden;background:#0f1b2a;color:#e8eef6}
 <script>
 (function(){
   var ch=(new URLSearchParams(location.search).get('ch')||'u01_protein').replace(/[^a-z0-9_-]/gi,'');
-  var s=document.createElement('script');s.src='data/'+(ch==='bc10'?'bc10-v2':ch)+'.js?v=20261112cbu';
+  var s=document.createElement('script');s.src='data/'+(ch==='bc10'?'bc10-v2':ch)+'.js?v=20261112cbv';
   s.onload=function(){init()};s.onerror=function(){document.getElementById('ttl').textContent='数据加载失败'};document.head.appendChild(s);
   function init(){
     var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c){document.getElementById('ttl').textContent='未找到单元';return;}
