@@ -1367,15 +1367,15 @@
     }
     if (cid === "bc09") {
       var d9 = el("a", "sub", "📥 第9章AI讲义（PPT）");
-      d9.href = "downloads/bc09-ai-style.pptx?v=20261112can";
+      d9.href = "downloads/bc09-ai-style.pptx?v=20261112cap";
       d9.download = "BC09_糖类和糖生物学_AI讲义.pptx";
       aside.appendChild(d9);
       var d9p = el("a", "sub", "📄 第9章AI讲义PDF预览");
-      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112can";
+      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112cap";
       d9p.target = "_blank";
       aside.appendChild(d9p);
       var d9e = el("a", "sub", "📝 第9章网页题");
-      d9e.href = "exercises.html?ch=bc09&v=20261112can";
+      d9e.href = "exercises.html?ch=bc09&v=20261112cap";
       aside.appendChild(d9e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
