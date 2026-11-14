@@ -69,6 +69,8 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
     s=String(s==null?'':s).replace(/\u000b/g,'\n').replace(/\u0000/g,'').replace(/\r/g,'');
     s=s.replace(/CL\)/g,'(1)').replace(/C(10|[1-9])\)/g,'($1)');
     s=s.replace(/¢\s*\)/g,'（ ）').replace(/〈/g,'（').replace(/〉/g,'）');
+    s=s.replace(/\bA\?\s*/g,'Δ9 ').replace(/CA[”\"\)]/g,'(Δ9)');
+    s=s.replace(/Cl(?=\d)/g,'C').replace(/C(\d+)一C(\d+)/g,'C$1—C$2');
     s=s.replace(/[ \t]+/g,' ').replace(/\s*\n\s*/g,'\n').trim();
     return s;
   }
