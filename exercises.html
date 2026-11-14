@@ -99,8 +99,9 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
         var body=el('div','');body.innerHTML=esc(fmt(text,question)).replace(/\n/g,'<br>');b.appendChild(body);card.appendChild(b);return b;
       }
       block('q','原题',q.q,true);if(q.kp&&clean(q.kp))block('kp','考察知识点',q.kp);
-      var sameA=String(q.answer||'').trim()&&clean(q.answer)===clean(q.analysis);
-      var ana=sameA?null:block('analysis hide','解析',q.analysis);
+      var hasAna=String(q.analysis||'').trim();
+      var sameA=String(q.answer||'').trim()&&hasAna&&clean(q.answer)===clean(q.analysis);
+      var ana=(sameA||!hasAna)?null:block('analysis hide','解析',q.analysis);
       var ans=block('answer hide',sameA?'答案与解析':'答案',q.answer);
       var oe=null;if(q.oe&&q.oe.length)oe=block('analysis hide','选项解析',q.oe.map(function(x,i){return String.fromCharCode(65+i)+'：'+x;}).join('\n'));if(q.pitfalls)block('pitfall','易错点',q.pitfalls);
       var act=el('div','actions');
