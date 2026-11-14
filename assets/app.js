@@ -1341,54 +1341,54 @@
     }
     if (cid === "bc07") {
       var d7 = el("a", "sub", "📥 第7章AI讲义（PPT）");
-      d7.href = "downloads/bc07-ai-style.pptx?v=20261112cbd";
+      d7.href = "downloads/bc07-ai-style.pptx?v=20261112cbf";
       d7.download = "BC07_酶动力学_AI讲义.pptx";
       aside.appendChild(d7);
       var d7p = el("a", "sub", "📄 第7章AI讲义PDF预览");
-      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112cbd";
+      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112cbf";
       d7p.target = "_blank";
       aside.appendChild(d7p);
       var d7e = el("a", "sub", "📝 第7章网页题");
-      d7e.href = "exercises.html?ch=bc07&v=20261112cbd";
+      d7e.href = "exercises.html?ch=bc07&v=20261112cbf";
       aside.appendChild(d7e);
     }
     if (cid === "bc08") {
       var d8 = el("a", "sub", "📥 第8章AI讲义（PPT）");
-      d8.href = "downloads/bc08-ai-style.pptx?v=20261112cbd";
+      d8.href = "downloads/bc08-ai-style.pptx?v=20261112cbf";
       d8.download = "BC08_酶作用机制和酶活性调节_AI讲义.pptx";
       aside.appendChild(d8);
       var d8p = el("a", "sub", "📄 第8章AI讲义PDF预览");
-      d8p.href = "downloads/bc08-ai-style.pdf?v=20261112cbd";
+      d8p.href = "downloads/bc08-ai-style.pdf?v=20261112cbf";
       d8p.target = "_blank";
       aside.appendChild(d8p);
       var d8e = el("a", "sub", "📝 第8章网页题");
-      d8e.href = "exercises.html?ch=bc08&v=20261112cbd";
+      d8e.href = "exercises.html?ch=bc08&v=20261112cbf";
       aside.appendChild(d8e);
     }
     if (cid === "bc09") {
       var d9 = el("a", "sub", "📥 第9章AI讲义（PPT）");
-      d9.href = "downloads/bc09-ai-style.pptx?v=20261112cbd";
+      d9.href = "downloads/bc09-ai-style.pptx?v=20261112cbf";
       d9.download = "BC09_糖类和糖生物学_AI讲义.pptx";
       aside.appendChild(d9);
       var d9p = el("a", "sub", "📄 第9章AI讲义PDF预览");
-      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112cbd";
+      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112cbf";
       d9p.target = "_blank";
       aside.appendChild(d9p);
       var d9e = el("a", "sub", "📝 第9章网页题");
-      d9e.href = "exercises.html?ch=bc09&v=20261112cbd";
+      d9e.href = "exercises.html?ch=bc09&v=20261112cbf";
       aside.appendChild(d9e);
     }
     if (cid === "bc10") {
       var d10 = el("a", "sub", "📥 第10章AI讲义（PPT）");
-      d10.href = "downloads/bc10-ai-style.pptx?v=20261112cbd";
+      d10.href = "downloads/bc10-ai-style.pptx?v=20261112cbf";
       d10.download = "BC10_脂质和生物膜_AI讲义.pptx";
       aside.appendChild(d10);
       var d10p = el("a", "sub", "📄 第10章AI讲义PDF预览");
-      d10p.href = "downloads/bc10-ai-style.pdf?v=20261112cbd";
+      d10p.href = "downloads/bc10-ai-style.pdf?v=20261112cbf";
       d10p.target = "_blank";
       aside.appendChild(d10p);
       var d10e = el("a", "sub", "📝 第10章网页题");
-      d10e.href = "exercises.html?ch=bc10&v=20261112cbd";
+      d10e.href = "exercises.html?ch=bc10&v=20261112cbf";
       aside.appendChild(d10e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
