@@ -55,6 +55,7 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
     <span class="pill" id="progress">已掌握 0 / 0</span>
     <button class="btn" id="reset">重置掌握标记</button>
   </div>
+  <details id="calcguide" style="display:none;margin:12px 0 16px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card)"><summary style="cursor:pointer;font-weight:700;color:#1f5c8b">🧮 计算题四步法（点开）</summary><div style="margin-top:8px;font-size:13px;line-height:1.8">① 列出已知量并统一单位；② 写出公式/定义式；③ 代入数值，先约单位再算数；④ 检查数量级、单位和有效数字。<br>常见陷阱：mL↔L、mg↔g、μmol↔mol、直径↔半径、Vmax 与 v、总活力与比活力。</div></details>
   <div id="list"></div>
   <div class="foot">个人学习页面 · 进度保存在本机浏览器</div>
 </div>
@@ -133,8 +134,8 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
   }
   document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){applyFilter(b.dataset.filter);};});
   document.getElementById('reset').onclick=function(){if(confirm('清除本机掌握标记？')){done={};save();render(data);applyFilter('all');}};
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112ccf';
-  s.onload=function(){var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c||!c.exercises){document.getElementById('list').textContent='未找到习题数据。';return;}data=c.exercises;document.getElementById('title').textContent=(c.exerciseTitle||'📝 课后习题 · 网页题');document.getElementById('back').href=ch+'.html';document.getElementById('back').textContent='← 返回本章';document.getElementById('sub').textContent='共 '+data.length+' 题 · 按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT';render(data);};
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112ccg';
+  s.onload=function(){var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c||!c.exercises){document.getElementById('list').textContent='未找到习题数据。';return;}data=c.exercises;document.getElementById('title').textContent=(c.exerciseTitle||'📝 课后习题 · 网页题');if((c.exercises||[]).some(function(q){return q.type==='计算';}))document.getElementById('calcguide').style.display='block';document.getElementById('back').href=ch+'.html';document.getElementById('back').textContent='← 返回本章';document.getElementById('sub').textContent='共 '+data.length+' 题 · 按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT';render(data);};
   s.onerror=function(){document.getElementById('list').textContent='数据加载失败，请确认 data/'+ch+'.js 存在。';};
   document.head.appendChild(s);
 })();
