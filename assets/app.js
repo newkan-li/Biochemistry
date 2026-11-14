@@ -1380,7 +1380,7 @@
     }
     if (cid === "bc10") {
       var d10 = el("a", "sub", "📥 第10章AI讲义（PPT）");
-      d10.href = "downloads/bc10-ai-style.pptx?v=20261112cba";
+      d10.href = "downloads/bc10-ai-style.pptx?v=20261112cbb";
       d10.download = "BC10_脂质和生物膜_AI讲义.pptx";
       aside.appendChild(d10);
       var d10p = el("a", "sub", "📄 第10章AI讲义PDF预览");
