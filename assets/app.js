@@ -991,7 +991,7 @@
       }
     }
     if (kind === "short") {
-      box.appendChild(el("div", "cp-q", esc(q.q || "请复述本页核心知识点。")));
+      box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q || "请复述本页核心知识点。"))));
       var inp0 = el("textarea", "cp-in");
       inp0.rows = 4;
       inp0.placeholder = "先自己写答案/公式，再点“显示参考答案”核对";
@@ -1055,7 +1055,7 @@
       box.appendChild(renderMCQ(cid, q, 1));
       return box;
     }
-    box.appendChild(el("div", "cp-q", esc(q.q || "")));
+    box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q || ""))));
     var ta = el("textarea", "cp-in");
     ta.rows = 4;
     ta.placeholder = "先按考试要求写出答案要点/步骤，再展开参考答案核对";
@@ -2193,7 +2193,7 @@
     function qCard(id, info) {
       var q = info.q, c = el("div", "rev-card");
       c.innerHTML = '<div class="rev-meta">' + esc(idx.titles[info.cid] || info.cid) + " · " + esc(kindName(info.kind)) + "</div>" +
-        '<div class="rev-title">' + esc(q.q || q.term || "") + "</div>";
+        '<div class="rev-title">' + esc(cleanOCR(q.q || q.term || "")) + "</div>";
       if (info.kind === "mcq" && q.o) {
         var opts = el("div", "rev-opts");
         q.o.forEach(function (o, i) {
