@@ -1378,6 +1378,19 @@
       d9e.href = "exercises.html?ch=bc09&v=20261112cap";
       aside.appendChild(d9e);
     }
+    if (cid === "bc10") {
+      var d10 = el("a", "sub", "📥 第10章AI讲义（PPT）");
+      d10.href = "downloads/bc10-ai-style.pptx?v=20261112car";
+      d10.download = "BC10_脂质和生物膜_AI讲义.pptx";
+      aside.appendChild(d10);
+      var d10p = el("a", "sub", "📄 第10章AI讲义PDF预览");
+      d10p.href = "downloads/bc10-ai-style.pdf?v=20261112car";
+      d10p.target = "_blank";
+      aside.appendChild(d10p);
+      var d10e = el("a", "sub", "📝 第10章网页题");
+      d10e.href = "exercises.html?ch=bc10&v=20261112car";
+      aside.appendChild(d10e);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");
@@ -1929,7 +1942,7 @@
     var ctl = document.getElementById("diagctl"), host = document.getElementById("diaghost"), res = document.getElementById("diagresult");
     if (!ctl || !host) return;
     var names = chNames();
-    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05", "bc06", "bc07", "bc08", "bc09"];
+    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05", "bc06", "bc07", "bc08", "bc09", "bc10"];
     var want = "";
     try { want = new URLSearchParams(location.search).get("ch") || ""; } catch (e) { }
     if (ids.indexOf(want) < 0) want = "bc02";
