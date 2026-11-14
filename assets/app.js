@@ -166,6 +166,16 @@
     t = t.replace(/(<br>)+/g, "<br>").replace(/^<br>/, "").replace(/<br>$/, "");
     return t;
   }
+  function fmtExp(s) {
+    var t = esc(String(s == null ? "" : s)).replace(/^解析\s*[:：]\s*/, "").replace(/\r/g, "");
+    var out = [];
+    t.split(/\n+/).forEach(function (p) {
+      p = p.trim(); if (!p) return;
+      var arr = p.match(/[^。；;]+[。；;]?/g) || [p];
+      arr.forEach(function (x) { x = x.trim(); if (x) out.push('<div class="exp-line">' + x + '</div>'); });
+    });
+    return out.join("");
+  }
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function chNames() { var m = {}; (window.MANIFEST || []).forEach(function (x) { m[x.id] = x.title; }); return m; }
 
@@ -508,7 +518,7 @@
     bar.appendChild(bChk); bar.appendChild(bShow); box.appendChild(bar);
     var det = el("details", "sol");
     det.innerHTML = '<summary>参考答案</summary><div class="ansbox"><b>' + esc(q.a) + "</b></div>" +
-      (q.e ? '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtAns(q.e) + "</div></div>" : "");
+      (q.e ? '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>" : "");
     box.appendChild(det);
     var res = el("div", "mres"); res.style.display = "none"; box.appendChild(res);
     var cb = causeBox(cid, q.id); box.appendChild(cb);
@@ -547,7 +557,7 @@
         (q.src ? ' <span class="src">[' + esc(q.src) + ']</span>' : "");
       answerHTML = "<b>参考答案：</b><div class=\"anspts\">" + fmtAns(kind === "calc" ? (q.steps || q.a) : q.a) + "</div>";
       kps = q.kps || "";
-      if (q.e) answerHTML += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtAns(q.e) + "</div></div>";
+      if (q.e) answerHTML += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>";
     }
     box.appendChild(el("p", "qq", title));
     if (q.img) { var qimg = el("img", "q-img"); qimg.src = q.img; qimg.alt = "题目配图"; qimg.loading = "lazy"; box.appendChild(qimg); }
@@ -663,7 +673,7 @@
         var html = (ok === true ? '<span class="ok">✔ 正确，已从错题本移除</span>' :
                    ok === false ? '<span class="no">✘ 错误</span>' : '<b>参考答案</b>') +
           '<div class="anspts" style="margin-top:4px"><b>答案：</b>' + fmtAns(ans) + "</div>";
-        if (q && q.e) html += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtAns(q.e) + "</div></div>";
+        if (q && q.e) html += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>";
         if (q && q.oe && q.oe.length) {
           html += '<div class="cp-oe"><b>选项解析</b><ul>' + q.oe.map(function (x, i) {
             return "<li><b>" + String(q.o && q.o[i] ? q.o[i] : "").trim().charAt(0) + "</b>：" + esc(x) + "</li>";
@@ -979,7 +989,7 @@
       box.appendChild(inp0);
       var showB = el("button", "cp-opt", "显示参考答案");
       showB.onclick = function () {
-        fb.innerHTML = '<div class="cp-ans"><b>参考答案</b>：<div class="anspts">' + fmtAns(q.a || "本页为过渡页，无文字要点。") + "</div>" + (q.e ? '<div class="cp-exp"><b>解析</b>：'+fmtAns(String(q.e).replace(/^解析：/,''))+'</div>' : '') + '</div>';
+        fb.innerHTML = '<div class="cp-ans"><b>参考答案</b>：<div class="anspts">' + fmtAns(q.a || "本页为过渡页，无文字要点。") + "</div>" + (q.e ? '<div class="cp-exp"><b>解析</b><div class="exp-lines">'+fmtExp(q.e)+'</div></div>' : '') + '</div>';
         showB.disabled = true;
       };
       box.appendChild(showB);
@@ -1044,7 +1054,7 @@
     var fb = el("div", "cp-fb");
     var b = el("button", "cp-opt", "显示参考答案");
     b.onclick = function () {
-      fb.innerHTML = '<div class="cp-ans"><b>参考答案 / 得分点</b><div class="anspts">' + fmtAns(q.a || "") + '</div>' + (q.e ? '<div class="cp-exp"><b>解析</b>：'+fmtAns(String(q.e).replace(/^解析：/,''))+'</div>' : '') + '</div>';
+      fb.innerHTML = '<div class="cp-ans"><b>参考答案 / 得分点</b><div class="anspts">' + fmtAns(q.a || "") + '</div>' + (q.e ? '<div class="cp-exp"><b>解析</b><div class="exp-lines">'+fmtExp(q.e)+'</div></div>' : '') + '</div>';
       b.disabled = true;
     };
     box.appendChild(b); box.appendChild(fb);

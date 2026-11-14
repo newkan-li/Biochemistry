@@ -254,6 +254,11 @@ html[data-theme="sepia"] .checkpoint .cp-opt.right{background:#e2ecd6;border-col
 html[data-theme="sepia"] .checkpoint .cp-opt.wrong{background:#f3ddd6;border-color:#a2482a}
 .checkpoint .cp-in{width:100%;max-width:360px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:6px}
 .checkpoint .cp-fb{margin-top:6px;font-size:12.5px}
+.checkpoint .cp-fb .cp-exp{margin-top:8px;padding:8px 10px;border-left:3px solid #1f5c8b;background:#f2f7fb;border-radius:0 7px 7px 0;line-height:1.75;font-size:12.5px}
+.checkpoint .cp-fb .cp-exp>b{display:block;margin-bottom:3px;color:#1f5c8b}
+.checkpoint .cp-fb .cp-exp .exp-line{display:block;margin:2px 0;text-align:left}
+html[data-theme="dark"] .checkpoint .cp-fb .cp-exp{background:#22303d;border-left-color:#5b9bd5}
+html[data-theme="dark"] .checkpoint .cp-fb .cp-exp>b{color:#8fc3ee}
 .checkpoint .cp-fb .ok{color:var(--ok);font-weight:700}
 .checkpoint .cp-fb .no{color:var(--acc);font-weight:700}
 .hm-mod{margin:8px 0}
@@ -464,8 +469,11 @@ html[data-theme="dark"] .toc-subgroup>summary{color:#a8c6e0}
 .test-wrap h3{margin:12px 0 6px;font-size:13.5px;color:#7a2a24}
 html[data-theme="dark"] .chapter-test{border-top-color:#33475a}
 html[data-theme="dark"] .test-wrap{background:#1c2630;border-color:#33404d}
-.q .q-exp{margin-top:8px;padding:8px 10px;border-left:3px solid #1f5c8b;background:#f2f7fb;border-radius:0 7px 7px 0;font-size:12.5px;line-height:1.7}
+.q .q-exp{margin-top:8px;padding:8px 10px;border-left:3px solid #1f5c8b;background:#f2f7fb;border-radius:0 7px 7px 0;font-size:12.5px;line-height:1.75}
+.q .q-exp>b{display:block;margin-bottom:3px;color:#1f5c8b}
+.q .q-exp .exp-line{display:block;margin:2px 0;text-align:left}
 html[data-theme="dark"] .q .q-exp{background:#22303d;border-left-color:#5b9bd5}
+html[data-theme="dark"] .q .q-exp>b{color:#8fc3ee}
 .cp-retry{margin-top:8px}
 .checkpoint .cp-fb .cp-opt{margin-top:6px}
 .slide .sh .src-type{font-size:10.5px;color:#6b7c8f;border:1px solid #cbd9ea;border-radius:10px;padding:1px 7px;margin-left:8px;white-space:nowrap}
