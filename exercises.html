@@ -145,7 +145,7 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
   }
   document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){applyFilter(b.dataset.filter);};});
   document.getElementById('reset').onclick=function(){if(confirm('清除本机掌握标记？')){done={};save();render(data);applyFilter('all');}};
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112ccj';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112cck';
   s.onload=function(){var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c||!c.exercises){document.getElementById('list').textContent='未找到习题数据。';return;}data=c.exercises;document.getElementById('title').textContent=(c.exerciseTitle||'📝 课后习题 · 网页题');if((c.exercises||[]).some(function(q){return q.type==='计算';}))document.getElementById('calcguide').style.display='block';document.getElementById('back').href=ch+'.html';document.getElementById('back').textContent='← 返回本章';document.getElementById('sub').textContent='共 '+data.length+' 题 · 按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT';render(data);};
   s.onerror=function(){document.getElementById('list').textContent='数据加载失败，请确认 data/'+ch+'.js 存在。';};
   document.head.appendChild(s);
