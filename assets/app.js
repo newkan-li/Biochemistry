@@ -1365,6 +1365,19 @@
       d8e.href = "exercises.html?ch=bc08&v=20261112cae";
       aside.appendChild(d8e);
     }
+    if (cid === "bc09") {
+      var d9 = el("a", "sub", "📥 第9章AI讲义（PPT）");
+      d9.href = "downloads/bc09-ai-style.pptx?v=20261112cal";
+      d9.download = "BC09_糖类和糖生物学_AI讲义.pptx";
+      aside.appendChild(d9);
+      var d9p = el("a", "sub", "📄 第9章AI讲义PDF预览");
+      d9p.href = "downloads/bc09-ai-style.pdf?v=20261112cal";
+      d9p.target = "_blank";
+      aside.appendChild(d9p);
+      var d9e = el("a", "sub", "📝 第9章网页题");
+      d9e.href = "exercises.html?ch=bc09&v=20261112cal";
+      aside.appendChild(d9e);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");
@@ -1916,7 +1929,7 @@
     var ctl = document.getElementById("diagctl"), host = document.getElementById("diaghost"), res = document.getElementById("diagresult");
     if (!ctl || !host) return;
     var names = chNames();
-    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05", "bc06", "bc07", "bc08"];
+    var ids = ["bc01", "bc02", "bc03", "bc04", "bc05", "bc06", "bc07", "bc08", "bc09"];
     var want = "";
     try { want = new URLSearchParams(location.search).get("ch") || ""; } catch (e) { }
     if (ids.indexOf(want) < 0) want = "bc02";
