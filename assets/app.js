@@ -442,7 +442,7 @@
     });
     var res = box._res; res.style.display = "block";
     var mh = (ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>（正确答案：<b>' + esc(correct) + "</b>）") +
-      '<div style="margin-top:4px">解析：' + esc(q.e || "") + "</div>";
+      '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e || "") + "</div></div>";
     if (q.oe && q.oe.length) {
       mh += '<div class="q-oe"><b>选项解析</b><ul>' + q.oe.map(function (x, i) {
         return "<li><b>" + String(q.o && q.o[i] ? q.o[i] : "").trim().charAt(0) + "</b>：" + esc(x) + "</li>";
@@ -500,7 +500,7 @@
     });
     var res = box._res; res.style.display = "block";
     res.innerHTML = (ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>（正确答案：<b>' + esc(correct) + "</b>）") +
-      '<div style="margin-top:4px">解析：' + esc(q.e || "") + "</div>";
+      '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e || "") + "</div></div>";
     box._cause.style.display = ok ? "none" : "flex";
     if (!ok) addWrong(cid, { id: q.id, type: "judge", q: q.q, correct: correct, chosen: chosen, cause: "", ts: Date.now() });
     else clearWrong(cid, q.id);
@@ -533,7 +533,7 @@
       inp.classList.remove("right", "wrong"); inp.classList.add(ok ? "right" : "wrong");
       res.style.display = "block";
       res.innerHTML = (ok ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 与参考答案不完全一致</span>，可点“显示答案”核对。') +
-        (q.e ? '<div style="margin-top:4px">解析：' + esc(q.e) + "</div>" : "");
+        (q.e ? '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>" : "");
       cb.style.display = ok ? "none" : "flex";
       if (ok) { clearWrong(cid, q.id); } else { addWrong(cid, { id: q.id, type: "fill", q: q.q, correct: q.a, chosen: inp.value, cause: "", ts: Date.now() }); }
       kpRecord(q.kpId || q.kp, ok);
@@ -965,7 +965,7 @@
       }
       var fbhtml = (correct ? '<span class="ok">✔ 正确</span>' : '<span class="no">✘ 错误</span>') +
         '　正确答案：<b>' + esc(answerText()) + "</b>" +
-        (q.e ? '<div style="margin-top:4px">解析：' + esc(q.e) + "</div>" : "");
+        (q.e ? '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>" : "");
       if (q.oe && q.oe.length) {
         fbhtml += '<div class="cp-oe"><b>选项解析</b><ul>' + q.oe.map(function (x, i) {
           return "<li><b>" + String(q.o && q.o[i] ? q.o[i] : "").trim().charAt(0) + "</b>：" + esc(x) + "</li>";
