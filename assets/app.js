@@ -1421,6 +1421,19 @@
       d10e.href = "exercises.html?ch=bc10&v=20261112cbf";
       aside.appendChild(d10e);
     }
+    if (cid === "bc11") {
+      var d11 = el("a", "sub", "📥 第11章AI讲义（PPT）");
+      d11.href = "downloads/bc11-ai-style.pptx?v=20261112ccw";
+      d11.download = "BC11_核酸的结构和功能_AI讲义.pptx";
+      aside.appendChild(d11);
+      var d11p = el("a", "sub", "📄 第11章AI讲义PDF预览");
+      d11p.href = "downloads/bc11-ai-style.pdf?v=20261112ccw";
+      d11p.target = "_blank";
+      aside.appendChild(d11p);
+      var d11e = el("a", "sub", "📝 第11章网页题");
+      d11e.href = "exercises.html?ch=bc11&v=20261112ccw";
+      aside.appendChild(d11e);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");
