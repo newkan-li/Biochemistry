@@ -18,6 +18,12 @@
     <p>中英对照 · 按章筛选 · 关键词搜索 ｜ 共 <span id="gcount">0</span> 条</p>
   </header>
   <p><a href="index.html">← 返回首页</a></p>
+  <section id="abbr" style="margin:18px 0 24px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg2,#fbfdff)">
+    <h2 style="margin:0 0 4px">🔎 英文缩写查询</h2>
+    <p class="hint" style="margin:0 0 8px">输入 pH、pI、SDS、Km、ELISA、HPLC、IEF 等缩写/符号；也可搜中文或全称。</p>
+    <input id="abbrsearch" class="ans" placeholder="例如：pH / pI / SDS / Km / ELISA" autocomplete="off">
+    <div id="abbrlist" style="margin-top:10px"></div>
+  </section>
   <div id="gcontrols">
     <input id="gsearch" class="ans" placeholder="搜索中文名 / English / 释义…" autocomplete="off">
     <div id="gchips" class="causes"></div>
@@ -26,6 +32,8 @@
   <footer>仅供个人学习使用</footer>
 </div>
 <script src="data/glossary.js?v=20260914p"></script>
+<script src="data/abbr.js?v=20261112cai"></script>
 <script src="assets/app.js?v=20261015c"></script>
+<script src="assets/abbr.js?v=20261112cai"></script>
 </body>
 </html>
