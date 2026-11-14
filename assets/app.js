@@ -1355,7 +1355,7 @@
       d7.download = "BC07_酶动力学_AI讲义.pptx";
       aside.appendChild(d7);
       var d7p = el("a", "sub", "📄 第7章AI讲义PDF预览");
-      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112cbf";
+      d7p.href = "downloads/bc07-ai-style.pdf?v=20261112cbn";
       d7p.target = "_blank";
       aside.appendChild(d7p);
       var d7e = el("a", "sub", "📝 第7章网页题");
