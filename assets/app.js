@@ -164,9 +164,20 @@
     t = t.replace(/豆薄酸/g, "豆蔻酸");
     return t.replace(/[ \t]+/g, " ").trim();
   }
+  function annotateAbbr(s) {
+    var map = [["SV","皂化值"],["IV","碘值"],["Mr","平均相对分子质量"],["TG","三酰甘油"],["KOH","氢氧化钾"],["I₂","碘"],["PUFA","多不饱和脂肪酸"],["SOD","超氧化物歧化酶"],["CAT","过氧化氢酶"],["GPx","谷胱甘肽过氧化物酶"],["CM","乳糜微粒"],["VLDL","极低密度脂蛋白"],["LDL","低密度脂蛋白"],["HDL","高密度脂蛋白"],["IU","国际单位"],["Km","米氏常数"],["Vmax","最大反应速度"],["kcat","转换数"]];
+    map.forEach(function (pair) {
+      var a = pair[0], cn = pair[1];
+      if (s.indexOf(a + "（") >= 0) return;
+      if (new RegExp(cn + "\\s*" + a).test(s)) return;
+      var re = new RegExp("(^|[^A-Za-z])" + a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?=$|[^A-Za-z])");
+      if (re.test(s)) s = s.replace(re, "$1" + a + "（" + cn + "）");
+    });
+    return s;
+  }
   /* 把连排的参考答案拆成易读的分点（圈号 / 【小标题】 / 换行） */
   function fmtAns(s) {
-    var t = esc(cleanOCR(s)).replace(/\r/g, "");
+    var t = esc(annotateAbbr(cleanOCR(s))).replace(/\r/g, "");
     t = t.replace(/\n+/g, "<br>");
     t = t.replace(/\s*([①-⑳])/g, "<br>$1");
     t = t.replace(/\s*(【[^】]{1,24}】)/g, "<br>$1");
@@ -176,7 +187,7 @@
     return t;
   }
   function fmtExp(s) {
-    var t = esc(cleanOCR(s)).replace(/^解析\s*[:：]\s*/, "").replace(/\r/g, "");
+    var t = esc(annotateAbbr(cleanOCR(s))).replace(/^解析\s*[:：]\s*/, "").replace(/\r/g, "");
     var out = [];
     t.split(/\n+/).forEach(function (p) {
       p = p.trim(); if (!p) return;

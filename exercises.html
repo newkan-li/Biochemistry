@@ -75,8 +75,19 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
     s=s.replace(/[ \t]+/g,' ').replace(/\s*\n\s*/g,'\n').trim();
     return s;
   }
+  function annotateAbbr(s){
+    var map=[['SV','皂化值'],['IV','碘值'],['Mr','平均相对分子质量'],['TG','三酰甘油'],['KOH','氢氧化钾'],['I₂','碘'],['PUFA','多不饱和脂肪酸'],['SOD','超氧化物歧化酶'],['CAT','过氧化氢酶'],['GPx','谷胱甘肽过氧化物酶'],['CM','乳糜微粒'],['VLDL','极低密度脂蛋白'],['LDL','低密度脂蛋白'],['HDL','高密度脂蛋白'],['IU','国际单位'],['Km','米氏常数'],['Vmax','最大反应速度'],['kcat','转换数']];
+    map.forEach(function(pair){
+      var a=pair[0],cn=pair[1];
+      if(s.indexOf(a+'（')>=0)return;
+      if(new RegExp(cn+'\\s*'+a).test(s))return;
+      var re=new RegExp('(^|[^A-Za-z])'+a.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[^A-Za-z])');
+      if(re.test(s))s=s.replace(re,'$1'+a+'（'+cn+'）');
+    });
+    return s;
+  }
   function fmt(s,question){
-    s=clean(s);
+    s=clean(s);s=annotateAbbr(s);
     s=s.replace(/\s*(?=\(\d{1,2}\))/g,'\n');
     if(question)s=s.replace(/\s+(?=[A-D][.．、]\s)/g,'\n');
     s=s.replace(/\s*(①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩)/g,'\n$1');
@@ -134,7 +145,7 @@ h1{font-size:22px;margin:0}.sub{color:var(--muted);font-size:13px}
   }
   document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){applyFilter(b.dataset.filter);};});
   document.getElementById('reset').onclick=function(){if(confirm('清除本机掌握标记？')){done={};save();render(data);applyFilter('all');}};
-  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112ccg';
+  var s=document.createElement('script');s.src='data/'+ch+'.js?v=20261112cch';
   s.onload=function(){var c=window.CHAPTERS&&window.CHAPTERS[ch];if(!c||!c.exercises){document.getElementById('list').textContent='未找到习题数据。';return;}data=c.exercises;document.getElementById('title').textContent=(c.exerciseTitle||'📝 课后习题 · 网页题');if((c.exercises||[]).some(function(q){return q.type==='计算';}))document.getElementById('calcguide').style.display='block';document.getElementById('back').href=ch+'.html';document.getElementById('back').textContent='← 返回本章';document.getElementById('sub').textContent='共 '+data.length+' 题 · 按顺序：原题 → 考察知识点 → 解析 → 答案 → 对应 PPT';render(data);};
   s.onerror=function(){document.getElementById('list').textContent='数据加载失败，请确认 data/'+ch+'.js 存在。';};
   document.head.appendChild(s);
