@@ -1380,15 +1380,15 @@
     }
     if (cid === "bc10") {
       var d10 = el("a", "sub", "📥 第10章AI讲义（PPT）");
-      d10.href = "downloads/bc10-ai-style.pptx?v=20261112cay";
+      d10.href = "downloads/bc10-ai-style.pptx?v=20261112caz";
       d10.download = "BC10_脂质和生物膜_AI讲义.pptx";
       aside.appendChild(d10);
       var d10p = el("a", "sub", "📄 第10章AI讲义PDF预览");
-      d10p.href = "downloads/bc10-ai-style.pdf?v=20261112cay";
+      d10p.href = "downloads/bc10-ai-style.pdf?v=20261112caz";
       d10p.target = "_blank";
       aside.appendChild(d10p);
       var d10e = el("a", "sub", "📝 第10章网页题");
-      d10e.href = "exercises.html?ch=bc10&v=20261112cay";
+      d10e.href = "exercises.html?ch=bc10&v=20261112caz";
       aside.appendChild(d10e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
