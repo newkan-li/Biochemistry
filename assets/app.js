@@ -2498,6 +2498,20 @@
         html += '<div class="tb-gaps">⚠️ bc01–bc14 尚未覆盖的董晓燕章节：<ul>' +
           T.dong.gaps.map(function (g) { return "<li>" + esc(g) + "</li>"; }).join("") + '</ul></div>';
       }
+      if (T.dong.legacy && T.dong.legacy.length) {
+        html += '<h3 style="font-size:17px;color:#7a2a24;margin:20px 0 6px">旧版老师 PPT · 代谢与分子</h3>' +
+          '<p class="hint">这些是旧版代谢/分子模块，对应董晓燕第八章至第十二章。</p>' +
+          '<table class="tbl"><thead><tr><th>旧版 PPT 模块</th><th>董晓燕对应章节</th><th>覆盖</th><th>说明</th><th>学习</th></tr></thead><tbody>';
+        T.dong.legacy.forEach(function (r) {
+          html += '<tr><td><b>' + esc(r.title) + '</b></td><td>' + esc(r.dong) + '</td><td>' + esc(r.cover) + '</td><td>' + esc(r.note) + '</td>' +
+            '<td><a href="' + esc(r.web) + '.html">去学习 →</a></td></tr>';
+        });
+        html += '</tbody></table>';
+        if (T.dong.legacyGaps && T.dong.legacyGaps.length) {
+          html += '<div class="tb-gaps">⚠️ 旧版 PPT 仍未覆盖：<ul>' +
+            T.dong.legacyGaps.map(function (g) { return "<li>" + esc(g) + "</li>"; }).join("") + '</ul></div>';
+        }
+      }
       html += '</div><hr style="border:0;border-top:1px solid var(--line);margin:24px 0">';
     }
     (T.chapters || []).forEach(function (ch) {

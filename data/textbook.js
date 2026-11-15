@@ -20,3 +20,14 @@ window.TEXTBOOK={"source": "朱圣庚、徐长法《生物化学》第4版（上
   ],
   gaps:["第八章 代谢总论","第九章 糖代谢","第十章 脂质代谢","第十一章 核酸代谢","第十二章 蛋白质代谢","第十三章 代谢调节综述"]
 };
+window.TEXTBOOK.dong.legacy=[
+  {web:"sugar1",title:"第六章 糖代谢（分解）",dong:"第九章 糖代谢 第一、二节",cover:"部分",note:"糖降解/吸收、无氧氧化、TCA、PPP"},
+  {web:"sugar2",title:"糖代谢（二）合成与调节",dong:"第九章 糖代谢 第三、四、五节",cover:"部分",note:"糖异生、糖原合成、糖代谢调节"},
+  {web:"bioox",title:"第五章 生物氧化",dong:"第八章 代谢总论 第二、三节",cover:"部分",note:"生物能学、呼吸链、氧化磷酸化"},
+  {web:"lipid",title:"第七章 脂类代谢",dong:"第十章 脂质代谢",cover:"高",note:"脂质降解/转运、脂肪酸氧化、脂质合成"},
+  {web:"protein",title:"蛋白质代谢",dong:"第十二章 蛋白质代谢",cover:"高",note:"蛋白质降解、氨基酸分解、尿素循环、翻译"},
+  {web:"nucleic",title:"核酸代谢",dong:"第十一章 核酸代谢 第一节",cover:"部分",note:"核酸降解和核苷酸代谢"},
+  {web:"dna",title:"DNA 的复制和修复",dong:"第十一章 核酸代谢 第二节",cover:"部分",note:"DNA复制、损伤修复、逆转录"},
+  {web:"rna",title:"RNA 合成与加工",dong:"第十一章 核酸代谢 第三节",cover:"部分",note:"转录、转录后加工、RNA复制"}
+];
+window.TEXTBOOK.dong.legacyGaps=["第十一章第四节 核酸代谢调节（旧版未单独覆盖）","第十三章 代谢调节综述（旧版未单独覆盖）"];
