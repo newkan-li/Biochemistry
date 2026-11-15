@@ -60,7 +60,10 @@ table.tbl{border-collapse:collapse;width:100%;margin:.5em 0 1em;font-size:14px}
 .lv-掌握{background:var(--acc)}.lv-理解{background:var(--warn)}.lv-了解{background:#607d8b}
 .slide .body{display:flex;gap:14px;align-items:flex-start}
 .slide .body img{width:52%;max-width:560px;border:1px solid var(--line);border-radius:8px;cursor:zoom-in;background:#fff}
-.slide .body .notes{flex:1;min-width:0;font-size:13.5px;white-space:pre-wrap}
+.slide .body .notes{flex:1;min-width:0;font-size:13.5px;white-space:pre-wrap;color:var(--ink)}
+.slide .points li{color:#5a4a1a}
+html[data-theme="dark"] .slide .body .notes{color:#d7dee8}
+html[data-theme="dark"] .slide .points li{color:#d8c98f}
 .slide.done{outline:2px solid #bfe3cc}
 .slide .donebtn{font-size:12px;border:1px solid var(--line);background:#fff;color:var(--ok);border-radius:16px;padding:2px 10px;cursor:pointer}
 .slide .donebtn.on{background:var(--ok);color:#fff;border-color:var(--ok)}
@@ -559,3 +562,8 @@ body[data-ch="bc02"] .slide .body{flex-direction:column;gap:12px}
 body[data-ch="bc02"] .slide .body img{width:100%;max-width:100%;cursor:zoom-in}
 body[data-ch="bc02"] .slide .slide-text{width:100%}
 body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
+
+@media print {
+  .slide, .slide .body .notes, .slide .points li, .slide .sh .t { color:#111 !important; background:#fff !important; }
+  .slide .body img { border-color:#bbb !important; }
+}
