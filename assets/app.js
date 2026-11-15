@@ -1545,10 +1545,22 @@
         head.innerHTML = '<span class="t">' + esc(s.title) + '</span><span class="src-type">' + imgType + '</span>' + (s.srcType ? '<span class="src-type">' + esc(s.srcType) + '</span>' : '') + (s.role ? '<span class="src-type">' + esc(s.role) + '</span>' : '') + (s.source ? '<span class="src-type">' + esc(s.source) + '</span>' : '') + '<span class="lv lv-' + esc(lv) + '">' + esc(lv) + "</span>";
         card.appendChild(head);
         var body = el("div", "body");
+        if (s.origImg) body.classList.add("dualbody");
         if (s.img) {
-          var img = el("img"); img.src = s.img; img.loading = "lazy"; img.alt = s.title;
-          img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
-          body.appendChild(img);
+          if (s.origImg) {
+            var duo = el("div", "dualimg");
+            [["重绘摘要", s.img], ["原图", s.origImg]].forEach(function (pair) {
+              var fig = el("figure");
+              var im = el("img"); im.src = pair[1]; im.loading = "lazy"; im.alt = pair[0];
+              im.onclick = function () { document.getElementById("lbimg").src = pair[1]; document.getElementById("lightbox").classList.add("on"); };
+              var cap = el("figcaption", "", pair[0]); fig.appendChild(im); fig.appendChild(cap); duo.appendChild(fig);
+            });
+            body.appendChild(duo);
+          } else {
+            var img = el("img"); img.src = s.img; img.loading = "lazy"; img.alt = s.title;
+            img.onclick = function () { document.getElementById("lbimg").src = s.img; document.getElementById("lightbox").classList.add("on"); };
+            body.appendChild(img);
+          }
         }
         var textwrap = el("div", "slide-text");
         if (s.imageExplain) {
