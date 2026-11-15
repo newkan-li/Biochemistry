@@ -1451,15 +1451,15 @@
     }
     if (cid === "bc13") {
       var d13 = el("a", "sub", "📥 第13章AI讲义（PPT）");
-      d13.href = "downloads/bc13-ai-style.pptx?v=20261112cfo";
+      d13.href = "downloads/bc13-ai-style.pptx?v=20261112cfp";
       d13.download = "BC13_维生素和辅酶_AI讲义.pptx";
       aside.appendChild(d13);
       var d13p = el("a", "sub", "📄 第13章AI讲义PDF预览");
-      d13p.href = "downloads/bc13-ai-style.pdf?v=20261112cfo";
+      d13p.href = "downloads/bc13-ai-style.pdf?v=20261112cfp";
       d13p.target = "_blank";
       aside.appendChild(d13p);
       var d13e = el("a", "sub", "📝 第13章网页题");
-      d13e.href = "exercises.html?ch=bc13&v=20261112cfo";
+      d13e.href = "exercises.html?ch=bc13&v=20261112cfp";
       aside.appendChild(d13e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
