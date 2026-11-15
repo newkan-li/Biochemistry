@@ -569,8 +569,8 @@ body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
 }
 
 .slide .body.dualbody{display:block}
-.dualimg{display:flex;gap:12px;margin:0 0 10px;align-items:flex-start}
-.dualimg figure{flex:1;margin:0;min-width:0}
-.dualimg img{width:100%;max-width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}
+.dualimg{display:flex;flex-direction:column;gap:14px;margin:0 0 10px;align-items:stretch}
+.dualimg figure{width:100%;margin:0;min-width:0}
+.dualimg img{display:block;width:100%;max-width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}
 .dualimg figcaption{font-size:12px;color:var(--sub);text-align:center;margin-top:3px}
-@media(max-width:760px){.dualimg{flex-direction:column}.dualimg figure{width:100%}}
+
