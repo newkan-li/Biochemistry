@@ -1562,7 +1562,7 @@
           fb.innerHTML = '<div class="fn-h">🔍 图注解读</div><p>' + esc(s.fig).replace(/\n/g, "<br>") + "</p>";
           card.appendChild(fb);
         }
-        if (s.table && s.table.length) {
+        if (Array.isArray(s.table) && s.table.length) {
           var tw = el("div", "aa-table");
           var th = '<div class="at-h">📊 ' + esc(s.tableTitle || "数据表") + '</div><div class="at-scroll"><table><thead><tr>';
           s.table[0].forEach(function (h) { th += "<th>" + esc(h) + "</th>"; });
