@@ -1562,7 +1562,7 @@
         if (s.img) {
           if (s.origImg) {
             var duo = el("div", "dualimg");
-            [["重绘摘要", s.img], ["原图", s.origImg]].forEach(function (pair) {
+            (s.origFirst ? [["原图", s.origImg], ["重绘摘要", s.img]] : [["重绘摘要", s.img], ["原图", s.origImg]]).forEach(function (pair) {
               var fig = el("figure");
               var im = el("img"); im.src = pair[1]; im.loading = "lazy"; im.alt = pair[0];
               im.onclick = function () { document.getElementById("lbimg").src = pair[1]; document.getElementById("lightbox").classList.add("on"); };
