@@ -1438,15 +1438,15 @@
     }
     if (cid === "bc12") {
       var d12 = el("a", "sub", "📥 第12章AI讲义（PPT）");
-      d12.href = "downloads/bc12-ai-style.pptx?v=20261112cfc";
+      d12.href = "downloads/bc12-ai-style.pptx?v=20261112cfd";
       d12.download = "BC12_核酸的物理化学性质和研究方法_AI讲义.pptx";
       aside.appendChild(d12);
       var d12p = el("a", "sub", "📄 第12章AI讲义PDF预览");
-      d12p.href = "downloads/bc12-ai-style.pdf?v=20261112cfc";
+      d12p.href = "downloads/bc12-ai-style.pdf?v=20261112cfd";
       d12p.target = "_blank";
       aside.appendChild(d12p);
       var d12e = el("a", "sub", "📝 第12章网页题");
-      d12e.href = "exercises.html?ch=bc12&v=20261112cfc";
+      d12e.href = "exercises.html?ch=bc12&v=20261112cfd";
       aside.appendChild(d12e);
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
