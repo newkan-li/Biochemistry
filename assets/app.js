@@ -1024,7 +1024,7 @@
       q.o.forEach(function (o, i) { var b = el("button", "cp-opt", esc(cleanOCR(o))); b.onclick = function () { grade(optLetter(o) === String(q.a).trim(), opts, b); }; opts.appendChild(b); });
       box.appendChild(opts);
     } else if (kind === "judge") {
-      box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q))));
+      box.appendChild(el("div", "cp-q", "判断：下列说法是否正确？ " + esc(cleanOCR(q.q))));
       var o2 = el("div", "cp-opts");
       ["对", "错"].forEach(function (v) { var b = el("button", "cp-opt", v); b.onclick = function () { grade(v === q.a, o2, b); }; o2.appendChild(b); });
       box.appendChild(o2);
