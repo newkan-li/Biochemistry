@@ -1462,6 +1462,19 @@
       d13e.href = "exercises.html?ch=bc13&v=20261112cfp";
       aside.appendChild(d13e);
     }
+    if (cid === "bc14") {
+      var d14 = el("a", "sub", "📥 第14章AI讲义（PPT）");
+      d14.href = "downloads/bc14-ai-style.pptx?v=20261112cft";
+      d14.download = "BC14_激素和信号转导_AI讲义.pptx";
+      aside.appendChild(d14);
+      var d14p = el("a", "sub", "📄 第14章AI讲义PDF预览");
+      d14p.href = "downloads/bc14-ai-style.pdf?v=20261112cft";
+      d14p.target = "_blank";
+      aside.appendChild(d14p);
+      var d14e = el("a", "sub", "📝 第14章网页题");
+      d14e.href = "exercises.html?ch=bc14&v=20261112cft";
+      aside.appendChild(d14e);
+    }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
     var exA = el("a", "sub", "⏱ 本章限时测试");
