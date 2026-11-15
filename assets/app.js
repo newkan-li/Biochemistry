@@ -2484,6 +2484,22 @@
     var host = document.getElementById("tbhost"); if (!host) return;
     var T = window.TEXTBOOK; if (!T) { host.innerHTML = '<p class="empty">数据未加载。</p>'; return; }
     var html = '<p class="hint">' + esc(T.source) + " ｜ " + esc(T.note) + "</p>";
+    if (T.dong) {
+      html += '<div class="tb-dong"><h2 style="font-size:20px;color:#1f5c8b;margin:18px 0 6px">📘 董晓燕《生物化学》第4版覆盖对照</h2>' +
+        '<p class="hint">' + esc(T.dong.source) + " ｜ " + esc(T.dong.note) + "</p>" +
+        '<div class="tb-coverage"><b>覆盖范围：</b>' + esc(T.dong.coverage) + '</div>' +
+        '<table class="tbl"><thead><tr><th>bc 章节</th><th>董晓燕对应章节</th><th>覆盖</th><th>说明</th><th>学习</th></tr></thead><tbody>';
+      (T.dong.chapters || []).forEach(function (r) {
+        html += '<tr><td><b>' + esc(r.title) + '</b></td><td>' + esc(r.dong) + '</td><td>' + esc(r.cover) + '</td><td>' + esc(r.note) + '</td>' +
+          '<td><a href="' + esc(r.bc) + '.html">去学习 →</a></td></tr>';
+      });
+      html += '</tbody></table>';
+      if (T.dong.gaps && T.dong.gaps.length) {
+        html += '<div class="tb-gaps">⚠️ bc01–bc14 尚未覆盖的董晓燕章节：<ul>' +
+          T.dong.gaps.map(function (g) { return "<li>" + esc(g) + "</li>"; }).join("") + '</ul></div>';
+      }
+      html += '</div><hr style="border:0;border-top:1px solid var(--line);margin:24px 0">';
+    }
     (T.chapters || []).forEach(function (ch) {
       html += '<div class="tb-chapter"><h3>' + esc(ch.title) + "</h3>" +
         '<table class="tbl"><thead><tr><th>教材章节（第4版）</th><th>本站模块</th><th>页号</th><th>覆盖</th><th>学习</th><th>真题</th></tr></thead><tbody>';
