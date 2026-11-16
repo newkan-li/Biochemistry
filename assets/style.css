@@ -599,3 +599,6 @@ body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
 .chapnav.side{margin:8px 0}
 .chapnav .navbtn{width:auto;margin:0;text-align:center;text-decoration:none;font-size:12px;padding:6px 9px}
 .chapnav.bottom{border-top:1px dashed var(--line);padding-top:12px;margin-top:18px}
+
+.wb-entry.done{opacity:.62}
+.wb-entry .wb-redo{border-top:1px dashed var(--line);margin-top:7px;padding-top:7px}
