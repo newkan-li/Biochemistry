@@ -428,20 +428,86 @@
 
   function qSlide(cid, q) {
     if (!q) return null;
-    if (q.slide != null) return +q.slide;
+    if (q.pptSlide != null) return q.pptSlide;
+    if (q.slide != null) { q.pptSlide = +q.slide; return q.pptSlide; }
     var ch = window.CHAPTERS[cid]; if (!ch) return null;
     var slides = (ch.modules && ch.modules[0] && ch.modules[0].slides) || [];
+    var qtext = String((q.q || q.term || "") + " " + (q.a || q.def || ""));
+    var core = slides.filter(function (s) { return /老师PPT逐页/.test(String(s.sec || "")); });
+    var rules = [
+      [/LDL|HDL|VLDL|CM|乳糜微粒|脂蛋白/, /脂蛋白|LDL|HDL|VLDL|CM|乳糜微粒/],
+      [/皂化值|碘值|平均相对分子质量|双键数/, /计算|皂化|碘值|双键|Mr/],
+      [/三酰甘油|甘油三酯|蜡/, /三酰甘油|甘油三酯|皂化|蜡/],
+      [/磷脂|磷脂酸|膜脂|PC|PE|PS|PI|PG/, /磷脂|磷脂酸|PC|PE|PS|PI|PG/],
+      [/鞘脂|鞘磷脂|糖脂|脑苷|神经节苷/, /鞘|糖脂|脑苷|神经节苷/],
+      [/胆固醇|类固醇|固醇|萜/, /胆固醇|类固醇|固醇|萜/],
+      [/过氧化|SOD|自由基|PUFA|抗氧化/, /过氧化|SOD|自由基|抗氧化/],
+      [/脂肪酸|熔点|双键|必需脂肪酸/, /脂肪酸|熔点|双键|必需/],
+      [/膜蛋白|GPI|脂筏|流动性|线粒体|内膜|通透|生物膜/, /膜|脂双层|膜蛋白|流动/],
+      [/同工酶|LDH/, /同工酶|LDH/],
+      [/酶原|共价修饰|磷酸化/, /酶原|共价修饰|磷酸化/],
+      [/别构|齐变|序变|ATCase|PALA/, /别构|齐变|序变|ATCase|PALA/],
+      [/核酸|DNA|RNA|核苷酸|碱基/, /核酸|DNA|RNA|核苷酸|碱基/],
+      [/糖|葡萄糖|糖原|淀粉|纤维素|糖苷/, /糖|葡萄糖|糖原|淀粉|纤维素|糖苷/],
+      [/维生素|辅酶|TPP|NAD|FAD|PLP|THF/, /维生素|辅酶|TPP|NAD|FAD|PLP|THF/],
+      [/激素|受体|cAMP|PKA|IP3|DAG|PKC|胰岛素/, /激素|受体|cAMP|PKA|IP3|DAG|PKC|胰岛素/]
+    ];
+    var candidate = null;
+    for (var ri = 0; ri < rules.length; ri++) {
+      if (rules[ri][0].test(qtext)) { candidate = rules[ri][1]; break; }
+    }
+    if (candidate) {
+      var bestK = 0, bestKS = -1e9;
+      core.forEach(function (s, si) {
+        var title = String(s.title || ""), blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" ")));
+        if (!candidate.test(title + " " + (s.notes || ""))) return;
+        var score = 0; if (candidate.test(title)) score += 20;
+        if (/^[一二三四五六七八九十]+、/.test(title)) score -= 35;
+        if (/章节标题|小节标题|过渡页|导览/.test(title + " " + (s.notes || ""))) score -= 50;
+        if (score > bestKS) { bestKS = score; bestK = s.i; }
+      });
+      if (bestKS > -50) { q.pptSlide = bestK; return bestK; }
+    }
     var m = String(q.kpId || "").match(/_s\d+_(\d+)$/);
-    if (m && slides[+m[1]]) return +m[1];
-    var qt = String((q.q || q.term || "") + " " + (q.a || q.def || "") + " " + (q.e || "")).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-    var qg = {}; for (var i = 0; i < qt.length - 1; i++) qg[qt.substr(i, 2)] = 1;
-    var best = 0, bestScore = -1;
+    var aiIdx = m ? +m[1] : -1;
+    if (aiIdx >= 0 && slides[aiIdx]) {
+      var ai = slides[aiIdx], aiSec = String(ai.sec || "");
+      if (!/AI主讲|导读/.test(aiSec)) { q.pptSlide = aiIdx; return aiIdx; }
+      if (!window.__pptAlias) window.__pptAlias = {};
+      var ck = cid + ":alias:" + aiIdx;
+      if (window.__pptAlias[ck] != null) { q.pptSlide = window.__pptAlias[ck]; return q.pptSlide; }
+      var imgBase = String(ai.img || "").split('/').pop().split('?')[0];
+      if (imgBase) {
+        for (var ci = aiIdx - 1; ci >= 0; ci--) {
+          if (String(slides[ci].img || "").split('/').pop().split('?')[0] === imgBase) { window.__pptAlias[ck] = ci; q.pptSlide = ci; return ci; }
+        }
+      }
+      var at = String((ai.title || "") + " " + (ai.notes || "") + " " + ((ai.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+      var ag = []; for (var x = 0; x < at.length - 1; x++) ag.push(at.substr(x, 2));
+      var best = 0, bestScore = -1e9;
+      slides.slice(0, aiIdx).forEach(function (s, si) {
+        var title = String(s.title || ""), sec = String(s.sec || "");
+        var blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+        var score = 0; for (var j = 0; j < ag.length; j++) if (blob.indexOf(ag[j]) >= 0) score++;
+        if (/老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 18;
+        if (/章节标题|小节标题|过渡页|导览/.test(title + " " + (s.notes || ""))) score -= 80;
+        if (score > bestScore) { bestScore = score; best = si; }
+      });
+      window.__pptAlias[ck] = best; q.pptSlide = best; return best;
+    }
+    var qt = qtext.replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+    var qg = []; for (var i = 0; i < qt.length - 1; i++) qg.push(qt.substr(i, 2));
+    var best2 = 0, best2Score = -1e9;
     slides.forEach(function (s, si) {
-      var st = String((s.title || "") + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-      var score = 0; for (var k in qg) if (st.indexOf(k) >= 0) score++;
-      if (score > bestScore) { bestScore = score; best = si; }
+      var title = String(s.title || ""), sec = String(s.sec || "");
+      var blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+      var score = 0; for (var j = 0; j < qg.length; j++) if (blob.indexOf(qg[j]) >= 0) score++;
+      if (/老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 20;
+      if (/AI主讲|导读|使用评估/.test(sec)) score -= 20;
+      if (/章节标题|小节标题|过渡页|导览/.test(title + " " + (s.notes || ""))) score -= 70;
+      if (score > best2Score) { best2Score = score; best2 = si; }
     });
-    q.slide = best; return best;
+    q.pptSlide = best2; return best2;
   }
   function pptJump(cid, q) {
     var si = qSlide(cid, q);
