@@ -432,7 +432,7 @@
     if (q.slide != null) { q.pptSlide = +q.slide; return q.pptSlide; }
     var ch = window.CHAPTERS[cid]; if (!ch) return null;
     var slides = (ch.modules && ch.modules[0] && ch.modules[0].slides) || [];
-    var qtext = String((q.q || q.term || "") + " " + (q.a || q.def || ""));
+    var qtext = String(q.q || q.term || "");
     var core = slides.filter(function (s) { return /老师PPT逐页|脂质计算|计算专题/.test(String(s.sec || "")); });
     var rules = [
       [/LDL|HDL|VLDL|CM|乳糜微粒|脂蛋白/, /脂蛋白|LDL|HDL|VLDL|CM|乳糜微粒/],
