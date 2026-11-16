@@ -1189,14 +1189,16 @@
       var readPct = total ? Math.round(read * 100 / total) : 0;
       var ts = testStatsForBlock(bi);
       var ws = webStatsForBlock(bi);
-      return { total: total, read: read, mastered: mastered, avg: avg, readPct: readPct, test: ts, web: ws,
-        status: (read >= total && avg >= 75) ? "已掌握" : (avg >= 50 || readPct >= 50) ? "巩固中" : read > 0 ? "学习中" : "未开始" };
+      var qTotal = ts.total + ws.total, qDone = ts.done + ws.done;
+      var qStatus = !qTotal ? "无题" : qDone >= qTotal && (ts.pct == null || ts.pct >= 80) ? "已掌握" : qDone > 0 ? "学习中" : "未开始";
+      return { total: total, read: read, mastered: mastered, avg: avg, readPct: readPct, test: ts, web: ws, qTotal: qTotal, qDone: qDone,
+        status: qStatus };
     }
     function draw() {
       var total = slides.length, mastered = 0;
       slides.forEach(function (s) { if (kpMastery(cid + "_s0_" + s.i) >= 0.6) mastered++; });
       var html = '<span id="blockprogress"></span><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">' +
-        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 章节测试 已做 ' + chapterTestStats.done + "/" + chapterTestStats.total + ' · 正确率 ' + (chapterTestStats.pct == null ? "—" : chapterTestStats.pct + "%") + ' ｜ 网页题 已掌握 ' + webAllStats.done + "/" + webAllStats.total + ' ｜ 点方块跳到该页</span></div>' +
+        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">章节测试 已做 ' + chapterTestStats.done + "/" + chapterTestStats.total + ' · 正确率 ' + (chapterTestStats.pct == null ? "—" : chapterTestStats.pct + "%") + ' ｜ 网页题 已掌握 ' + webAllStats.done + "/" + webAllStats.total + ' ｜ 按题统计 ｜ 点方块跳到该页</span></div>' +
         '<div class="hm-legend">' +
         '<span><i class="hm-cell hm-0"></i>未学</span>' +
         '<span><i class="hm-cell hm-c"></i>学过·未掌握</span>' +
@@ -1210,8 +1212,7 @@
         var testTxt = st.test.total ? (' · 章节测试 ' + st.test.done + "/" + st.test.total + ' · 正确率 ' + (st.test.pct == null ? "—" : st.test.pct + "%")) : ' · 章节测试 0';
         var webTxt = st.web.total ? (' · 网页题 ' + st.web.done + "/" + st.web.total + '（' + (st.web.pct == null ? "—" : st.web.pct + "%") + '）') : '';
         html += '<div class="hm-mod"><div class="hm-name"><a href="#s_' + cid + '_s0_' + b.start + '">' +
-          esc(b.title) + '</a><span class="hm-block-meta"> ' + (b.start + 1) + "–" + b.end + '页 · 已读 ' + st.read + "/" + st.total +
-          ' · 掌握 ' + st.mastered + "/" + st.total + ' · 平均 ' + st.avg + '%' + testTxt + webTxt + ' · ' + st.status + '</span></div><div class="hm-grid">';
+          esc(b.title) + '</a><span class="hm-block-meta"> ' + (b.start + 1) + "–" + b.end + '页' + testTxt + webTxt + ' · ' + st.status + '</span></div><div class="hm-grid">';
         for (var i = b.start; i < b.end; i++) {
           var s = slides[i]; if (!s) continue;
           var kp = cid + "_s0_" + s.i, v = kpMastery(kp);
@@ -1693,7 +1694,7 @@
     var hero = el("div", "hero");
     hero.innerHTML = "<h1>" + esc(ch.title) + '</h1><div class="tag">' + esc(ch.sub2 || "") + " ｜ 概念逐页 + 全题型练习 + 错题本 + 手写</div>";
     main.appendChild(hero);
-    main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释。学习顺序：主线=AI主讲/精读/学习支持；练习=过程/变式/卡点/专题；查阅=老师原页/原书图卡。页面停留约1.2秒会自动记为已读，也可手动取消。"));
+    main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释。学习顺序：主线=AI主讲/精读/学习支持；练习=过程/变式/卡点/专题；查阅=老师原页/原书图卡。已读仅作阅读记录，掌握进度以章节测试和网页题为准。"));
 
     if (ch.preview) {
       var pv = el("div", "statsbox previewbox");
@@ -1732,33 +1733,6 @@
 
     // concept slides
     var seen = seenStore(cid);
-    function markSeen(key, card, db) {
-      if (!key || seen[key] || (card && card._autoDisabled)) return;
-      seen[key] = 1; jset(skey(cid, "seen"), seen);
-      bumpTask("read");
-      if (!srsGet(key)) srsRate(key, 2);
-      if (card) card.classList.add("done");
-      if (db) { db.classList.add("on"); db.textContent = "✓ 已读"; }
-      refreshProgress();
-      if (typeof window.__refreshHeat === "function") window.__refreshHeat();
-      if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
-    }
-    var autoTimers = {};
-    var autoSeenIO = window.IntersectionObserver ? new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        var card = en.target, key = card._seenKey;
-        if (!key) return;
-        if (en.isIntersecting) {
-          if (autoTimers[key]) return;
-          autoTimers[key] = setTimeout(function () {
-            autoTimers[key] = null;
-            if (card.isConnected) markSeen(key, card, card._seenDb);
-          }, 1200);
-        } else if (autoTimers[key]) {
-          clearTimeout(autoTimers[key]); autoTimers[key] = null;
-        }
-      });
-    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }) : null;
     var qByKp = {};
     ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (kind) {
       (ch[kind] || []).forEach(function (q) { if (q.kp) { (qByKp[q.kp] = qByKp[q.kp] || []).push({ q: q, kind: kind }); } });
@@ -1846,7 +1820,6 @@
         if (seen[key]) { card.classList.add("done"); db.classList.add("on"); }
         db.onclick = function () {
           seen[key] = seen[key] ? 0 : 1; jset(skey(cid, "seen"), seen);
-          card._autoDisabled = !seen[key];
           if (seen[key]) {
             bumpTask("read");
             if (!srsGet(key)) srsRate(key, 2);
@@ -1857,8 +1830,6 @@
           if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
         };
         card.appendChild(db);
-        card._seenKey = key; card._seenDb = db;
-        if (autoSeenIO) autoSeenIO.observe(card);
         var cfd = confusedStore(cid)[key] || {};
         var cf = el("button", "confbtn" + (isConfused(cid, key) ? " on" : ""), isConfused(cid, key) ? "❓ 待问" : "❓ 没听懂");
         var cnote = el("input", "confnote");
