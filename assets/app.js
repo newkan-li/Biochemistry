@@ -503,8 +503,8 @@
     var best2 = 0, best2Score = -1e9;
     slides.forEach(function (s, si) {
       var title = String(s.title || ""), sec = String(s.sec || "");
-      var blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-      var score = 0; for (var j = 0; j < qg.length; j++) if (blob.indexOf(qg[j]) >= 0) score++;
+      var titleBlob = String(title + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+      var score = 0; for (var j = 0; j < qg.length; j++) if (titleBlob.indexOf(qg[j]) >= 0) score++;
       if (/DNA/.test(qt) && /DNA/.test(title)) score += 30;
       if (/RNA/.test(qt) && /RNA/.test(title)) score += 30;
       if (/胰岛素/.test(qt) && /胰岛素/.test(title)) score += 30;
@@ -513,7 +513,7 @@
       if (/维生素|辅酶/.test(qt) && /维生素|辅酶/.test(title)) score += 24;
       if (/糖/.test(qt) && /糖/.test(title)) score += 12;
       if (/脂|脂肪酸|磷脂|胆固醇/.test(qt) && /脂|脂肪酸|磷脂|胆固醇/.test(title)) score += 12;
-      if (/老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 20;
+      if (score > 0 && /老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 20;
       if (/AI主讲|导读|使用评估/.test(sec)) score -= 20;
       if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
       if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 70;
