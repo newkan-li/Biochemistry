@@ -1098,15 +1098,20 @@
       var total = slides.length, mastered = 0;
       slides.forEach(function (s) { if (kpMastery(cid + "_s0_" + s.i) >= 0.6) mastered++; });
       var html = '<span id="blockprogress"></span><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">' +
-        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 按知识块显示进度 ｜ 点方块跳到该页</span></div><div class="hm-blocklist">';
+        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 按知识块显示进度 ｜ 点方块跳到该页</span></div>' +
+        '<div class="hm-legend">' +
+        '<span><i class="hm-cell hm-0"></i>未学</span>' +
+        '<span><i class="hm-cell hm-c"></i>学过·未掌握</span>' +
+        '<span><i class="hm-cell hm-b"></i>已掌握</span>' +
+        '<span><i class="hm-cell hm-a"></i>熟练</span>' +
+        '<span><i class="hm-cell hm-0 hm-conf"></i>待问/没听懂</span>' +
+        '<span class="hint">掌握度 = 0.6×答对率 + 0.4×复习强度；答错或自评“不会”会下降</span>' +
+        '</div>';
       blocks.forEach(function (b) {
         var st = blockStats(b);
-        var cls = st.status === "已掌握" ? "bp-ok" : st.status === "巩固中" ? "bp-mid" : st.status === "学习中" ? "bp-ing" : "";
-        html += '<div class="hm-block ' + cls + '"><div class="hm-block-head"><div><a href="#s_' + cid + '_s0_' + b.start + '">' +
-          esc(b.title) + '</a><span class="hm-block-pages">' + (b.start + 1) + "–" + b.end + '页</span></div>' +
-          '<span class="bp-status">' + st.status + '</span></div>' +
-          '<div class="bp-bar"><i style="width:' + st.avg + '%"></i></div>' +
-          '<div class="hm-block-meta">已读 ' + st.read + "/" + st.total + ' 页（' + st.readPct + '%）· 已掌握 ' + st.mastered + "/" + st.total + ' 页 · 平均掌握度 ' + st.avg + '%</div><div class="hm-grid">';
+        html += '<div class="hm-mod"><div class="hm-name"><a href="#s_' + cid + '_s0_' + b.start + '">' +
+          esc(b.title) + '</a><span class="hm-block-meta"> ' + (b.start + 1) + "–" + b.end + '页 · 已读 ' + st.read + "/" + st.total +
+          ' · 掌握 ' + st.mastered + "/" + st.total + ' · 平均 ' + st.avg + '% · ' + st.status + '</span></div><div class="hm-grid">';
         for (var i = b.start; i < b.end; i++) {
           var s = slides[i]; if (!s) continue;
           var kp = cid + "_s0_" + s.i, v = kpMastery(kp);
@@ -1116,7 +1121,7 @@
         }
         html += '</div></div>';
       });
-      host.innerHTML = html + "</div>";
+      host.innerHTML = html;
     }
     draw();
     window.__refreshHeat = draw;
