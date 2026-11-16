@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>bc01–14 生物化学自学</title>
-<link rel="stylesheet" href="assets/style.css?v=20261116p0">
+<link rel="stylesheet" href="assets/style.css?v=20261116p3">
 <script src="assets/theme.js?v=20261116p0"></script>
 <style>
 .bc-hero{background:linear-gradient(135deg,#1f5c8b,#12324d);color:#fff;border-radius:14px;padding:20px 22px;margin:8px 0 14px}
@@ -79,7 +79,7 @@
       '<div class="bc-meta">' + esc(c.group) + ' ｜ ' + c.n_slides + '页 ｜ ' + c.n_q + '题 ｜ 建议 ' + esc(c.hours) + '</div>' +
       '<div class="bc-bar"><i style="width:' + pct + '%"></i></div>' +
       '<div class="bc-meta">已读 ' + seen + '/' + c.n_slides + ' 页（' + pct + '%）</div>' +
-      '<div class="bc-links"><a href="' + c.id + '.html">进入学习</a><a href="diag.html?ch=' + c.id + '">诊断测</a><a href="wrong.html?ch=' + c.id + '">本章错题</a><a href="exam.html?ch=' + c.id + '">限时测试</a><a href="flashcards.html?ch=' + c.id + '">闪卡</a></div>';
+      '<div class="bc-links"><a href="' + c.id + '.html">进入学习</a><a href="' + c.id + '.html#blockprogress">知识块进度</a><a href="diag.html?ch=' + c.id + '">诊断测</a><a href="wrong.html?ch=' + c.id + '">本章错题</a><a href="exam.html?ch=' + c.id + '">限时测试</a><a href="flashcards.html?ch=' + c.id + '">闪卡</a></div>';
     grid.appendChild(card);
   });
   document.getElementById("bctotal").textContent = "共 " + list.length + " 章 ｜ " + totalSlides + " 页 ｜ " + totalQs + " 道章节测试题 ｜ 建议总投入 80–105 小时（基础差可从 100–130 小时起步）";

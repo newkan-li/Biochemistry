@@ -121,6 +121,7 @@
     o[kp] = c; jset(KPS_KEY, o);
     bumpTask("practice");
     if (typeof window.__refreshHeat === "function") window.__refreshHeat();
+    if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
   }
   /* 0~1 掌握度：正确率(0.6) + 复习强度(0.4) */
   function kpMastery(kp) {
@@ -1081,6 +1082,39 @@
     window.__refreshHeat = draw;
   }
 
+  function renderBlockProgress(cid, ch, host) {
+    var blocks = ch.toc || [];
+    if (!blocks.length) return;
+    var slides = ch.modules[0].slides || [];
+    function draw() {
+      var seen = seenStore(cid);
+      var html = '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">' +
+        '<h3 style="margin:0">🧩 知识块掌握进度</h3><span class="hint">按本章知识块汇总已读页与掌握度</span></div><div class="bp-list">';
+      blocks.forEach(function (b, bi) {
+        var start = Math.max(0, Math.min(slides.length, +b.start || 0));
+        var end = Math.max(start, Math.min(slides.length, +b.end || start));
+        var total = end - start, read = 0, mastered = 0, sum = 0;
+        for (var i = start; i < end; i++) {
+          var kp = cid + "_s0_" + i;
+          if (seen[kp]) read++;
+          var v = kpMastery(kp);
+          sum += v; if (v >= 0.6) mastered++;
+        }
+        var avg = total ? Math.round(sum * 100 / total) : 0;
+        var readPct = total ? Math.round(read * 100 / total) : 0;
+        var status = (read >= total && avg >= 75) ? "已掌握" : (avg >= 50 || readPct >= 50) ? "巩固中" : read > 0 ? "学习中" : "未开始";
+        var cls = status === "已掌握" ? "bp-ok" : status === "巩固中" ? "bp-mid" : status === "学习中" ? "bp-ing" : "";
+        html += '<div class="bp-row ' + cls + '"><div class="bp-top"><a href="#s_' + cid + '_s0_' + start + '">' +
+          esc(b.title || ("知识块" + (bi + 1))) + '</a><span class="bp-status">' + status + '</span></div>' +
+          '<div class="bp-bar"><i style="width:' + avg + '%"></i></div>' +
+          '<div class="bp-meta">已读 ' + read + "/" + total + " 页（" + readPct + '%）· 已掌握 ' + mastered + "/" + total + ' 页 · 平均掌握度 ' + avg + '%</div></div>';
+      });
+      host.innerHTML = html + "</div>";
+    }
+    draw();
+    window.__refreshBlocks = draw;
+  }
+
   function renderExamBlock(cid, s, key) {
     var q = s.exam;
     if (!q) return null;
@@ -1581,6 +1615,7 @@
     main.appendChild(exBtn);
     var statsbox = el("div", "statsbox"); statsbox.id = "statsbox"; renderStats(cid, ch, statsbox); main.appendChild(statsbox);
     var heat = el("div", "statsbox"); heat.id = "heatmap"; renderHeatmap(cid, ch, heat); main.appendChild(heat);
+    var blockProg = el("div", "statsbox"); blockProg.id = "blockprogress"; renderBlockProgress(cid, ch, blockProg); main.appendChild(blockProg);
 
     // concept slides
     var seen = seenStore(cid);
@@ -1677,6 +1712,8 @@
           }
           card.classList.toggle("done", !!seen[key]); db.classList.toggle("on", !!seen[key]);
           db.textContent = seen[key] ? "✓ 已读" : "标记已读"; refreshProgress();
+          if (typeof window.__refreshHeat === "function") window.__refreshHeat();
+          if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
         };
         card.appendChild(db);
         var cfd = confusedStore(cid)[key] || {};
