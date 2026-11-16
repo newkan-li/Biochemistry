@@ -433,11 +433,12 @@
     var ch = window.CHAPTERS[cid]; if (!ch) return null;
     var slides = (ch.modules && ch.modules[0] && ch.modules[0].slides) || [];
     var qtext = String((q.q || q.term || "") + " " + (q.a || q.def || ""));
-    var core = slides.filter(function (s) { return /老师PPT逐页/.test(String(s.sec || "")); });
+    var core = slides.filter(function (s) { return /老师PPT逐页|脂质计算|计算专题/.test(String(s.sec || "")); });
     var rules = [
       [/LDL|HDL|VLDL|CM|乳糜微粒|脂蛋白/, /脂蛋白|LDL|HDL|VLDL|CM|乳糜微粒/],
       [/皂化值|碘值|平均相对分子质量|双键数/, /脂质计算|计算专题|皂化值|碘值|平均Mr|双键数/],
-      [/三酰甘油|甘油三酯|蜡/, /三酰甘油|甘油三酯|蜡/],
+      [/三酰甘油|甘油三酯/, /三酰甘油|甘油三酯/],
+      [/磷脂酰乙醇胺|磷脂酰胆碱|磷脂酰丝氨酸|磷脂酰肌醇|心磷脂/, /甘油磷脂|磷脂酰|心磷脂/],
       [/磷脂|磷脂酸|膜脂|PC|PE|PS|PI|PG/, /磷脂|磷脂酸|PC|PE|PS|PI|PG/],
       [/鞘脂|鞘磷脂|糖脂|脑苷|神经节苷/, /鞘|糖脂|脑苷|神经节苷/],
       [/胆固醇|类固醇|固醇|萜/, /胆固醇|类固醇|固醇|萜/],
