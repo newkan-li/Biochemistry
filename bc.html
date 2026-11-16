@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>bc01–14 生物化学自学</title>
-<link rel="stylesheet" href="assets/style.css?v=20261116p10">
+<link rel="stylesheet" href="assets/style.css?v=20261116p11">
 <script src="assets/theme.js?v=20261116p0"></script>
 <style>
 .bc-hero{background:linear-gradient(135deg,#1f5c8b,#12324d);color:#fff;border-radius:14px;padding:20px 22px;margin:8px 0 14px}
@@ -58,9 +58,9 @@
   <div class="bc-grid" id="bcgrid"></div>
   <div class="bc-total" id="bctotal"></div>
   <p class="hint" style="font-size:12px;color:var(--muted);line-height:1.7">PPT按钮采用保守策略：章节测试仅显示已确认对应页的链接；未确认的题不显示按钮，避免跳到章节标题页或导读页。学习记录保存在本机浏览器 localStorage。</p>
-  <footer style="margin-top:18px">bc01–14 自学入口 ｜ 数据保存在本机浏览器</footer>
+  <footer style="margin-top:18px">bc01–14 自学入口 ｜ 版本 20261116p11 ｜ 数据保存在本机浏览器</footer>
 </div>
-<script src="data/bc_core.js?v=20261116p0"></script>
+<script src="data/bc_core.js?v=20261116p11"></script>
 <script>
 (function () {
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -74,11 +74,20 @@
     var pct = c.n_slides ? Math.min(100, Math.round(seen * 100 / c.n_slides)) : 0;
     var ts = +(localStorage.getItem("biochem_last:" + c.id) || 0);
     if (ts > lastTs) { lastTs = ts; lastId = c.id; }
+    function countDone(key, field) {
+      var n = 0;
+      try { var o = JSON.parse(localStorage.getItem(key) || "{}") || {}; Object.keys(o).forEach(function (k) { if (o[k] && o[k][field] != null && o[k][field] !== "") n++; }); } catch (e) {}
+      return n;
+    }
+    var testDone = countDone("biochem_mcq:" + c.id, "last") + countDone("biochem_judge:" + c.id, "last") + countDone("biochem_fill:" + c.id, "last") + countDone("biochem_self:" + c.id, "state"); testDone = Math.min(testDone, c.n_q);
+    var webDone = 0;
+    try { var w = JSON.parse(localStorage.getItem("ex_done_" + c.id) || "{}") || {}; webDone = Math.min((c.n_web || 0), Object.keys(w).filter(function (k) { return w[k]; }).length); } catch (e) {}
     var card = document.createElement("div"); card.className = "bc-card";
     card.innerHTML = '<h3><a href="' + c.id + '.html">' + esc(c.id) + ' · ' + esc(c.title) + '</a></h3>' +
       '<div class="bc-meta">' + esc(c.group) + ' ｜ ' + c.n_slides + '页 ｜ ' + c.n_q + '题 ｜ 建议 ' + esc(c.hours) + '</div>' +
       '<div class="bc-bar"><i style="width:' + pct + '%"></i></div>' +
       '<div class="bc-meta">已读 ' + seen + '/' + c.n_slides + ' 页（' + pct + '%）</div>' +
+      '<div class="bc-meta">章节测试 已做 ' + testDone + '/' + c.n_q + ' ｜ 网页题 已掌握 ' + webDone + '/' + (c.n_web || 0) + '</div>' +
       '<div class="bc-links"><a href="' + c.id + '.html">进入学习</a><a href="' + c.id + '.html#blockprogress">知识块进度</a><a href="diag.html?ch=' + c.id + '">诊断测</a><a href="wrong.html?ch=' + c.id + '">本章错题</a><a href="exam.html?ch=' + c.id + '">限时测试</a><a href="flashcards.html?ch=' + c.id + '">闪卡</a></div>';
     grid.appendChild(card);
   });
