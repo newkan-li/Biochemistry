@@ -1693,7 +1693,7 @@
     var hero = el("div", "hero");
     hero.innerHTML = "<h1>" + esc(ch.title) + '</h1><div class="tag">' + esc(ch.sub2 || "") + " ｜ 概念逐页 + 全题型练习 + 错题本 + 手写</div>";
     main.appendChild(hero);
-    main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释。学习顺序：主线=AI主讲/精读/学习支持；练习=过程/变式/卡点/专题；查阅=老师原页/原书图卡。"));
+    main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释。学习顺序：主线=AI主讲/精读/学习支持；练习=过程/变式/卡点/专题；查阅=老师原页/原书图卡。页面停留约1.2秒会自动记为已读，也可手动取消。"));
 
     if (ch.preview) {
       var pv = el("div", "statsbox previewbox");
@@ -1732,6 +1732,33 @@
 
     // concept slides
     var seen = seenStore(cid);
+    function markSeen(key, card, db) {
+      if (!key || seen[key] || (card && card._autoDisabled)) return;
+      seen[key] = 1; jset(skey(cid, "seen"), seen);
+      bumpTask("read");
+      if (!srsGet(key)) srsRate(key, 2);
+      if (card) card.classList.add("done");
+      if (db) { db.classList.add("on"); db.textContent = "✓ 已读"; }
+      refreshProgress();
+      if (typeof window.__refreshHeat === "function") window.__refreshHeat();
+      if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
+    }
+    var autoTimers = {};
+    var autoSeenIO = window.IntersectionObserver ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var card = en.target, key = card._seenKey;
+        if (!key) return;
+        if (en.isIntersecting) {
+          if (autoTimers[key]) return;
+          autoTimers[key] = setTimeout(function () {
+            autoTimers[key] = null;
+            if (card.isConnected) markSeen(key, card, card._seenDb);
+          }, 1200);
+        } else if (autoTimers[key]) {
+          clearTimeout(autoTimers[key]); autoTimers[key] = null;
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }) : null;
     var qByKp = {};
     ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (kind) {
       (ch[kind] || []).forEach(function (q) { if (q.kp) { (qByKp[q.kp] = qByKp[q.kp] || []).push({ q: q, kind: kind }); } });
@@ -1819,9 +1846,10 @@
         if (seen[key]) { card.classList.add("done"); db.classList.add("on"); }
         db.onclick = function () {
           seen[key] = seen[key] ? 0 : 1; jset(skey(cid, "seen"), seen);
+          card._autoDisabled = !seen[key];
           if (seen[key]) {
             bumpTask("read");
-            if (!srsGet(key)) srsRate(key, 2);   // 首次标记已读 → 安排首次复习
+            if (!srsGet(key)) srsRate(key, 2);
           }
           card.classList.toggle("done", !!seen[key]); db.classList.toggle("on", !!seen[key]);
           db.textContent = seen[key] ? "✓ 已读" : "标记已读"; refreshProgress();
@@ -1829,6 +1857,8 @@
           if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
         };
         card.appendChild(db);
+        card._seenKey = key; card._seenDb = db;
+        if (autoSeenIO) autoSeenIO.observe(card);
         var cfd = confusedStore(cid)[key] || {};
         var cf = el("button", "confbtn" + (isConfused(cid, key) ? " on" : ""), isConfused(cid, key) ? "❓ 待问" : "❓ 没听懂");
         var cnote = el("input", "confnote");
