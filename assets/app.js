@@ -464,7 +464,8 @@
         if (!candidate.test(title + " " + (s.notes || ""))) return;
         var score = 0; if (candidate.test(title)) score += 20;
         if (/^[一二三四五六七八九十]+、/.test(title)) score -= 35;
-        if (/章节标题|小节标题|过渡页|导览/.test(title + " " + (s.notes || ""))) score -= 50;
+        if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
+        if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 50;
         if (score > bestKS) { bestKS = score; bestK = s.i; }
       });
       if (bestKS > -50) { q.pptSlide = bestK; return bestK; }
@@ -491,7 +492,8 @@
         var blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
         var score = 0; for (var j = 0; j < ag.length; j++) if (blob.indexOf(ag[j]) >= 0) score++;
         if (/老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 18;
-        if (/章节标题|小节标题|过渡页|导览/.test(title + " " + (s.notes || ""))) score -= 80;
+        if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
+        if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 80;
         if (score > bestScore) { bestScore = score; best = si; }
       });
       window.__pptAlias[ck] = best; q.pptSlide = best; return best;
@@ -505,14 +507,15 @@
       var score = 0; for (var j = 0; j < qg.length; j++) if (blob.indexOf(qg[j]) >= 0) score++;
       if (/老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 20;
       if (/AI主讲|导读|使用评估/.test(sec)) score -= 20;
-      if (/章节标题|小节标题|过渡页|导览/.test(title + " " + (s.notes || ""))) score -= 70;
+      if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
+      if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 70;
       if (score > best2Score) { best2Score = score; best2 = si; }
     });
-    q.pptSlide = best2; return best2;
+    q.pptSlide = (best2Score >= 4 ? best2 : -1); return q.pptSlide;
   }
   function pptJump(cid, q) {
     var si = qSlide(cid, q);
-    if (si == null) return "";
+    if (si == null || si < 0) return "";
     return ' <a class="ppt-jump" href="ppt.html?ch=' + encodeURIComponent(cid) + "&slide=" + (si + 1) + "&back=" + encodeURIComponent(cid) + '" target="_blank" rel="noopener">📽 对应PPT</a>';
   }
   /* ================= MCQ ================= */
