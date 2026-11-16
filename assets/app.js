@@ -123,6 +123,10 @@
     if (typeof window.__refreshHeat === "function") window.__refreshHeat();
     if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
   }
+  function refreshMasteryViews() {
+    if (typeof window.__refreshHeat === "function") window.__refreshHeat();
+    if (typeof window.__refreshBlocks === "function") window.__refreshBlocks();
+  }
   /* 0~1 掌握度：正确率(0.6) + 复习强度(0.4) */
   function kpMastery(kp) {
     var c = kpAll()[kp], s = srsGet(kp);
@@ -492,6 +496,7 @@
       clearWrong(cid, q.id);
     }
     kpRecord(q.kpId || q.kp, ok);
+    refreshMasteryViews();
     if (!ok) srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
   }
 
@@ -532,6 +537,7 @@
     if (!ok) addWrong(cid, { id: q.id, type: "judge", q: q.q, correct: correct, chosen: chosen, cause: "", ts: Date.now() });
     else clearWrong(cid, q.id);
     kpRecord(q.kpId || q.kp, ok);
+    refreshMasteryViews();
     if (!ok) srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
   }
 
@@ -564,6 +570,7 @@
       cb.style.display = ok ? "none" : "flex";
       if (ok) { clearWrong(cid, q.id); } else { addWrong(cid, { id: q.id, type: "fill", q: q.q, correct: q.a, chosen: inp.value, cause: "", ts: Date.now() }); }
       kpRecord(q.kpId || q.kp, ok);
+      refreshMasteryViews();
       if (!ok) srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
     };
     bChk.onclick = box._check;
@@ -621,6 +628,7 @@
         addWrong(cid, { id: q.id, type: kind, q: (kind === "term" ? q.term : q.q), correct: (kind === "term" ? q.def : (kind === "calc" ? (q.a || q.steps) : q.a)), chosen: "(自评不会)", cause: "", ts: Date.now() });
       } else { clearWrong(cid, q.id); }
       kpRecord(q.kpId || q.kp, state === "ok");
+      refreshMasteryViews();
       if (state === "no") srsRate(q.id, 0); else if (srsGet(q.id)) srsRate(q.id, 2);
     }
     bOk.onclick = function () { mark("ok"); };
@@ -1081,7 +1089,70 @@
       if (missing && gapStart < 0) gapStart = gi;
       if (!missing && gapStart >= 0) { pushBlock("未归类内容", gapStart, gi); gapStart = -1; }
     }
-    function blockStats(b) {
+    var qRules = {
+      bc11: [
+        [/RNA|tRNA|mRNA|hnRNA|核糖|转录/, 2],
+        [/DNA|Watson|Crick|双螺旋|核小体|超螺旋|变性|Tm|重组技术|中心法则/, 1],
+        [/核酸|核苷酸|核苷|碱基|磷酸二酯键|Miescher|Chargaff|化学组成|水解/, 0]
+      ],
+      bc12: [
+        [/限制性内切酶|限制酶/, 1],
+        [/紫外|A260|A280|增色|减色/, 2],
+        [/碱水解|酸水解|核酸酶|水解/, 0],
+        [/变性|复性|Tm|Cot|杂交|Southern|Northern|Western|密度|GC含量/, 3]
+      ],
+      bc13: [
+        [/脂溶性|维生素A|维生素D|维生素E|维生素K|夜盲|佝偻|血凝/, 1],
+        [/水溶性|维生素B|维生素C|TPP|NAD|FAD|PLP|THF|生物素|钴胺|坏血|一碳|辅酶/, 2],
+        [/维生素|总论|定义|分类/, 0]
+      ],
+      bc14: [
+        [/何谓激素|定义|化学本质|分类|激素的概念|性质和特征/, 0],
+        [/受体|cAMP|IP3|DAG|G蛋白|RTK|第二信使|信号转导|级联|作用机制/, 2],
+        [/下丘脑|轴|昆虫|调节/, 3],
+        [/胰岛素|胰高血糖素|甲状腺|肾上腺素|皮质激素|性激素|生长激素|PTH|降钙素|垂体|激素/, 1]
+      ]
+    };
+    function blockIndexFor(q) {
+      var text = String(q.q || q.term || "") + " " + String(q.def || "");
+      var rules = qRules[cid] || [];
+      for (var ri = 0; ri < rules.length; ri++) if (rules[ri][0].test(text)) return rules[ri][1];
+      var qt = String(q.q || q.term || "").replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+      var qg = []; for (var qi = 0; qi < qt.length - 1; qi++) qg.push(qt.substr(qi, 2));
+      var best = -1, bestScore = 1;
+      blocks.forEach(function (b, bi) {
+        if (/AI主讲|精读|过程版|图卡|学习支持|使用评估|卡点|总结|测试|附录|封面|导览|补充|专项|难点|练习|强化|反应式/.test(b.title)) return;
+        var bt = String(b.title || "").replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+        var score = 0; for (var j = 0; j < qg.length; j++) if (bt.indexOf(qg[j]) >= 0) score++;
+        if (score > bestScore) { bestScore = score; best = bi; }
+      });
+      if (best >= 0) return best;
+      var m = String(q.kpId || "").match(/_s\d+_(\d+)$/);
+      var idx = m ? +m[1] : null;
+      if (idx != null) for (var bi2 = 0; bi2 < blocks.length; bi2++) if (idx >= blocks[bi2].start && idx < blocks[bi2].end) return bi2;
+      return -1;
+    }
+    function testStatsForBlock(bi) {
+      var seenDone = 0, ok = 0, total = 0;
+      ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (kind) {
+        (ch[kind] || []).forEach(function (q) {
+          if (blockIndexFor(q) !== bi) return;
+          total++;
+          var rec, correct = false, answered = false;
+          if (kind === "mcq") { rec = mcqStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && String(rec.last).trim() === String(q.a).trim(); }
+          else if (kind === "judge") { rec = judgeStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && String(rec.last).trim() === String(q.a).trim(); }
+          else if (kind === "fill") { rec = fillStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && fuzzyMatch(q.a, rec.last); }
+          else { rec = selfStore(cid)[q.id]; answered = !!(rec && rec.state); correct = answered && rec.state === "ok"; }
+          if (answered) seenDone++;
+          if (correct) ok++;
+        });
+      });
+      return { total: total, done: seenDone, ok: ok, pct: seenDone ? Math.round(ok * 100 / seenDone) : null };
+    }
+    var allTestQ = [];
+    ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (kind) { (ch[kind] || []).forEach(function (q) { allTestQ.push(q); }); });
+    var unbound = allTestQ.filter(function (q) { return blockIndexFor(q) < 0; }).length;
+    function blockStats(b, bi) {
       var seen = seenStore(cid), total = b.end - b.start, read = 0, mastered = 0, sum = 0;
       for (var i = b.start; i < b.end; i++) {
         var kp = cid + "_s0_" + i;
@@ -1091,14 +1162,15 @@
       }
       var avg = total ? Math.round(sum * 100 / total) : 0;
       var readPct = total ? Math.round(read * 100 / total) : 0;
-      return { total: total, read: read, mastered: mastered, avg: avg, readPct: readPct,
+      var ts = testStatsForBlock(bi);
+      return { total: total, read: read, mastered: mastered, avg: avg, readPct: readPct, test: ts,
         status: (read >= total && avg >= 75) ? "已掌握" : (avg >= 50 || readPct >= 50) ? "巩固中" : read > 0 ? "学习中" : "未开始" };
     }
     function draw() {
       var total = slides.length, mastered = 0;
       slides.forEach(function (s) { if (kpMastery(cid + "_s0_" + s.i) >= 0.6) mastered++; });
       var html = '<span id="blockprogress"></span><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">' +
-        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 按知识块显示进度 ｜ 点方块跳到该页</span></div>' +
+        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 按知识块显示进度 ｜ 测题正确率按已做章节测试统计 ｜ 点方块跳到该页</span></div>' +
         '<div class="hm-legend">' +
         '<span><i class="hm-cell hm-0"></i>未学</span>' +
         '<span><i class="hm-cell hm-c"></i>学过·未掌握</span>' +
@@ -1107,11 +1179,12 @@
         '<span><i class="hm-cell hm-0 hm-conf"></i>待问/没听懂</span>' +
         '<span class="hint">掌握度 = 0.6×答对率 + 0.4×复习强度；答错或自评“不会”会下降</span>' +
         '</div>';
-      blocks.forEach(function (b) {
-        var st = blockStats(b);
+      blocks.forEach(function (b, bi) {
+        var st = blockStats(b, bi);
+        var testTxt = st.test.total ? (' · 测题 ' + st.test.done + "/" + st.test.total + ' · 正确率 ' + (st.test.pct == null ? "—" : st.test.pct + "%")) : ' · 测题 0';
         html += '<div class="hm-mod"><div class="hm-name"><a href="#s_' + cid + '_s0_' + b.start + '">' +
           esc(b.title) + '</a><span class="hm-block-meta"> ' + (b.start + 1) + "–" + b.end + '页 · 已读 ' + st.read + "/" + st.total +
-          ' · 掌握 ' + st.mastered + "/" + st.total + ' · 平均 ' + st.avg + '% · ' + st.status + '</span></div><div class="hm-grid">';
+          ' · 掌握 ' + st.mastered + "/" + st.total + ' · 平均 ' + st.avg + '%' + testTxt + ' · ' + st.status + '</span></div><div class="hm-grid">';
         for (var i = b.start; i < b.end; i++) {
           var s = slides[i]; if (!s) continue;
           var kp = cid + "_s0_" + s.i, v = kpMastery(kp);
@@ -1121,6 +1194,7 @@
         }
         html += '</div></div>';
       });
+      if (unbound) html += '<p class="hint" style="margin-top:6px">另有 ' + unbound + ' 道章节测试题暂未绑定知识块，未计入上方测题统计。</p>';
       host.innerHTML = html;
     }
     draw();
