@@ -426,10 +426,32 @@
     return box;
   }
 
+  function qSlide(cid, q) {
+    if (!q) return null;
+    if (q.slide != null) return +q.slide;
+    var ch = window.CHAPTERS[cid]; if (!ch) return null;
+    var slides = (ch.modules && ch.modules[0] && ch.modules[0].slides) || [];
+    var m = String(q.kpId || "").match(/_s\d+_(\d+)$/);
+    if (m && slides[+m[1]]) return +m[1];
+    var qt = String((q.q || q.term || "") + " " + (q.a || q.def || "") + " " + (q.e || "")).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+    var qg = {}; for (var i = 0; i < qt.length - 1; i++) qg[qt.substr(i, 2)] = 1;
+    var best = 0, bestScore = -1;
+    slides.forEach(function (s, si) {
+      var st = String((s.title || "") + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+      var score = 0; for (var k in qg) if (st.indexOf(k) >= 0) score++;
+      if (score > bestScore) { bestScore = score; best = si; }
+    });
+    q.slide = best; return best;
+  }
+  function pptJump(cid, q) {
+    var si = qSlide(cid, q);
+    if (si == null) return "";
+    return ' <a class="ppt-jump" href="ppt.html?ch=' + encodeURIComponent(cid) + "&slide=" + (si + 1) + "&back=" + encodeURIComponent(cid) + '" target="_blank" rel="noopener">📽 对应PPT</a>';
+  }
   /* ================= MCQ ================= */
   function renderMCQ(cid, q, idx) {
     var box = el("div", "q"); box.id = "q_" + q.id;
-    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(cleanOCR(q.q)) + (q.mod ? '<span class="src">[' + esc(cleanOCR(q.mod)) + "]</span>" : "")));
+    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(cleanOCR(q.q)) + (q.mod ? '<span class="src">[' + esc(cleanOCR(q.mod)) + "]</span>" : "") + pptJump(cid, q)));
     var opts = el("div", "mcq");
     q.o.forEach(function (o) {
       var letter = o.trim().charAt(0);
@@ -491,7 +513,7 @@
   /* ================= 判断题 ================= */
   function renderJudge(cid, q, idx) {
     var box = el("div", "q"); box.id = "q_" + q.id;
-    box.appendChild(el("p", "qq", "第 " + idx + " 题（判断对错） " + esc(cleanOCR(q.q))));
+    box.appendChild(el("p", "qq", "第 " + idx + " 题（判断对错） " + esc(cleanOCR(q.q)) + pptJump(cid, q)));
     var opts = el("div", "mcq");
     ["对", "错"].forEach(function (v) {
       var b = el("button", "mopt", v); b.dataset.l = v;
@@ -531,7 +553,7 @@
   /* ================= fill ================= */
   function renderFill(cid, q, idx) {
     var box = el("div", "q"); box.id = "q_" + q.id;
-    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(cleanOCR(q.q))));
+    box.appendChild(el("p", "qq", "第 " + idx + " 题 " + esc(cleanOCR(q.q)) + pptJump(cid, q)));
     var inp = el("input", "ans"); inp.placeholder = "输入答案（多个空用逗号分隔）"; box.appendChild(inp);
     var bar = el("div", "self");
     var bChk = el("button", "ok", "检查"), bShow = el("button", "", "显示答案");
@@ -579,7 +601,7 @@
       kps = q.kps || "";
       if (q.e) answerHTML += '<div class="q-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + "</div></div>";
     }
-    box.appendChild(el("p", "qq", title));
+    box.appendChild(el("p", "qq", title + pptJump(cid, q)));
     if (q.img) { var qimg = el("img", "q-img"); qimg.src = q.img; qimg.alt = "题目配图"; qimg.loading = "lazy"; box.appendChild(qimg); }
     var ta = el("textarea", "ta");
     ta.placeholder = (kind === "term")
