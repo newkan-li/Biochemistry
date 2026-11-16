@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>bc01–14 生物化学自学</title>
+<link rel="stylesheet" href="assets/style.css?v=20261116p0">
+<script src="assets/theme.js?v=20261116p0"></script>
+<style>
+.bc-hero{background:linear-gradient(135deg,#1f5c8b,#12324d);color:#fff;border-radius:14px;padding:20px 22px;margin:8px 0 14px}
+.bc-hero h1{margin:0 0 6px;font-size:25px}
+.bc-hero p{margin:4px 0;line-height:1.7;font-size:13.5px;opacity:.95}
+.bc-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.bc-tools a,.bc-tools button{border:1px solid #cbd9ea;background:#eef4fb;color:#1f5c8b;border-radius:18px;padding:7px 13px;text-decoration:none;font-size:13px;cursor:pointer}
+.bc-route{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;margin:12px 0}
+.bc-route div{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:9px 11px;font-size:12.5px;line-height:1.6}
+.bc-route b{display:block;color:#1f5c8b;margin-bottom:2px}
+.bc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:12px 0}
+.bc-card{border:1px solid var(--line);background:var(--card);border-radius:11px;padding:12px 13px;display:flex;flex-direction:column;gap:7px}
+.bc-card h3{margin:0;font-size:15px;line-height:1.45}
+.bc-card h3 a{color:#1f5c8b;text-decoration:none}
+.bc-meta{font-size:11.5px;color:var(--muted);line-height:1.5}
+.bc-bar{height:6px;background:#e5edf5;border-radius:9px;overflow:hidden}
+.bc-bar i{display:block;height:100%;background:#2c7a5a;width:0}
+.bc-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+.bc-links a{font-size:11.5px;border:1px solid #d2e0ee;border-radius:12px;padding:3px 8px;text-decoration:none;color:#31516f;background:#f7fbff}
+.bc-total{font-size:12.5px;color:var(--muted);line-height:1.8;border-top:1px dashed var(--line);padding-top:10px;margin-top:8px}
+</style>
+</head>
+<body data-page="bc-core">
+<div class="wrap" style="max-width:1120px">
+  <div class="bc-hero">
+    <h1>生物化学 bc01–14 自学主页</h1>
+    <p>按朱圣庚第4版第1–14章组织：概念页、AI主讲、原书精读、图卡、章节测试、错题复习。</p>
+    <p>建议顺序：先做本章诊断，再学主线；每章学完立即做章节测试，错题进入错题本。</p>
+    <div class="bc-tools">
+      <a href="learn.html" style="background:#fff;color:#1f5c8b">36章详细目录</a>
+      <a href="textbook.html" style="background:#fff;color:#1f5c8b">教材对照与时间评估</a>
+      <a href="review.html" style="background:#fff;color:#1f5c8b">今日复习</a>
+      <a href="wrong.html" style="background:#fff;color:#1f5c8b">全局错题本</a>
+      <a href="exam.html" style="background:#fff;color:#1f5c8b">模拟测验</a>
+      <a href="index.html" style="background:#fff;color:#1f5c8b">旧版首页</a>
+    </div>
+  </div>
+
+  <div class="statsbox" id="continuebox"></div>
+
+  <div class="bc-route">
+    <div><b>基础</b>bc01 生命的分子基础</div>
+    <div><b>蛋白质</b>bc02 → bc03 → bc04 → bc05</div>
+    <div><b>酶学</b>bc06 → bc07 → bc08</div>
+    <div><b>糖与脂</b>bc09 → bc10</div>
+    <div><b>核酸</b>bc11 → bc12</div>
+    <div><b>维生素与激素</b>bc13 → bc14</div>
+  </div>
+
+  <div class="bc-grid" id="bcgrid"></div>
+  <div class="bc-total" id="bctotal"></div>
+  <p class="hint" style="font-size:12px;color:var(--muted);line-height:1.7">PPT按钮采用保守策略：章节测试仅显示已确认对应页的链接；未确认的题不显示按钮，避免跳到章节标题页或导读页。学习记录保存在本机浏览器 localStorage。</p>
+  <footer style="margin-top:18px">bc01–14 自学入口 ｜ 数据保存在本机浏览器</footer>
+</div>
+<script src="data/bc_core.js?v=20261116p0"></script>
+<script>
+(function () {
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  var list = window.BC_CORE || [];
+  var totalSlides = 0, totalQs = 0, lastId = null, lastTs = 0;
+  var grid = document.getElementById("bcgrid");
+  list.forEach(function (c) {
+    totalSlides += c.n_slides; totalQs += c.n_q;
+    var seen = 0;
+    try { var obj = JSON.parse(localStorage.getItem("biochem_seen:" + c.id) || "{}"); seen = Object.keys(obj).filter(function (k) { return obj[k]; }).length; } catch (e) {}
+    var pct = c.n_slides ? Math.min(100, Math.round(seen * 100 / c.n_slides)) : 0;
+    var ts = +(localStorage.getItem("biochem_last:" + c.id) || 0);
+    if (ts > lastTs) { lastTs = ts; lastId = c.id; }
+    var card = document.createElement("div"); card.className = "bc-card";
+    card.innerHTML = '<h3><a href="' + c.id + '.html">' + esc(c.id) + ' · ' + esc(c.title) + '</a></h3>' +
+      '<div class="bc-meta">' + esc(c.group) + ' ｜ ' + c.n_slides + '页 ｜ ' + c.n_q + '题 ｜ 建议 ' + esc(c.hours) + '</div>' +
+      '<div class="bc-bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="bc-meta">已读 ' + seen + '/' + c.n_slides + ' 页（' + pct + '%）</div>' +
+      '<div class="bc-links"><a href="' + c.id + '.html">进入学习</a><a href="diag.html?ch=' + c.id + '">诊断测</a><a href="exam.html?ch=' + c.id + '">限时测试</a><a href="flashcards.html?ch=' + c.id + '">闪卡</a></div>';
+    grid.appendChild(card);
+  });
+  document.getElementById("bctotal").textContent = "共 " + list.length + " 章 ｜ " + totalSlides + " 页 ｜ " + totalQs + " 道章节测试题 ｜ 建议总投入 80–105 小时（基础差可从 100–130 小时起步）";
+  var cb = document.getElementById("continuebox");
+  if (lastId) {
+    cb.innerHTML = '<h3 style="margin:0 0 8px">继续上次学习</h3><p style="margin:0 0 8px">上次打开：<b>' + esc(lastId) + '</b></p><a class="navbtn" style="width:auto;display:inline-block;text-decoration:none" href="' + lastId + '.html">继续学习</a>';
+  } else {
+    cb.innerHTML = '<h3 style="margin:0 0 8px">开始学习</h3><p style="margin:0 0 8px">还没有学习记录。建议先做 bc01 诊断，或直接从 bc01 开始。</p><a class="navbtn" style="width:auto;display:inline-block;text-decoration:none" href="bc01.html">进入 bc01</a> <a class="navbtn" style="width:auto;display:inline-block;text-decoration:none" href="diag.html?ch=bc01">先做诊断</a>';
+  }
+})();
+</script>
+</body>
+</html>

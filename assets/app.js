@@ -426,104 +426,10 @@
     return box;
   }
 
-  function qSlide(cid, q) {
-    if (!q) return null;
-    if (q.pptSlide != null) return q.pptSlide;
-    if (q.slide != null) { q.pptSlide = +q.slide; return q.pptSlide; }
-    var ch = window.CHAPTERS[cid]; if (!ch) return null;
-    var slides = (ch.modules && ch.modules[0] && ch.modules[0].slides) || [];
-    var qtext = String(q.q || q.term || "");
-    var core = slides.filter(function (s) { return /老师PPT逐页|脂质计算|计算专题/.test(String(s.sec || "")); });
-    var rules = [
-      [/LDL|HDL|VLDL|CM|乳糜微粒|脂蛋白/, /脂蛋白|LDL|HDL|VLDL|CM|乳糜微粒/],
-      [/皂化值|碘值|平均相对分子质量|双键数/, /脂质计算|计算专题|皂化值|碘值|平均Mr|双键数/],
-      [/三酰甘油|甘油三酯/, /三酰甘油|甘油三酯/],
-      [/磷脂酰乙醇胺|磷脂酰胆碱|磷脂酰丝氨酸|磷脂酰肌醇|心磷脂/, /甘油磷脂|磷脂酰|心磷脂/],
-      [/磷脂|磷脂酸|膜脂|PC|PE|PS|PI|PG/, /磷脂|磷脂酸|PC|PE|PS|PI|PG/],
-      [/鞘脂|鞘磷脂|糖脂|脑苷|神经节苷/, /鞘|糖脂|脑苷|神经节苷/],
-      [/胆固醇|类固醇|固醇|萜/, /胆固醇|类固醇|固醇|萜/],
-      [/过氧化|SOD|自由基|PUFA|抗氧化/, /过氧化|SOD|自由基|抗氧化/],
-      [/脂肪酸|熔点|双键|必需脂肪酸/, /脂肪酸|熔点|双键|必需/],
-      [/膜蛋白|GPI|脂筏|流动性|线粒体|内膜|通透|生物膜/, /膜|脂双层|膜蛋白|流动/],
-      [/同工酶|LDH/, /同工酶|LDH/],
-      [/酶原|共价修饰|磷酸化/, /酶原|共价修饰|磷酸化/],
-      [/别构|齐变|序变|ATCase|PALA/, /别构|齐变|序变|ATCase|PALA/],
-      [/核酸|DNA|RNA|核苷酸|碱基/, /核酸|DNA|RNA|核苷酸|碱基/],
-      [/糖|葡萄糖|糖原|淀粉|纤维素|糖苷/, /糖|葡萄糖|糖原|淀粉|纤维素|糖苷/],
-      [/维生素|辅酶|TPP|NAD|FAD|PLP|THF/, /维生素|辅酶|TPP|NAD|FAD|PLP|THF/],
-      [/激素|受体|cAMP|PKA|IP3|DAG|PKC|胰岛素/, /激素|受体|cAMP|PKA|IP3|DAG|PKC|胰岛素/]
-    ];
-    var candidate = null;
-    for (var ri = 0; ri < rules.length; ri++) {
-      if (rules[ri][0].test(qtext)) { candidate = rules[ri][1]; break; }
-    }
-    if (candidate) {
-      var bestK = 0, bestKS = -1e9;
-      core.forEach(function (s, si) {
-        var title = String(s.title || ""), blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" ")));
-        if (!candidate.test(title + " " + (s.notes || ""))) return;
-        var score = 0; if (candidate.test(title)) score += 20;
-        if (/^[一二三四五六七八九十]+、/.test(title)) score -= 35;
-        if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
-        if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 50;
-        if (score > bestKS) { bestKS = score; bestK = s.i; }
-      });
-      if (bestKS > -50) { q.pptSlide = bestK; return bestK; }
-    }
-    var m = String(q.kpId || "").match(/_s\d+_(\d+)$/);
-    var aiIdx = m ? +m[1] : -1;
-    if (aiIdx >= 0 && slides[aiIdx]) {
-      var ai = slides[aiIdx], aiSec = String(ai.sec || "");
-      if (!/AI主讲|导读/.test(aiSec)) { q.pptSlide = aiIdx; return aiIdx; }
-      if (!window.__pptAlias) window.__pptAlias = {};
-      var ck = cid + ":alias:" + aiIdx;
-      if (window.__pptAlias[ck] != null) { q.pptSlide = window.__pptAlias[ck]; return q.pptSlide; }
-      var imgBase = String(ai.img || "").split('/').pop().split('?')[0];
-      if (imgBase) {
-        for (var ci = aiIdx - 1; ci >= 0; ci--) {
-          if (String(slides[ci].img || "").split('/').pop().split('?')[0] === imgBase) { window.__pptAlias[ck] = ci; q.pptSlide = ci; return ci; }
-        }
-      }
-      var at = String((ai.title || "") + " " + (ai.notes || "") + " " + ((ai.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-      var ag = []; for (var x = 0; x < at.length - 1; x++) ag.push(at.substr(x, 2));
-      var best = 0, bestScore = -1e9;
-      slides.slice(0, aiIdx).forEach(function (s, si) {
-        var title = String(s.title || ""), sec = String(s.sec || "");
-        var blob = String(title + " " + (s.notes || "") + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-        var score = 0; for (var j = 0; j < ag.length; j++) if (blob.indexOf(ag[j]) >= 0) score++;
-        if (/老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 18;
-        if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
-        if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 80;
-        if (score > bestScore) { bestScore = score; best = si; }
-      });
-      window.__pptAlias[ck] = best; q.pptSlide = best; return best;
-    }
-    var qt = String(q.q || q.term || "").replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-    var qg = []; for (var i = 0; i < qt.length - 1; i++) qg.push(qt.substr(i, 2));
-    var best2 = 0, best2Score = -1e9;
-    slides.forEach(function (s, si) {
-      var title = String(s.title || ""), sec = String(s.sec || "");
-      var titleBlob = String(title + " " + ((s.points || []).join(" "))).replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
-      var score = 0; for (var j = 0; j < qg.length; j++) if (titleBlob.indexOf(qg[j]) >= 0) score++;
-      if (/DNA/.test(qt) && /DNA/.test(title)) score += 30;
-      if (/RNA/.test(qt) && /RNA/.test(title)) score += 30;
-      if (/胰岛素/.test(qt) && /胰岛素/.test(title)) score += 30;
-      if (/激素/.test(qt) && /激素/.test(title)) score += 24;
-      if (/酶/.test(qt) && /酶/.test(title)) score += 20;
-      if (/维生素|辅酶/.test(qt) && /维生素|辅酶/.test(title)) score += 24;
-      if (/糖/.test(qt) && /糖/.test(title)) score += 12;
-      if (/脂|脂肪酸|磷脂|胆固醇/.test(qt) && /脂|脂肪酸|磷脂|胆固醇/.test(title)) score += 12;
-      if (score > 0 && /老师PPT逐页|原书精读|图卡|过程版|计算专题/.test(sec)) score += 20;
-      if (/AI主讲|导读|使用评估/.test(sec)) score -= 20;
-      if (/第\d+章|章节标题页|本章标题|过渡页|导览/.test(title)) score -= 100;
-      if (/章节标题|小节标题/.test(title + " " + (s.notes || ""))) score -= 70;
-      if (score > best2Score) { best2Score = score; best2 = si; }
-    });
-    q.pptSlide = (best2Score >= 12 ? best2 : -1); return q.pptSlide;
-  }
   function pptJump(cid, q) {
-    var si = qSlide(cid, q);
-    if (si == null || si < 0) return "";
+    if (!q || q.slide == null) return "";
+    var si = +q.slide;
+    if (si < 0) return "";
     return ' <a class="ppt-jump" href="ppt.html?ch=' + encodeURIComponent(cid) + "&slide=" + (si + 1) + "&back=" + encodeURIComponent(cid) + '" target="_blank" rel="noopener">📽 对应PPT</a>';
   }
   /* ================= MCQ ================= */
@@ -1251,6 +1157,7 @@
     var sec = el("section", "chapter-test"); sec.id = "chapter-test";
     sec.appendChild(el("h2", "", "📝 本章章节测试（原书课后题优先）"));
     sec.appendChild(el("p", "hint", "第一部分为朱圣庚第4版本章课后题；客观题用于补充检测。共 " + total + " 题。"));
+    sec.appendChild(el("p", "hint", "PPT按钮仅在已确认对应页码的题显示；未确认题目不显示按钮，避免跳到章节标题页或导读页。"));
     var box = el("details", "test-wrap"); box.open = false;
     box.appendChild(el("summary", "", "展开本章测试（" + total + " 题）"));
     function head(t) { return el("h3", "", t); }
@@ -1270,13 +1177,34 @@
     return sec;
   }
 
+  function coreNav(cid, cls) {
+    var core = window.BC_CORE || [];
+    var ix = -1;
+    for (var i = 0; i < core.length; i++) if (core[i].id === cid) { ix = i; break; }
+    if (ix < 0) return null;
+    var box = el("div", "chapnav" + (cls ? " " + cls : ""));
+    if (ix > 0) {
+      var p = el("a", "navbtn", "← 上一章：" + core[ix - 1].id + " " + core[ix - 1].title);
+      p.href = core[ix - 1].id + ".html"; box.appendChild(p);
+    }
+    var home = el("a", "navbtn", "bc01–14 目录");
+    home.href = "bc.html"; box.appendChild(home);
+    if (ix < core.length - 1) {
+      var n = el("a", "navbtn", "下一章：" + core[ix + 1].id + " " + core[ix + 1].title + " →");
+      n.href = core[ix + 1].id + ".html"; box.appendChild(n);
+    }
+    return box;
+  }
+
   function renderChapter(cid) {
     var ch = window.CHAPTERS[cid];
     if (!ch) { document.getElementById("main").innerHTML = "<p>数据未加载。</p>"; return; }
     HW.init(cid);
+    touch(cid);
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
-    aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="index.html">← 返回首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="diag.html?ch=' + esc(cid) + '">🩺 本章诊断测</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
+    aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="bc.html">← bc01–14 目录</a><a href="index.html">旧版首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="diag.html?ch=' + esc(cid) + '">🩺 本章诊断测</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
+    var cn = coreNav(cid, "side"); if (cn) aside.appendChild(cn);
     var findBox = document.createElement("div");
     findBox.style.cssText = "margin:8px 0;padding:8px;border:1px solid #d7e0ea;border-radius:8px;background:#f7fafc";
     findBox.innerHTML = '<input id="chfind" type="search" placeholder="搜索本页标题/关键词，如：诊断页、pI、Hill" style="width:100%;box-sizing:border-box;padding:6px 8px;border:1px solid #c9d6e3;border-radius:6px"><div id="chfindres" style="font-size:12px;margin-top:6px;max-height:180px;overflow:auto"></div>';
@@ -1784,6 +1712,7 @@
 
     var chapterTest = renderChapterTest(cid, ch);
     if (chapterTest) main.appendChild(chapterTest);
+    var endNav = coreNav(cid, "bottom"); if (endNav) main.appendChild(endNav);
     main.appendChild(el("footer", "", "仅供个人学习使用 ｜ 数据保存在本机浏览器 localStorage"));
     refreshProgress();
   }

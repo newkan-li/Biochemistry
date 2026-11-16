@@ -1,0 +1,16 @@
+window.BC_CORE=[
+  {id:"bc01",title:"生命的分子基础",group:"基础",n_slides:98,n_q:38,hours:"3–4h"},
+  {id:"bc02",title:"氨基酸、肽和蛋白质",group:"蛋白质",n_slides:154,n_q:43,hours:"7–9h"},
+  {id:"bc03",title:"蛋白质的三维结构",group:"蛋白质",n_slides:95,n_q:43,hours:"5–7h"},
+  {id:"bc04",title:"蛋白质的生物学功能",group:"蛋白质",n_slides:157,n_q:39,hours:"5–7h"},
+  {id:"bc05",title:"蛋白质的性质、分离纯化和鉴定",group:"蛋白质",n_slides:108,n_q:43,hours:"5–6h"},
+  {id:"bc06",title:"酶的催化作用",group:"酶学",n_slides:152,n_q:46,hours:"6–8h"},
+  {id:"bc07",title:"酶动力学",group:"酶学",n_slides:165,n_q:48,hours:"7–9h"},
+  {id:"bc08",title:"酶作用机制和酶活性调节",group:"酶学",n_slides:108,n_q:47,hours:"5–6h"},
+  {id:"bc09",title:"糖类和糖生物学",group:"糖",n_slides:105,n_q:56,hours:"5–6h"},
+  {id:"bc10",title:"脂质和生物膜",group:"脂质",n_slides:123,n_q:69,hours:"6–8h"},
+  {id:"bc11",title:"核酸的结构和功能",group:"核酸",n_slides:136,n_q:56,hours:"7–9h"},
+  {id:"bc12",title:"核酸的物理化学性质和研究方法",group:"核酸",n_slides:94,n_q:56,hours:"5–7h"},
+  {id:"bc13",title:"维生素和辅酶",group:"维生素",n_slides:127,n_q:56,hours:"5–6h"},
+  {id:"bc14",title:"激素和信号转导",group:"激素",n_slides:135,n_q:56,hours:"5–7h"}
+];
