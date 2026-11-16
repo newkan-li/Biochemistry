@@ -1132,25 +1132,50 @@
       if (idx != null) for (var bi2 = 0; bi2 < blocks.length; bi2++) if (idx >= blocks[bi2].start && idx < blocks[bi2].end) return bi2;
       return -1;
     }
+    function testAnswer(q, kind) {
+      var rec, correct = false, answered = false;
+      if (kind === "mcq") { rec = mcqStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && String(rec.last).trim() === String(q.a).trim(); }
+      else if (kind === "judge") { rec = judgeStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && String(rec.last).trim() === String(q.a).trim(); }
+      else if (kind === "fill") { rec = fillStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && fuzzyMatch(q.a, rec.last); }
+      else { rec = selfStore(cid)[q.id]; answered = !!(rec && rec.state); correct = answered && rec.state === "ok"; }
+      return { answered: answered, correct: correct };
+    }
     function testStatsForBlock(bi) {
-      var seenDone = 0, ok = 0, total = 0;
+      var done = 0, ok = 0, total = 0;
       ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (kind) {
         (ch[kind] || []).forEach(function (q) {
           if (blockIndexFor(q) !== bi) return;
           total++;
-          var rec, correct = false, answered = false;
-          if (kind === "mcq") { rec = mcqStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && String(rec.last).trim() === String(q.a).trim(); }
-          else if (kind === "judge") { rec = judgeStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && String(rec.last).trim() === String(q.a).trim(); }
-          else if (kind === "fill") { rec = fillStore(cid)[q.id]; answered = !!(rec && rec.last != null); correct = answered && fuzzyMatch(q.a, rec.last); }
-          else { rec = selfStore(cid)[q.id]; answered = !!(rec && rec.state); correct = answered && rec.state === "ok"; }
-          if (answered) seenDone++;
-          if (correct) ok++;
+          var a = testAnswer(q, kind);
+          if (a.answered) done++;
+          if (a.correct) ok++;
         });
       });
-      return { total: total, done: seenDone, ok: ok, pct: seenDone ? Math.round(ok * 100 / seenDone) : null };
+      return { total: total, done: done, ok: ok, pct: done ? Math.round(ok * 100 / done) : null };
+    }
+    function webStatsForBlock(bi) {
+      var doneMap = {};
+      try { doneMap = JSON.parse(localStorage.getItem("ex_done_" + cid) || "{}") || {}; } catch (e) {}
+      var total = 0, done = 0;
+      (ch.exercises || []).forEach(function (q) {
+        if (blockIndexFor(q) !== bi) return;
+        total++; if (doneMap[q.id]) done++;
+      });
+      return { total: total, done: done, pct: total ? Math.round(done * 100 / total) : null };
     }
     var allTestQ = [];
     ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (kind) { (ch[kind] || []).forEach(function (q) { allTestQ.push(q); }); });
+    var chapterTestStats = (function () {
+      var done = 0, ok = 0;
+      allTestQ.forEach(function (q) { var kind = "short"; ["mcq","judge","fill","short","calc","term"].some(function (k) { if ((ch[k] || []).indexOf(q) >= 0) { kind = k; return true; } return false; }); var a = testAnswer(q, kind); if (a.answered) done++; if (a.correct) ok++; });
+      return { total: allTestQ.length, done: done, ok: ok, pct: done ? Math.round(ok * 100 / done) : null };
+    })();
+    var webAllStats = (function () {
+      var doneMap = {}; try { doneMap = JSON.parse(localStorage.getItem("ex_done_" + cid) || "{}") || {}; } catch (e) {}
+      var total = (ch.exercises || []).length, done = 0;
+      (ch.exercises || []).forEach(function (q) { if (doneMap[q.id]) done++; });
+      return { total: total, done: done, pct: total ? Math.round(done * 100 / total) : null };
+    })();
     var unbound = allTestQ.filter(function (q) { return blockIndexFor(q) < 0; }).length;
     function blockStats(b, bi) {
       var seen = seenStore(cid), total = b.end - b.start, read = 0, mastered = 0, sum = 0;
@@ -1163,14 +1188,15 @@
       var avg = total ? Math.round(sum * 100 / total) : 0;
       var readPct = total ? Math.round(read * 100 / total) : 0;
       var ts = testStatsForBlock(bi);
-      return { total: total, read: read, mastered: mastered, avg: avg, readPct: readPct, test: ts,
+      var ws = webStatsForBlock(bi);
+      return { total: total, read: read, mastered: mastered, avg: avg, readPct: readPct, test: ts, web: ws,
         status: (read >= total && avg >= 75) ? "已掌握" : (avg >= 50 || readPct >= 50) ? "巩固中" : read > 0 ? "学习中" : "未开始" };
     }
     function draw() {
       var total = slides.length, mastered = 0;
       slides.forEach(function (s) { if (kpMastery(cid + "_s0_" + s.i) >= 0.6) mastered++; });
       var html = '<span id="blockprogress"></span><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">' +
-        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 按知识块显示进度 ｜ 测题正确率按已做章节测试统计 ｜ 点方块跳到该页</span></div>' +
+        '<h3 style="margin:0">🧭 知识点掌握度</h3><span class="hint">已掌握 ' + mastered + "/" + total + ' ｜ 章节测试 已做 ' + chapterTestStats.done + "/" + chapterTestStats.total + ' · 正确率 ' + (chapterTestStats.pct == null ? "—" : chapterTestStats.pct + "%") + ' ｜ 网页题 已掌握 ' + webAllStats.done + "/" + webAllStats.total + ' ｜ 点方块跳到该页</span></div>' +
         '<div class="hm-legend">' +
         '<span><i class="hm-cell hm-0"></i>未学</span>' +
         '<span><i class="hm-cell hm-c"></i>学过·未掌握</span>' +
@@ -1181,10 +1207,11 @@
         '</div>';
       blocks.forEach(function (b, bi) {
         var st = blockStats(b, bi);
-        var testTxt = st.test.total ? (' · 测题 ' + st.test.done + "/" + st.test.total + ' · 正确率 ' + (st.test.pct == null ? "—" : st.test.pct + "%")) : ' · 测题 0';
+        var testTxt = st.test.total ? (' · 章节测试 ' + st.test.done + "/" + st.test.total + ' · 正确率 ' + (st.test.pct == null ? "—" : st.test.pct + "%")) : ' · 章节测试 0';
+        var webTxt = st.web.total ? (' · 网页题 ' + st.web.done + "/" + st.web.total + '（' + (st.web.pct == null ? "—" : st.web.pct + "%") + '）') : '';
         html += '<div class="hm-mod"><div class="hm-name"><a href="#s_' + cid + '_s0_' + b.start + '">' +
           esc(b.title) + '</a><span class="hm-block-meta"> ' + (b.start + 1) + "–" + b.end + '页 · 已读 ' + st.read + "/" + st.total +
-          ' · 掌握 ' + st.mastered + "/" + st.total + ' · 平均 ' + st.avg + '%' + testTxt + ' · ' + st.status + '</span></div><div class="hm-grid">';
+          ' · 掌握 ' + st.mastered + "/" + st.total + ' · 平均 ' + st.avg + '%' + testTxt + webTxt + ' · ' + st.status + '</span></div><div class="hm-grid">';
         for (var i = b.start; i < b.end; i++) {
           var s = slides[i]; if (!s) continue;
           var kp = cid + "_s0_" + s.i, v = kpMastery(kp);
