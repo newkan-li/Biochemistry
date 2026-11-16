@@ -498,7 +498,7 @@
       });
       window.__pptAlias[ck] = best; q.pptSlide = best; return best;
     }
-    var qt = qtext.replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
+    var qt = String(q.q || q.term || "").replace(/[^\u4e00-\u9fffA-Za-z0-9]/g, "");
     var qg = []; for (var i = 0; i < qt.length - 1; i++) qg.push(qt.substr(i, 2));
     var best2 = 0, best2Score = -1e9;
     slides.forEach(function (s, si) {
