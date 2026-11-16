@@ -577,3 +577,17 @@ body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
 
 .tb-dong{margin:14px 0 6px}
 .tb-coverage{background:#eef7ff;border:1px solid #cfe0ee;border-radius:10px;padding:10px 12px;margin:8px 0 10px;font-size:13px;color:#234f7a}
+
+.study-estimate{background:#f7fbff;border:1px solid #cfe0ee;border-radius:14px;padding:16px 18px;margin:16px 0}
+.study-estimate h2{font-size:20px;color:#1f5c8b;margin:0 0 6px}
+.study-estimate h3{font-size:15px;color:#7a2a24;margin:12px 0 5px}
+.study-estimate p{margin:6px 0}
+.se-targets{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.se-card{background:#fff;border:1px solid #d5e3ef;border-radius:10px;padding:10px 12px}
+.se-goal{font-size:13px;color:#5b6b7b}
+.se-hours{font-size:18px;font-weight:700;color:#1f5c8b;margin-top:2px}
+.se-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.se-cols ul{margin:4px 0 0 18px;padding:0}
+.se-cols li{margin:3px 0;font-size:13px}
+.se-conclusion{background:#eef7f0;border:1px solid #b7e3c9;border-radius:9px;padding:10px 12px;margin-top:10px;font-weight:600;color:#1e5a3a}
+@media(max-width:700px){.se-cols{grid-template-columns:1fr}}

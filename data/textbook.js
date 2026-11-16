@@ -31,3 +31,22 @@ window.TEXTBOOK.dong.legacy=[
   {web:"rna",title:"RNA 合成与加工",dong:"第十一章 核酸代谢 第三节",cover:"部分",note:"转录、转录后加工、RNA复制"}
 ];
 window.TEXTBOOK.dong.legacyGaps=["第十一章第四节 核酸代谢调节（旧版未单独覆盖）","第十三章 代谢调节综述（旧版未单独覆盖）"];
+window.TEXTBOOK.studyEstimate={
+  totalPages:1757,
+  intro:"bc01–bc14 共约1757页，另有页内自测、章测和网页题。时间应按“看懂 + 做题 + 复习”估算，而不是只按页数。",
+  targets:[
+    {goal:"及格 / 60分",hours:"40–60 小时"},
+    {goal:"80分左右",hours:"80–110 小时"},
+    {goal:"85分左右",hours:"110–140 小时"},
+    {goal:"90分+",hours:"160–220 小时"}
+  ],
+  schedule:[
+    {daily:"每天 6–8 小时，突击",time:"2–3 周"},
+    {daily:"每天 3–4 小时",time:"4–5 周"},
+    {daily:"每天 2 小时",time:"8–10 周"},
+    {daily:"每天 1–1.5 小时，跟学期",time:"3–4 个月"}
+  ],
+  allocation:["看 PPT/讲义：55–65 小时","做章测 + 网页题：35–45 小时","错题和复习：15–20 小时","原书图表/补缺：10–15 小时"],
+  hard:["bc03 蛋白质三维结构","bc05 分离纯化","bc06–bc08 酶学","bc10 脂质计算","bc12 核酸方法","bc14 信号通路"],
+  conclusion:"想比较稳地掌握 bc01–bc14，建议准备100–130小时；突击2–3周通常只能到75–82分，想85+需要4周以上并坚持做题。"
+};

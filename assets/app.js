@@ -2484,6 +2484,21 @@
     var host = document.getElementById("tbhost"); if (!host) return;
     var T = window.TEXTBOOK; if (!T) { host.innerHTML = '<p class="empty">数据未加载。</p>'; return; }
     var html = '<p class="hint">' + esc(T.source) + " ｜ " + esc(T.note) + "</p>";
+    if (T.studyEstimate) {
+      var se = T.studyEstimate;
+      html += '<div class="study-estimate" id="study-estimate"><h2>⏱️ bc01–bc14 学习时间评估</h2>' +
+        '<p>' + esc(se.intro) + '</p>' +
+        '<div class="se-targets">' + (se.targets || []).map(function (x) {
+          return '<div class="se-card"><div class="se-goal">' + esc(x.goal) + '</div><div class="se-hours">' + esc(x.hours) + '</div></div>';
+        }).join('') + '</div>' +
+        '<div class="se-cols"><div><h3>按每天学习时间</h3><ul>' + (se.schedule || []).map(function (x) {
+          return '<li><b>' + esc(x.daily) + '</b>：' + esc(x.time) + '</li>';
+        }).join('') + '</ul></div><div><h3>时间分配（以120小时为例）</h3><ul>' + (se.allocation || []).map(function (x) {
+          return '<li>' + esc(x) + '</li>';
+        }).join('') + '</ul></div></div>' +
+        '<p><b>较难章节：</b>' + (se.hard || []).map(esc).join('、') + '</p>' +
+        '<div class="se-conclusion">' + esc(se.conclusion) + '</div></div>';
+    }
     if (T.dong) {
       html += '<div class="tb-dong"><h2 style="font-size:20px;color:#1f5c8b;margin:18px 0 6px">📘 董晓燕《生物化学》第4版覆盖对照</h2>' +
         '<p class="hint">' + esc(T.dong.source) + " ｜ " + esc(T.dong.note) + "</p>" +
