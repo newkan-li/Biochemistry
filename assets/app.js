@@ -1376,7 +1376,7 @@
     sec.appendChild(el("p", "hint", "来自朱圣庚《生物化学》第4版配套题库·第2章；先作答，再展开答案/解析。共 " + bank.length + " 题。"));
     var bar = el("div", "bank-filters");
     var list = el("div", "bank-list");
-    var box = el("details", "bank-wrap"); box.open = false;
+    var box = el("details", "bank-wrap"); box.open = true;
     box.appendChild(el("summary", "", "展开配套题库（" + bank.length + " 题）"));
     var active = "all";
     var btns = [];
@@ -1742,6 +1742,11 @@
     var hero = el("div", "hero");
     hero.innerHTML = "<h1>" + esc(ch.title) + '</h1><div class="tag">' + esc(ch.sub2 || "") + " ｜ 概念逐页 + 全题型练习 + 错题本 + 手写</div>";
     main.appendChild(hero);
+    if (ch.bank && ch.bank.length) {
+      var bankTop = el("a", "navbtn", "📚 配套题库 · 考研真题（章末，" + ch.bank.length + "题）");
+      bankTop.href = "#chapter-bank"; bankTop.style.cssText = "width:auto;display:inline-block;margin:6px 0 10px;text-decoration:none";
+      main.appendChild(bankTop);
+    }
     main.appendChild(el("div", "hint", "来源标注：原书=原书原文/原意；老师PPT=老师原页；白话辅助=二次解释。学习顺序：主线=AI主讲/精读/学习支持；练习=过程/变式/卡点/专题；查阅=老师原页/原书图卡。已读仅作阅读记录，掌握进度以章节测试和网页题为准。"));
 
     if (ch.preview) {
