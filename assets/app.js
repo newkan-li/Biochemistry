@@ -1427,6 +1427,36 @@
     return sec;
   }
 
+  function initSidebarResize(aside, handle) {
+    var KEY = PREFIX + "sidebarWidth";
+    var MIN = 180, MAX = 520, DEF = 236;
+    function apply(w) {
+      w = Math.max(MIN, Math.min(MAX, w || DEF));
+      aside.style.width = w + "px";
+      aside.style.flexBasis = w + "px";
+      try { localStorage.setItem(KEY, String(w)); } catch (e) { }
+    }
+    try {
+      var saved = parseInt(localStorage.getItem(KEY) || "0", 10);
+      if (saved >= MIN && saved <= MAX) apply(saved);
+    } catch (e) { }
+    handle.addEventListener("pointerdown", function (e) {
+      if (window.innerWidth <= 760) return;
+      e.preventDefault();
+      var startX = e.clientX, startW = aside.getBoundingClientRect().width;
+      document.body.classList.add("resizing-sidebar");
+      function move(ev) { apply(startW + ev.clientX - startX); }
+      function up() {
+        document.body.classList.remove("resizing-sidebar");
+        document.removeEventListener("pointermove", move);
+        document.removeEventListener("pointerup", up);
+      }
+      document.addEventListener("pointermove", move);
+      document.addEventListener("pointerup", up);
+    });
+    handle.addEventListener("dblclick", function () { apply(DEF); });
+  }
+
   function renderChapter(cid) {
     var ch = window.CHAPTERS[cid];
     if (!ch) { document.getElementById("main").innerHTML = "<p>数据未加载。</p>"; return; }
@@ -1434,6 +1464,10 @@
     touch(cid);
     document.title = ch.title + " · 生物化学";
     var aside = document.getElementById("sidebar"), main = document.getElementById("main");
+    var sidebarHandle = el("div", "sidebar-resizer");
+    sidebarHandle.title = "拖动调整目录宽度，双击恢复默认";
+    aside.parentNode.insertBefore(sidebarHandle, aside.nextSibling);
+    initSidebarResize(aside, sidebarHandle);
     aside.innerHTML = '<div class="ttl">' + esc(ch.title) + '</div><a href="bc.html">← bc01–14 目录</a><a href="index.html">旧版首页</a><a href="learn.html">📚 36章详细目录</a><a href="textbook.html">📚 教材对照表</a><a href="glossary.html">📖 术语表</a><a href="review.html">🔁 今日复习</a><a href="flashcards.html?ch=' + esc(cid) + '">🃏 闪卡</a><a href="diag.html?ch=' + esc(cid) + '">🩺 本章诊断测</a><a href="exam.html?ch=' + esc(cid) + '">📝 本章测试（期末风格）</a><a href="exam.html">📝 全站模拟测验</a>';
     var cn = coreNav(cid, "side"); if (cn) aside.appendChild(cn);
     var findBox = document.createElement("div");
