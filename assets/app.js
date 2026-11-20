@@ -668,6 +668,7 @@
     ["mcq", "judge", "fill", "short", "calc", "term"].forEach(function (k) {
       (ch[k] || []).forEach(function (q) { qmap[q.id] = q; });
     });
+    (ch.bank || []).forEach(function (q) { qmap[q.id] = q; });
     ((ch.modules && ch.modules[0] && ch.modules[0].slides) || []).forEach(function (sl) {
       if (sl.check) qmap[sl.check.id] = sl.check;
       if (sl.exam) qmap[sl.exam.id] = sl.exam;
@@ -1366,6 +1367,48 @@
     return box;
   }
 
+  function renderChapterBank(cid, ch) {
+    var bank = ch.bank || [];
+    if (!bank.length) return null;
+    var names = { mcq: "选择题", fill: "填空题", judge: "判断题", term: "名词解释", short: "简答题", essay: "论述题" };
+    var sec = el("section", "chapter-bank"); sec.id = "chapter-bank";
+    sec.appendChild(el("h2", "", "📚 配套题库 · 考研真题精选"));
+    sec.appendChild(el("p", "hint", "来自朱圣庚《生物化学》第4版配套题库·第2章；先作答，再展开答案/解析。共 " + bank.length + " 题。"));
+    var bar = el("div", "bank-filters");
+    var list = el("div", "bank-list");
+    var box = el("details", "bank-wrap"); box.open = false;
+    box.appendChild(el("summary", "", "展开配套题库（" + bank.length + " 题）"));
+    var active = "all";
+    var btns = [];
+    function draw() {
+      list.innerHTML = "";
+      var shown = 0;
+      bank.forEach(function (q, i) {
+        if (active !== "all" && q.kind !== active) return;
+        shown++;
+        var item = el("div", "bank-item");
+        item.appendChild(el("div", "bank-src", (q.src || "配套题库") + " ｜ 第" + (q.no || i + 1) + "题"));
+        if (q.kind === "mcq") item.appendChild(renderMCQ(cid, q, i + 1));
+        else if (q.kind === "judge") item.appendChild(renderJudge(cid, q, i + 1));
+        else if (q.kind === "fill") item.appendChild(renderFill(cid, q, i + 1));
+        else if (q.kind === "term") item.appendChild(renderSelf(cid, q, i + 1, "term"));
+        else if (q.kind === "essay") item.appendChild(renderSelf(cid, q, i + 1, "calc"));
+        else item.appendChild(renderSelf(cid, q, i + 1, "short"));
+        list.appendChild(item);
+      });
+      if (!shown) list.appendChild(el("p", "empty", "该题型暂无题目。"));
+    }
+    function addFilter(k, label) {
+      var b = el("button", "bank-chip" + (k === "all" ? " on" : ""), label + "（" + bank.filter(function (q) { return k === "all" || q.kind === k; }).length + "）");
+      b.onclick = function () { active = k; btns.forEach(function (x) { x.classList.toggle("on", x === b); }); draw(); };
+      btns.push(b); bar.appendChild(b);
+    }
+    addFilter("all", "全部");
+    ["mcq", "fill", "judge", "term", "short", "essay"].forEach(function (k) { if (bank.some(function (q) { return q.kind === k; })) addFilter(k, names[k]); });
+    box.appendChild(bar); box.appendChild(list); sec.appendChild(box); draw();
+    return sec;
+  }
+
   function renderChapter(cid) {
     var ch = window.CHAPTERS[cid];
     if (!ch) { document.getElementById("main").innerHTML = "<p>数据未加载。</p>"; return; }
@@ -1675,6 +1718,7 @@
     }
     var ctA = el("a", "sub", "📝 本章章节测试（期末/期中）");
     ctA.href = "#chapter-test"; aside.appendChild(ctA);
+    if (ch.bank && ch.bank.length) { var bkA = el("a", "sub", "📚 配套题库 · 考研真题"); bkA.href = "#chapter-bank"; aside.appendChild(bkA); }
     var exA = el("a", "sub", "⏱ 本章限时测试");
     exA.href = "exam.html?ch=" + encodeURIComponent(cid); aside.appendChild(exA);
     var tools = el("div", "navbtns");
@@ -1884,6 +1928,7 @@
 
     var chapterTest = renderChapterTest(cid, ch);
     if (chapterTest) main.appendChild(chapterTest);
+    var bankSec = renderChapterBank(cid, ch); if (bankSec) main.appendChild(bankSec);
     var endNav = coreNav(cid, "bottom"); if (endNav) main.appendChild(endNav);
     main.appendChild(el("footer", "", "仅供个人学习使用 ｜ 数据保存在本机浏览器 localStorage"));
     refreshProgress();

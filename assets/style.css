@@ -630,3 +630,14 @@ body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
 .hm-name a{color:#31516f;text-decoration:none;font-weight:600}
 .hm-name a:hover{color:#1f5c8b}
 .hm-name .hm-block-meta{font-weight:400;color:var(--sub);font-size:11.5px}
+
+.chapter-bank{border-top:2px solid var(--line);margin-top:26px;padding-top:14px}
+.chapter-bank h2{color:#1f5c8b}
+.bank-wrap{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 14px;margin:10px 0}
+.bank-wrap>summary{cursor:pointer;font-weight:700;color:#1f5c8b}
+.bank-filters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.bank-chip{border:1px solid #cfe0ee;background:#f7fbff;color:#31516f;border-radius:15px;padding:3px 10px;font-size:12px;cursor:pointer}
+.bank-chip.on{background:#1f5c8b;border-color:#1f5c8b;color:#fff}
+.bank-list{margin-top:8px}
+.bank-item{border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}
+.bank-src{font-size:11.5px;color:#8a5a00;margin-bottom:5px}
