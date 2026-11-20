@@ -982,7 +982,8 @@
   function renderCheckpoint(cid, kp, qByKp, slide) {
     var pick = pickCheckpoint(qByKp, kp);
     var q, kind;
-    if (pick) { q = pick.q; kind = pick.kind; }
+    if (slide && slide.check && slide.check.src === "本页PPT-重写") { q = slide.check; kind = q.kind || "fill"; }
+    else if (pick) { q = pick.q; kind = pick.kind; }
     else if (slide && slide.check) { q = slide.check; kind = slide.check.kind || "mcq"; }
     else return null;
     var box = el("div", "checkpoint");
@@ -1062,9 +1063,12 @@
       box.appendChild(o2);
     } else {
       box.appendChild(el("div", "cp-q", esc(cleanOCR(q.q))));
-      var inp = el("input", "cp-in"); inp.placeholder = "输入答案"; box._fillInput = inp;
+      var inp = el("input", "cp-in"); inp.placeholder = "输入答案（可留空，直接看答案）"; box._fillInput = inp;
       var bc = el("button", "cp-opt", "检查"); bc.onclick = function () { grade(fuzzyMatch(q.a, inp.value)); };
-      box.appendChild(inp); box.appendChild(bc);
+      var bs = el("button", "cp-opt", "查看答案解析"); bs.onclick = function () {
+        fb.innerHTML = '<div class="cp-ans"><b>答案：</b>' + esc(answerText()) + (q.e ? '<div class="cp-exp"><b>解析</b><div class="anspts">' + fmtExp(q.e) + '</div></div>' : '') + '</div>';
+      };
+      box.appendChild(inp); box.appendChild(bc); box.appendChild(bs);
     }
     box.appendChild(fb);
     return box;
