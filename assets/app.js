@@ -982,7 +982,7 @@
   function renderCheckpoint(cid, kp, qByKp, slide) {
     var pick = pickCheckpoint(qByKp, kp);
     var q, kind;
-    if (slide && slide.check && slide.check.src === "本页PPT-重写") { q = slide.check; kind = q.kind || "fill"; }
+    if (slide && slide.check && slide.check.src === "PPT原文题") { q = slide.check; kind = q.kind || "fill"; }
     else if (pick) { q = pick.q; kind = pick.kind; }
     else if (slide && slide.check) { q = slide.check; kind = slide.check.kind || "mcq"; }
     else return null;
