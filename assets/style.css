@@ -646,3 +646,6 @@ body[data-ch="bc02"] .slide .body .notes{font-size:14.5px;line-height:1.65}
 .bank-sol>summary{cursor:pointer;font-size:12px;color:#1f5c8b;font-weight:600}
 .bank-ans{font-size:13px;margin-top:4px;color:#1b5e20}
 .bank-exp{font-size:12.5px;line-height:1.7;color:#44576a;margin-top:3px}
+
+.bank-oe{font-size:12.5px;line-height:1.65;color:#44576a;margin-top:4px}
+.bank-oe ul{margin:2px 0 0 18px;padding:0}

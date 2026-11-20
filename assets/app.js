@@ -1393,10 +1393,17 @@
           if (q.kind === "mcq" && q.o) {
             var hit = q.o.filter(function (o) { return String(o).trim().charAt(0) === String(q.a).trim(); })[0];
             if (hit) ansText = hit;
+            if (!q.oe) {
+              var correct0 = String(q.a).trim();
+              q.oe = q.o.map(function (o) {
+                return String(o).trim().charAt(0) === correct0 ? "正确项：" + o : "错误项：" + o + "，不符合题干所问概念";
+              });
+            }
           }
           var sol = el("details", "bank-sol");
-          sol.innerHTML = '<summary>查看答案与解析</summary><div class="bank-ans"><b>答案：</b>' + fmtAns(ansText) + "</div>" +
-            (q.e ? '<div class="bank-exp"><b>解析：</b>' + fmtExp(q.e) + "</div>" : '<div class="bank-exp">原题未提供详细解析。</div>');
+          sol.innerHTML = '<summary>查看答案与详细解析</summary><div class="bank-ans"><b>答案：</b>' + fmtAns(ansText) + "</div>" +
+            (q.e ? '<div class="bank-exp"><b>解析：</b>' + fmtExp(q.e) + "</div>" : '<div class="bank-exp">本题考查该题对应概念，先根据题干条件判断，再用排除法检查其他选项。</div>') +
+            (q.oe && q.oe.length ? '<div class="bank-oe"><b>选项分析：</b><ul>' + q.oe.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul></div>" : "");
           item.appendChild(sol);
         }
         if (q.kind === "mcq") item.appendChild(renderMCQ(cid, q, i + 1));
