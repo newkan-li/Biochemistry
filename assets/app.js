@@ -1388,6 +1388,17 @@
         shown++;
         var item = el("div", "bank-item");
         item.appendChild(el("div", "bank-src", (q.src || "配套题库") + " ｜ 第" + (q.no || i + 1) + "题"));
+        if (q.a && (q.kind === "mcq" || q.kind === "fill" || q.kind === "judge")) {
+          var ansText = q.a;
+          if (q.kind === "mcq" && q.o) {
+            var hit = q.o.filter(function (o) { return String(o).trim().charAt(0) === String(q.a).trim(); })[0];
+            if (hit) ansText = hit;
+          }
+          var sol = el("details", "bank-sol");
+          sol.innerHTML = '<summary>查看答案与解析</summary><div class="bank-ans"><b>答案：</b>' + fmtAns(ansText) + "</div>" +
+            (q.e ? '<div class="bank-exp"><b>解析：</b>' + fmtExp(q.e) + "</div>" : '<div class="bank-exp">原题未提供详细解析。</div>');
+          item.appendChild(sol);
+        }
         if (q.kind === "mcq") item.appendChild(renderMCQ(cid, q, i + 1));
         else if (q.kind === "judge") item.appendChild(renderJudge(cid, q, i + 1));
         else if (q.kind === "fill") item.appendChild(renderFill(cid, q, i + 1));
