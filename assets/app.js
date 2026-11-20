@@ -1373,7 +1373,7 @@
     var names = { mcq: "选择题", fill: "填空题", judge: "判断题", term: "名词解释", short: "简答题", essay: "论述题" };
     var sec = el("section", "chapter-bank"); sec.id = "chapter-bank";
     sec.appendChild(el("h2", "", "📚 配套题库 · 考研真题精选"));
-    sec.appendChild(el("p", "hint", "来自朱圣庚《生物化学》第4版配套题库·第2章；先作答，再展开答案/解析。共 " + bank.length + " 题。"));
+    sec.appendChild(el("p", "hint", "来自朱圣庚《生物化学》第4版配套题库 · " + esc(ch.title) + "；先作答，再展开答案/解析。共 " + bank.length + " 题。"));
     var bar = el("div", "bank-filters");
     var list = el("div", "bank-list");
     var box = el("details", "bank-wrap"); box.open = true;
